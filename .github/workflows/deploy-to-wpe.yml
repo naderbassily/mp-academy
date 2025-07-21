@@ -19,7 +19,7 @@ jobs:
           host: ${{ secrets.SFTP_HOST }}
           port: ${{ secrets.SFTP_PORT }}
           user: ${{ secrets.SFTP_USER }}
-          password: ${{ secrets.SFTP_PASSWORD }}
+          pass: ${{ secrets.SFTP_PASSWORD }}
           localDir: ./            # root of your theme folder
           remoteDir: /wp-content/themes/mp-academy
           options: --verbose --reverse --delete
