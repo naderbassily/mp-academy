@@ -13,13 +13,13 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Deploy via SFTP
+      - name: Deploy via SFTP (skip chmod)
         uses: pressidium/lftp-mirror-action@v1
         with:
           host: ${{ secrets.SFTP_HOST }}
           port: ${{ secrets.SFTP_PORT }}
           user: ${{ secrets.SFTP_USER }}
           pass: ${{ secrets.SFTP_PASSWORD }}
-          localDir: ./            # root of your theme folder
+          localDir: ./                       # Your mp-academy theme folder
           remoteDir: /wp-content/themes/mp-academy
-          options: --verbose --reverse --delete
+          options: --reverse --verbose --no-perms
