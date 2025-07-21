@@ -1,4 +1,4 @@
-name: Deploy to WP Engine
+name: Deploy to WP Engine via SFTP
 
 on:
   push:
@@ -10,16 +10,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Deploy theme to WP Engine via SFTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      - name: Deploy via SFTP
+        uses: pressidium/lftp-mirror-action@v1
         with:
-          server: ${{ secrets.SFTP_HOST }}
-          username: ${{ secrets.SFTP_USER }}
-          password: ${{ secrets.SFTP_PASSWORD }}
+          host: ${{ secrets.SFTP_HOST }}
           port: ${{ secrets.SFTP_PORT }}
-          local-dir: ./        # this is your mp-academy folder
-          server-dir: /wp-content/themes/mp-academy/
-          dangerous-clean-slate: false
+          user: ${{ secrets.SFTP_USER }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          localDir: ./            # root of your theme folder
+          remoteDir: /wp-content/themes/mp-academy
+          options: --verbose --reverse --delete
