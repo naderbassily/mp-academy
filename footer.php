@@ -11,22 +11,84 @@
 
 ?>
 
-	<footer id="colophon" class="site-footer">
-		<div class="site-info">
-			<a href="<?php echo esc_url( __( 'https://wordpress.org/', 'mp-academy' ) ); ?>">
-				<?php
-				/* translators: %s: CMS name, i.e. WordPress. */
-				printf( esc_html__( 'Proudly powered by %s', 'mp-academy' ), 'WordPress' );
-				?>
-			</a>
-			<span class="sep"> | </span>
-				<?php
-				/* translators: 1: Theme name, 2: Theme author. */
-				printf( esc_html__( 'Theme: %1$s by %2$s.', 'mp-academy' ), 'mp-academy', '<a href="http://underscores.me/">Underscores.me</a>' );
-				?>
-		</div><!-- .site-info -->
-	</footer><!-- #colophon -->
-</div><!-- #page -->
+<footer class="mp c-footer" role="contentinfo">
+  <nav class="c-footer__primary u-wrap" aria-label="Footer">
+    <ul class="c-footer__sections">
+      <li>
+        <h4 class="c-h c-h--step--1 c-footer__subtitle">Popular links</h4>
+        <?php
+          wp_nav_menu(array(
+            'theme_location' => 'footer-popular',
+            'container'      => false,
+            'items_wrap'     => '<ul>%3$s</ul>',
+          ));
+        ?>
+      </li>
+      <li>
+        <h4 class="c-h c-h--step--1 c-footer__subtitle">Support and services</h4>
+        <?php
+          wp_nav_menu(array(
+            'theme_location' => 'footer-support',
+            'container'      => false,
+            'items_wrap'     => '<ul>%3$s</ul>',
+          ));
+        ?>
+      </li>
+      <li>
+        <h4 class="c-h c-h--step--1 c-footer__subtitle">Company profile</h4>
+        <?php
+          wp_nav_menu(array(
+            'theme_location' => 'footer-company',
+            'container'      => false,
+            'items_wrap'     => '<ul>%3$s</ul>',
+          ));
+        ?>
+      </li>
+      <li>
+        <h4 class="c-h c-h--step--1 c-footer__subtitle">Legal information</h4>
+        <?php
+          wp_nav_menu(array(
+            'theme_location' => 'footer-legal',
+            'container'      => false,
+            'items_wrap'     => '<ul>%3$s</ul>',
+          ));
+        ?>
+      </li>
+    </ul>
+
+    <div class="c-footer__identity">
+      <a href="/" class="c-footer__logo">
+        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/malvernpanalyticallogo.svg" alt="Home" width="162" />
+      </a>
+      <ul class="c-footer__social">
+        <!-- Keep as-is for now, we can ACF or menu these later -->
+        <li><a href="#"><svg class="mp c-icon c-icon--facebook"><use xlink:href="/static/svg/sprite.svg#facebook"></use></svg></a></li>
+        <li><a href="#"><svg class="mp c-icon c-icon--twitter"><use xlink:href="/static/svg/sprite.svg#twitter"></use></svg></a></li>
+        <li><a href="#"><svg class="mp c-icon c-icon--rss"><use xlink:href="/static/svg/sprite.svg#rss"></use></svg></a></li>
+        <li><a href="#"><svg class="mp c-icon c-icon--instagram"><use xlink:href="/static/svg/sprite.svg#instagram"></use></svg></a></li>
+        <li><a href="#"><svg class="mp c-icon c-icon--linkedin"><use xlink:href="/static/svg/sprite.svg#linkedin"></use></svg></a></li>
+        <li><a href="#"><svg class="mp c-icon c-icon--youtube"><use xlink:href="/static/svg/sprite.svg#youtube"></use></svg></a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="c-footer__secondary">
+    <div class="u-wrap">
+      <ul class="c-footer__h-links">
+        <li><a href="#">Website feedback</a></li>
+        <li><a href="#">Site map</a></li>
+        <li><a href="#">Cookie settings</a></li>
+      </ul>
+      <span>&copy; <?php echo date('Y'); ?> Malvern Panalytical Ltd is a <a href="https://www.spectris.com/">Spectris</a> company</span>
+    </div>
+  </div>
+</footer>
+
+<a href="#header" class="mp c-back-to-top" title="">
+  <svg class="mp c-icon c-icon--chevron-up c-back-to-top__icon">
+    <use xlink:href="/static/svg/sprite.svg#chevron-up"></use>
+  </svg>
+</a>
 
 <?php wp_footer(); ?>
 
