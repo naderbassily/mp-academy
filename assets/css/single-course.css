@@ -1,0 +1,74 @@
+/* --- Single Course (scoped) --- */
+.mp-course {}
+
+/* Module list */
+.c-module-list { margin-top: var(--space-16, 1rem);  }
+.c-module-item {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  align-items: center;
+  gap: .75rem;
+  padding: .875rem 1rem;
+  margin: 2px 0;
+}
+.c-module-item__title { font-weight: 700; }
+.c-module-item__cta { margin-left: .75rem; }
+
+/* Radios / checks (simple circles) */
+.c-module-item__dot {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 2px solid rgba(0,0,0,.2);
+  background: #fff;
+  position: relative;
+}
+.c-module-item--complete .c-module-item__dot {
+  border-color: var(--color-primary, #0099a8);
+  background: var(--color-primary, #0099a8);
+}
+.c-module-item--inprogress .c-module-item__dot::after {
+  content: ""; position: absolute; inset: 4px; border-radius: 50%;
+  background: rgba(0,153,168,.15);
+}
+
+/* Status badges */
+.c-badge {
+  display: inline-block; padding: .25rem .6rem; border-radius: 999px;
+  font-size: 12px; line-height: 1; white-space: nowrap;
+}
+.c-badge--complete { background: var(--color-primary, #0099a8); color: #fff; }
+.c-badge--progress { background: rgba(0,153,168,.15); color: #004e56; }
+
+/* "Start module" button looks Franklin-y */
+.c-btn-start {
+  display: inline-block; padding: .5rem .75rem; border-radius: .5rem;
+  font-weight: 600; background: #1eac4c; color: #fff; text-decoration: none;
+}
+.c-btn-start:hover { opacity: .9; }
+/* Progress block */
+.mp-course__progress { margin-top: var(--space-8, .5rem); }
+.mp-course__progress-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 .25rem 0;
+  font-size: var(--size-14, .875rem);
+  color: var(--color-text-quiet, #5a6b7b);
+}
+.mp-course__progress-left { font-weight: 600; }
+
+/* Bar look to match Figma */
+.c-progress {
+  width: 100%;
+  height: 10px;
+  background: #E9F1F3;         /* light track */
+  border-radius: 999px;
+  overflow: hidden;
+}
+.c-progress__bar {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  background: var(--color-primary, #0FA3B1); /* teal */
+  transition: width .35s ease;
+}

@@ -1,61 +1,52 @@
-<?php get_header(); ?>
+<?php
+/**
+ * Template: LearnDash Single Course
+ */
+get_header();
 
-<main id="primary" class="site-main u-flow">
+$course_id = get_the_ID();
+$current_user_id = get_current_user_id();
+?>
 
-  <?php get_template_part('template-parts/single-course-hero'); ?>
+<main id="primary" class="site-main">
+  <section class="u-wrap u-space--section mp-course">
 
-<section class="u-wrap u-space--section u-margin-top-l u-margin-bottom-s">
-      <h2 class="c-h u-margin-bottom-s">Course Overview</h2>
+    <?php
+      // 1) Breadcrumbs (we'll wire it up next step)
+      get_template_part('template-parts/course/breadcrumbs', null, [
+        'course_id' => $course_id,
+      ]);
 
-    <div class="c-content">
+      // 2) Title + short description
+      get_template_part('template-parts/course/title', null, [
+        'course_id' => $course_id,
+      ]);
+
+      // 3) Progress bar (placeholder for now)
+      get_template_part('template-parts/course/progress', null, [
+        'course_id' => $course_id,
+        'user_id'   => $current_user_id,
+      ]);
+    ?>
+
+ <div class="u-margin-top-l" id="mp-course-modules">
+  <?php
+    get_template_part('template-parts/course/module-list', null, [
+      'course_id' => $course_id,
+      'user_id'   => $current_user_id,
+    ]);
+  ?>
+</div>
+
+
+    <div class="u-margin-top-xl" id="mp-course-overview">
       <?php
-      if (have_posts()) :
-        the_post();
-        // Get raw content (no filters, no LearnDash additions)
-        echo wpautop(get_post_field('post_content', get_the_ID()));
-      endif;
+         get_template_part('template-parts/course/overview', null, [
+           'course_id' => $course_id,
+         ]);
       ?>
     </div>
-  </section>
 
-    <section class="u-wrap u-space--section u-border-top u-margin-top-l">
-    <div class="c-content u-flow">
-<?php
-$course_id = get_the_ID();
-$lessons   = learndash_get_lesson_list($course_id);
-
-if (!empty($lessons)) : ?>
-<section class="u-wrap u-space--section">
-  <h2 class="c-h u-margin-bottom-s">Course Content</h2>
-  <dl class="c-accordion">
-    <?php foreach ($lessons as $lesson) : ?>
-      <div class="c-accordion__item">
-        <dt class="c-accordion__title">
-          <?php echo esc_html(get_the_title($lesson->ID)); ?>
-        </dt>
-        <dd class="c-accordion__content o-prose u-flow--prose">
-          <ul class="u-flow--xs">
-            <?php
-            $topics = learndash_get_topic_list($lesson->ID, $course_id);
-            if (!empty($topics)) :
-              foreach ($topics as $topic) : ?>
-                <li>
-                  <a class="c-link" href="<?php echo esc_url(get_permalink($topic->ID)); ?>">
-                    <?php echo esc_html(get_the_title($topic->ID)); ?>
-                  </a>
-                </li>
-              <?php endforeach;
-            else : ?>
-              <li><em>No topics for this lesson.</em></li>
-            <?php endif; ?>
-          </ul>
-        </dd>
-      </div>
-    <?php endforeach; ?>
-  </dl>
-</section>
-<?php endif; ?>
-    </div>
   </section>
 </main>
 

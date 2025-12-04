@@ -1,0 +1,89 @@
+/* ===========================
+   MP Academy — My Courses (GRID ONLY)
+   Targets: template-parts/home/my-course-grid.php
+   Keeps Franklin defaults; provides resilient fallbacks
+   =========================== */
+
+/* Section spacing */
+.mp.mp-my-courses.mp-section {
+  padding-block: var(--space-24, 24px);
+}
+
+/* Header spacing (use Franklin heading style already on h2) */
+.mp .mp-my-courses__hd {
+  margin-bottom: var(--space-16, 16px);
+}
+.mp .mp-my-courses__note {
+  color: var(--color-text-weak, #6b7280);
+  margin-top: var(--space-8, 8px);
+}
+
+/* ---- GRID LAYOUT ----
+   You already output: .o-grid o-grid--gap-24 o-grid--cols-3 mp-my-courses__grid
+   The rules below are SAFE fallbacks if o-grid isn’t present,
+   or to ensure the exact 1/2/3 column behavior like your screenshot.
+*/
+.mp .mp-my-courses__grid {
+  /* Fallback grid if o-grid isn’t available */
+  display: grid;
+  gap: var(--space-24, 24px);
+  grid-template-columns: 1fr;
+}
+
+/* ≥ 640px → 2 columns (tablet) */
+@media (min-width: 640px) {
+  .mp .mp-my-courses__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ≥ 980px → 3 columns (desktop) */
+@media (min-width: 980px) {
+  .mp .mp-my-courses__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Make children stretch nicely even if cards vary slightly in content height */
+.mp .mp-my-courses__grid > * {
+  min-width: 0;          /* prevents overflow in grid items */
+  height: 100%;
+}
+
+/* Optional: tighten the wrap container slightly on very wide screens */
+@media (min-width: 1280px) {
+  .mp .u-wrap {
+    /* uncomment if you want a max width feel
+    max-width: 1200px;
+    margin-inline: auto;
+    */
+  }
+}
+
+/* Admin debug line (the small enrolled IDs) */
+.mp .u-muted.u-mb-8 {
+  display: block;
+  font-size: var(--font-size-12, 12px);
+}
+
+/* 4-column archive grid (wins over o-grid defaults) */
+.o-grid.mp-courses-grid {
+  display: grid !important;                     /* o-grid may be flex; force grid */
+  gap: var(--space-24, 24px) !important;
+  grid-template-columns: 1fr;                   /* mobile: 1 */
+}
+
+@media (min-width: 640px) {
+  .o-grid.mp-courses-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;  /* tablet: 2 */
+  }
+}
+
+@media (min-width: 980px) {
+  .o-grid.mp-courses-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;  /* desktop: 4 */
+  }
+}
+
+/* Prevent overflow inside grid items */
+.o-grid.mp-courses-grid > * { min-width: 0; }

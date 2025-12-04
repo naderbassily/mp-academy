@@ -91,18 +91,44 @@
         </div>
       </form>
 
-      <!-- Site Nav (Dynamic WordPress Menu) -->
-      <nav class="c-header__site" aria-label="Site">
-        <?php
-        wp_nav_menu(array(
-          'theme_location' => 'menu-1',
-          'menu_class'     => '',
-          'container'      => false,
-          'items_wrap'     => '<ul>%3$s</ul>',
-          'walker'         => new Franklin_Menu_Walker()
-        ));
-        ?>
-      </nav>
+ <!-- Site Nav (Dynamic WordPress Menu) -->
+<nav class="c-header__site c-header__site--with-home" aria-label="Site">
+  <ul>
+    <?php
+    // WordPress menu output
+    wp_nav_menu(array(
+      'theme_location' => 'menu-1',
+      'menu_class'     => '',
+      'container'      => false,
+      'items_wrap'     => '%3$s', // Skip <ul> wrapper
+      'walker'         => new Franklin_Menu_Walker()
+    ));
+
+    // Auth & Basket
+    $user_id = get_current_user_id();
+    $is_logged_in = is_user_logged_in();
+    $enrolled_courses = 0;
+
+    if ($is_logged_in && function_exists('ld_get_mycourses')) {
+      $courses = ld_get_mycourses($user_id);
+      $enrolled_courses = is_array($courses) ? count($courses) : 0;
+    }
+    ?>
+
+    <!-- Franklin-style floating button: NOT inside <li> -->
+    <a class="mp c-button c-button--small c-button--tight c-button--outline-white c-header__push u-margin-right-m" href="<?php echo esc_url(home_url('/courses')); ?>">
+      Enrolled (<?php echo esc_html($enrolled_courses); ?>)
+    </a>
+
+    <!-- Auth links inside <li> -->
+    <?php if (!$is_logged_in) : ?>
+      <li><a href="<?php echo esc_url(wp_login_url()); ?>">Log in</a></li>
+      <li><a href="<?php echo esc_url(wp_registration_url()); ?>">Register</a></li>
+    <?php else : ?>
+      <li><a href="<?php echo esc_url(wp_logout_url(home_url())); ?>">Log out</a></li>
+    <?php endif; ?>
+  </ul>
+</nav>
 
     </div><!-- /c-header__primary -->
   </div><!-- /c-header__wrap -->
