@@ -209,3 +209,10 @@ function mp_academy_search_ld_category( $query ) {
   }
 }
 add_action( 'pre_get_posts', 'mp_academy_search_ld_category' );
+
+/**
+ * Force WordPress authentication cookies to expire after 30 minutes
+ */
+add_filter( 'auth_cookie_expiration', function( $seconds, $user_id, $remember ) {
+    return 30 * 60; // 30 minutes
+}, 10, 3 );
