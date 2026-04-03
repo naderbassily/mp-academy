@@ -6,8 +6,53 @@
  * @package MP_Academy
  */
 
-if ( ! defined( '_S_VERSION' ) ) {
-  define( '_S_VERSION', '1.0.0' );
+if ( ! defined( 'MP_ACADEMY_VERSION' ) ) {
+  define( 'MP_ACADEMY_VERSION', '1.0.0' );
+}
+
+/**
+ * Enqueue a theme stylesheet only when the file exists.
+ *
+ * @param string   $handle        Style handle.
+ * @param string   $relative_path Theme-relative asset path.
+ * @param string[] $deps          Optional dependencies.
+ */
+function mp_academy_enqueue_theme_style( $handle, $relative_path, $deps = array() ) {
+  $full_path = get_template_directory() . $relative_path;
+
+  if ( ! file_exists( $full_path ) ) {
+    return;
+  }
+
+  wp_enqueue_style(
+    $handle,
+    get_template_directory_uri() . $relative_path,
+    $deps,
+    filemtime( $full_path )
+  );
+}
+
+/**
+ * Enqueue a theme script only when the file exists.
+ *
+ * @param string   $handle        Script handle.
+ * @param string   $relative_path Theme-relative asset path.
+ * @param string[] $deps          Optional dependencies.
+ */
+function mp_academy_enqueue_theme_script( $handle, $relative_path, $deps = array() ) {
+  $full_path = get_template_directory() . $relative_path;
+
+  if ( ! file_exists( $full_path ) ) {
+    return;
+  }
+
+  wp_enqueue_script(
+    $handle,
+    get_template_directory_uri() . $relative_path,
+    $deps,
+    filemtime( $full_path ),
+    true
+  );
 }
 
 /**
@@ -70,153 +115,46 @@ add_action( 'after_setup_theme', 'mp_academy_content_width', 0 );
  * CONSOLIDATED: All asset enqueuing in one place
  */
 function mp_academy_scripts() {
-
-  // ---------- Base Styles ----------
-  // Single Video page (CPT: video)
-  if ( is_singular('video') ) {
-    $path = get_template_directory() . '/assets/css/single-video.css';
-    if ( file_exists( $path ) ) {
-      wp_enqueue_style(
-        'mp-single-video',
-        get_template_directory_uri() . '/assets/css/single-video.css',
-        ['mp-inter-font'],
-        filemtime( $path )
-      );
-    }
-  }
-
-  // Videos Library page (template)
-  if ( is_page_template('page-videos-library.php') ) {
-    $path = get_template_directory() . '/assets/css/videos-library.css';
-    if ( file_exists( $path ) ) {
-      wp_enqueue_style(
-        'mp-videos-library',
-        get_template_directory_uri() . '/assets/css/videos-library.css',
-        ['mp-inter-font'],
-        filemtime( $path )
-      );
-    }
-  }
-
-  wp_enqueue_style(
-    'mp-academy-style',
-    get_stylesheet_uri(),
-    [],
-    _S_VERSION
-  );
+  wp_enqueue_style( 'mp-academy-style', get_stylesheet_uri(), array(), filemtime( get_stylesheet_directory() . '/style.css' ) );
   wp_style_add_data( 'mp-academy-style', 'rtl', 'replace' );
 
-  // ---------- Fonts ----------
-  wp_enqueue_style(
-    'mp-inter-font',
-    get_template_directory_uri() . '/assets/css/inter-font.css',
-    [],
-    filemtime( get_template_directory() . '/assets/css/inter-font.css' )
-  );
+  mp_academy_enqueue_theme_style( 'mp-inter-font', '/assets/css/inter-font.css' );
+  mp_academy_enqueue_theme_style( 'mp-progress-bar', '/assets/css/progress-bar.css' );
+  mp_academy_enqueue_theme_style( 'mp-my-courses-grid', '/assets/css/my-courses-grid.css', array( 'mp-inter-font' ) );
+  mp_academy_enqueue_theme_style( 'mp-my-courses', '/assets/css/my-courses.css', array( 'mp-inter-font', 'mp-progress-bar' ) );
+  mp_academy_enqueue_theme_script( 'mp-academy-navigation', '/assets/js/navigation.js' );
 
-  // ---------- Page-Specific Styles ----------
-  
-  // Home page
-  if ( is_front_page() || is_page_template('templates/template-academy-home.php') ) {
-    $path = get_template_directory() . '/assets/css/home.css';
-    if ( file_exists( $path ) ) {
-      wp_enqueue_style(
-        'mp-academy-home',
-        get_template_directory_uri() . '/assets/css/home.css',
-        ['mp-inter-font'],
-        filemtime( $path )
-      );
-    }
+  if ( is_singular( 'video' ) ) {
+    mp_academy_enqueue_theme_style( 'mp-single-video', '/assets/css/single-video.css', array( 'mp-inter-font' ) );
   }
 
-
-  // All Courses archive page
-  if ( is_post_type_archive( 'sfwd-courses' ) ) {
-    // CSS
-    $css_path = get_template_directory() . '/assets/css/all-courses.css';
-    if ( file_exists( $css_path ) ) {
-      wp_enqueue_style(
-        'mp-all-courses',
-        get_template_directory_uri() . '/assets/css/all-courses.css',
-        ['mp-inter-font'],
-        filemtime( $css_path )
-      );
-    }
-
-    // JS
-    $js_path = get_template_directory() . '/assets/js/all-courses.js';
-    if ( file_exists( $js_path ) ) {
-      wp_enqueue_script(
-        'mp-all-courses',
-        get_template_directory_uri() . '/assets/js/all-courses.js',
-        [],
-        filemtime( $js_path ),
-        true
-      );
-    }
+  if ( is_page_template( 'page-videos-library.php' ) ) {
+    mp_academy_enqueue_theme_style( 'mp-videos-library', '/assets/css/videos-library.css', array( 'mp-inter-font' ) );
   }
 
-  // Single Topic / Lesson
-  if ( is_singular( 'sfwd-topic' ) || is_singular( 'sfwd-lessons' ) ) {
-    $topic_css = get_template_directory() . '/assets/css/single-topic.css';
-    if ( file_exists( $topic_css ) ) {
-      wp_enqueue_style( 'mp-single-topic', get_template_directory_uri() . '/assets/css/single-topic.css', ['mp-inter-font'], filemtime( $topic_css ) );
-    }
-
-    $topic_js = get_template_directory() . '/assets/js/single-topic.js';
-    if ( file_exists( $topic_js ) ) {
-      wp_enqueue_script( 'mp-single-topic-js', get_template_directory_uri() . '/assets/js/single-topic.js', ['jquery'], filemtime( $topic_js ), true );
-    }
+  if ( is_front_page() ) {
+    mp_academy_enqueue_theme_style( 'mp-academy-home', '/assets/css/home.css', array( 'mp-inter-font' ) );
   }
 
-  // Category icons (Home + All Courses)
   if ( is_front_page() || is_post_type_archive( 'sfwd-courses' ) ) {
-    $path = get_template_directory() . '/assets/css/categories.css';
-    if ( file_exists( $path ) ) {
-      wp_enqueue_style(
-        'mp-categories',
-        get_template_directory_uri() . '/assets/css/categories.css',
-        ['mp-inter-font'],
-        filemtime( $path )
-      );
-    }
+    mp_academy_enqueue_theme_style( 'mp-categories', '/assets/css/categories.css', array( 'mp-inter-font' ) );
   }
 
-  // ---------- Global Component Styles ----------
-  
-  // My Courses components (used on multiple pages)
-  $component_styles = [
-    'my-courses-grid' => '/assets/css/my-courses-grid.css',
-    'my-courses'      => '/assets/css/my-courses.css',
-  ];
-
-  foreach ( $component_styles as $handle => $relative_path ) {
-    $full_path = get_template_directory() . $relative_path;
-    if ( file_exists( $full_path ) ) {
-      wp_enqueue_style(
-        'mp-' . $handle,
-        get_template_directory_uri() . $relative_path,
-        ['mp-inter-font'],
-        filemtime( $full_path )
-      );
-    }
+  if ( is_post_type_archive( 'sfwd-courses' ) ) {
+    mp_academy_enqueue_theme_style( 'mp-all-courses', '/assets/css/all-courses.css', array( 'mp-inter-font' ) );
+    mp_academy_enqueue_theme_script( 'mp-all-courses', '/assets/js/all-courses.js' );
   }
 
-  // ---------- JavaScript ----------
-  
-  // Navigation (FIXED PATH)
-  $nav_path = get_template_directory() . '/assets/js/navigation.js';
-  if ( file_exists( $nav_path ) ) {
-    wp_enqueue_script(
-      'mp-academy-navigation',
-      get_template_directory_uri() . '/assets/js/navigation.js',
-      [],
-      filemtime( $nav_path ),
-      true
-    );
+  if ( is_singular( 'sfwd-courses' ) ) {
+    mp_academy_enqueue_theme_style( 'mp-single-course', '/assets/css/single-course.css', array( 'mp-inter-font', 'mp-progress-bar' ) );
+    mp_academy_enqueue_theme_script( 'mp-single-course-js', '/assets/js/single-course.js' );
   }
 
-  // Comments (only if needed)
+  if ( is_singular( 'sfwd-topic' ) || is_singular( 'sfwd-lessons' ) ) {
+    mp_academy_enqueue_theme_style( 'mp-single-topic', '/assets/css/single-topic.css', array( 'mp-inter-font' ) );
+    mp_academy_enqueue_theme_script( 'mp-single-topic-js', '/assets/js/single-topic.js', array( 'jquery' ) );
+  }
+
   if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
     wp_enqueue_script( 'comment-reply' );
   }
@@ -273,8 +211,6 @@ function mp_academy_search_ld_category( $query ) {
     }
   }
 }
-add_filter( 'learndash_course_completion_url', 'mp_academy_course_completion_url', 10, 3 );
-
 /**
  * Append the completed course ID to LearnDash completion redirects.
  */
@@ -290,18 +226,27 @@ function mp_academy_course_completion_url( $url, $course_id, $page_id ) {
     $url
   );
 }
+add_filter( 'learndash_course_completion_url', 'mp_academy_course_completion_url', 10, 3 );
 add_action( 'pre_get_posts', 'mp_academy_search_ld_category' );
 
-// Force LearnDash to enqueue video scripts on topic pages
-add_action('wp_enqueue_scripts', function() {
-    if (is_singular('sfwd-topic')) {
-        wp_enqueue_script('learndash-video');
-        wp_enqueue_style('learndash-video');
-        
-        // Also enqueue the main LearnDash script
-        if (file_exists(LEARNDASH_LMS_PLUGIN_DIR . 'assets/js/learndash.js')) {
-            wp_enqueue_script('learndash');
-        }
-    }
-}, 999);
+/**
+ * Ensure LearnDash video assets are available on topic pages.
+ */
+function mp_academy_enqueue_learndash_video_assets() {
+  if ( ! is_singular( 'sfwd-topic' ) ) {
+    return;
+  }
 
+  if ( wp_style_is( 'learndash-video', 'registered' ) ) {
+    wp_enqueue_style( 'learndash-video' );
+  }
+
+  if ( wp_script_is( 'learndash-video', 'registered' ) ) {
+    wp_enqueue_script( 'learndash-video' );
+  }
+
+  if ( wp_script_is( 'learndash', 'registered' ) ) {
+    wp_enqueue_script( 'learndash' );
+  }
+}
+add_action( 'wp_enqueue_scripts', 'mp_academy_enqueue_learndash_video_assets', 999 );

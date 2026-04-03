@@ -8,7 +8,6 @@
 	'use strict';
 	
 	document.addEventListener('DOMContentLoaded', function() {
-		console.log('Single course JS loaded');
 		initAccordion();
 	});
 	
@@ -17,22 +16,16 @@
 	 */
 	function initAccordion() {
 		const accordionHeaders = document.querySelectorAll('.mp-accordion-header');
-		
-		console.log('Found accordion headers:', accordionHeaders.length);
-		
+
 		if (!accordionHeaders.length) {
-			console.warn('No accordion headers found!');
 			return;
 		}
 		
 		accordionHeaders.forEach(header => {
-			header.addEventListener('click', function(e) {
-				console.log('Accordion clicked');
+			header.addEventListener('click', function() {
 				toggleAccordion(this);
 			});
 		});
-		
-		console.log('Accordion initialized successfully');
 	}
 	
 	/**
@@ -42,11 +35,8 @@
 		const isExpanded = header.getAttribute('aria-expanded') === 'true';
 		const contentId = header.getAttribute('aria-controls');
 		const content = document.getElementById(contentId);
-		
-		console.log('Toggle accordion:', { isExpanded, contentId, content });
-		
+
 		if (!content) {
-			console.error('Content not found for:', contentId);
 			return;
 		}
 		

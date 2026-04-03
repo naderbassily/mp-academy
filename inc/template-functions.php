@@ -52,45 +52,44 @@ function mp_ld_is_enrolled($user_id, $course_id) {
 }
 
 /**
- * Enqueue universal progress bar CSS globally
- * Used in: My Courses (home), Single Course, etc.
- * 
- * ⚠️ IMPORTANT: This MUST come BEFORE mp_enqueue_single_course_assets
- * because single-course.css depends on it!
+ * Get LearnDash lesson or topic status for the current user.
+ *
+ * @param int    $user_id   Current user ID.
+ * @param int    $course_id Course ID.
+ * @param int    $step_id   Lesson or topic ID.
+ * @param string $step_type LearnDash activity type.
+ * @return array{complete:bool,started:bool,can_view:bool}
  */
-function mp_enqueue_progress_bar_styles() {
-  wp_enqueue_style(
-    'mp-progress-bar',
-    get_template_directory_uri() . '/assets/css/progress-bar.css',
-    [],
-    '1.0.0'
+function mp_get_step_status( $user_id, $course_id, $step_id, $step_type = 'lesson' ) {
+  $status = array(
+    'complete' => false,
+    'started'  => false,
+    'can_view' => true,
   );
-}
-add_action('wp_enqueue_scripts', 'mp_enqueue_progress_bar_styles');
 
-/**
- * Enqueue assets on Single Course (sfwd-courses) page.
- */
-function mp_enqueue_single_course_assets() {
-  if (!is_singular('sfwd-courses')) {
-    return;
+  if ( 'lesson' === $step_type ) {
+    if ( $user_id && function_exists( 'learndash_is_lesson_complete' ) ) {
+      $status['complete'] = (bool) learndash_is_lesson_complete( $user_id, $step_id, $course_id );
+    }
+  } elseif ( $user_id && function_exists( 'learndash_is_topic_complete' ) ) {
+    $status['complete'] = (bool) learndash_is_topic_complete( $user_id, $step_id );
   }
 
-  // CSS (depends on progress-bar.css which loads globally)
-  wp_enqueue_style(
-    'mp-single-course',
-    get_template_directory_uri() . '/assets/css/single-course.css',
-    ['mp-progress-bar'],  // Depends on progress bar styles
-    '1.0.0'
-  );
+  if ( ! $status['complete'] && $user_id && function_exists( 'learndash_get_user_activity' ) ) {
+    $activity = learndash_get_user_activity(
+      array(
+        'user_id'       => $user_id,
+        'course_id'     => $course_id,
+        'post_id'       => $step_id,
+        'activity_type' => $step_type,
+        'per_page'      => 1,
+      )
+    );
 
-  // JS (Accordion functionality)
-  wp_enqueue_script(
-    'mp-single-course-js',
-    get_template_directory_uri() . '/assets/js/single-course.js',
-    [],
-    '1.0.0',
-    true
-  );
+    if ( ( is_array( $activity ) && ! empty( $activity ) ) || is_object( $activity ) ) {
+      $status['started'] = true;
+    }
+  }
+
+  return $status;
 }
-add_action('wp_enqueue_scripts', 'mp_enqueue_single_course_assets');

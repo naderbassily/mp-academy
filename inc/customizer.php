@@ -56,6 +56,18 @@ function mp_academy_customize_partial_blogdescription() {
  * Binds JS handlers to make Theme Customizer preview reload changes asynchronously.
  */
 function mp_academy_customize_preview_js() {
-	wp_enqueue_script( 'mp-academy-customizer', get_template_directory_uri() . '/js/customizer.js', array( 'customize-preview' ), _S_VERSION, true );
+	$asset_path = get_template_directory() . '/assets/js/customizer.js';
+
+	if ( ! file_exists( $asset_path ) ) {
+		return;
+	}
+
+	wp_enqueue_script(
+		'mp-academy-customizer',
+		get_template_directory_uri() . '/assets/js/customizer.js',
+		array( 'customize-preview' ),
+		filemtime( $asset_path ),
+		true
+	);
 }
 add_action( 'customize_preview_init', 'mp_academy_customize_preview_js' );

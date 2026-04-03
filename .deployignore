@@ -1,0 +1,13 @@
+.claude/
+.github/
+README.md
+composer.json
+composer.lock
+package.json
+package-lock.json
+phpcs.xml.dist
+.eslintrc
+.stylelintrc.json
+.gitignore
+.deployignore
+.DS_Store

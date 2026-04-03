@@ -1,20 +1,20 @@
 === MP Academy ===
 
-Contributors: automattic
-Tags: custom-background, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready
+Contributors: mpacademy
+Tags: learndash, education, custom-menu, featured-images, translation-ready
 
-Requires at least: 4.5
-Tested up to: 5.4
-Requires PHP: 5.6
+Requires at least: 6.4
+Tested up to: 6.8
+Requires PHP: 7.4
 Stable tag: 1.0.0
 License: GNU General Public License v2 or later
 License URI: LICENSE
 
-A starter theme called MP Academy.
+Custom LearnDash theme for MP Academy using the Franklin Design System.
 
 == Description ==
 
-Description
+MP Academy is a custom WordPress theme for LearnDash course delivery. It includes tailored templates for course archives, single courses, lessons, topics, and a video library experience aligned to the Franklin Design System.
 
 == Installation ==
 
@@ -24,16 +24,16 @@ Description
 
 == Frequently Asked Questions ==
 
-= Does this theme support any plugins? =
+= Does this theme support LearnDash? =
 
-MP Academy includes support for WooCommerce and for Infinite Scroll in Jetpack.
+Yes. The theme includes custom templates and UI components for LearnDash courses, lessons, topics, quizzes, and learner progress surfaces.
 
 == Changelog ==
 
-= 1.0 - May 12 2015 =
-* Initial release
+= 1.0.0 =
+* Reset repository history and establish the current theme as the version 1 baseline.
+* Align theme metadata and development tooling with MP Academy.
 
 == Credits ==
 
-* Based on Underscores https://underscores.me/, (C) 2012-2020 Automattic, Inc., [GPLv2 or later](https://www.gnu.org/licenses/gpl-2.0.html)
 * normalize.css https://necolas.github.io/normalize.css/, (C) 2012-2018 Nicolas Gallagher and Jonathan Neal, [MIT](https://opensource.org/licenses/MIT)

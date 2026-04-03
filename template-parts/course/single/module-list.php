@@ -33,40 +33,6 @@ if (function_exists('learndash_get_course_lessons_list')) {
 if (empty($lessons)) {
 	return;
 }
-
-// Helper: Get lesson/topic status
-function mp_get_step_status($user_id, $course_id, $step_id, $step_type = 'lesson') {
-	$status = [
-		'complete' => false,
-		'started' => false,
-		'can_view' => true,
-	];
-	
-	if ($step_type === 'lesson') {
-		if ($user_id && function_exists('learndash_is_lesson_complete')) {
-			$status['complete'] = learndash_is_lesson_complete($user_id, $step_id, $course_id);
-		}
-	} else {
-		if ($user_id && function_exists('learndash_is_topic_complete')) {
-			$status['complete'] = learndash_is_topic_complete($user_id, $step_id);
-		}
-	}
-	
-	if (!$status['complete'] && $user_id && function_exists('learndash_get_user_activity')) {
-		$activity = learndash_get_user_activity([
-			'user_id' => $user_id,
-			'course_id' => $course_id,
-			'post_id' => $step_id,
-			'activity_type' => $step_type,
-			'per_page' => 1,
-		]);
-		if ((is_array($activity) && !empty($activity)) || is_object($activity)) {
-			$status['started'] = true;
-		}
-	}
-	
-	return $status;
-}
 ?>
 
 <section class="mp-course-modules u-margin-bottom-l">
