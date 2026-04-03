@@ -13,7 +13,19 @@
       .c-navigation__list{list-style: none; 
 }
 
-      .c-header__search {
-        margin-bottom: 0 !important;
-      }
+.c-header__search {
+  margin-bottom: 0 !important;
+}
 
+.c-breadcrumb,
+.c-breadcrumb *,
+.c-breadcrumb__link {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+.c-breadcrumb__link::after,
+.c-breadcrumb__link::before {
+  display: none !important;
+}

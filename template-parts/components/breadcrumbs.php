@@ -8,6 +8,16 @@
 
 if (!defined('ABSPATH')) exit;
 
+if ( ! function_exists( 'mp_bc_chevron' ) ) {
+	function mp_bc_chevron( $sprite_path ) {
+		?>
+		<svg role="img" aria-hidden="true" focusable="false" class="mp c-icon c-icon--chevron-down">
+			<use xlink:href="<?php echo esc_attr( $sprite_path ); ?>#chevron-down"></use>
+		</svg>
+		<?php
+	}
+}
+
 $sprite_path = '/static/svg/sprite.svg';
 $extra_class = !empty($args['extra_class']) ? ' ' . trim((string) $args['extra_class']) : '';
 
@@ -32,15 +42,6 @@ if (is_page()) {
   if ($tpl === 'page-videos-library.php' || (function_exists('is_page') && is_page('videos-library'))) {
     $is_video_library = true;
   }
-}
-
-// Helper: chevron
-function mp_bc_chevron($sprite_path) {
-  ?>
-  <svg role="img" aria-hidden="true" focusable="false" class="mp c-icon c-icon--chevron-down">
-    <use xlink:href="<?php echo esc_attr($sprite_path); ?>#chevron-down"></use>
-  </svg>
-  <?php
 }
 
 // Resolve LearnDash IDs (only if needed)
@@ -75,21 +76,6 @@ $topic_title  = $topic_id ? get_the_title($topic_id) : '';
 
 <nav class="c-breadcrumb<?php echo esc_attr($extra_class); ?>" aria-label="Breadcrumb">
   <ol class="c-breadcrumb__list" role="list">
-
-<style>
-/* Aggressively remove underlines from the breadcrumbs globally */
-.c-breadcrumb,
-.c-breadcrumb *,
-.c-breadcrumb__link {
-    text-decoration: none !important;
-    border-bottom: none !important;
-    box-shadow: none !important;
-}
-.c-breadcrumb__link::after,
-.c-breadcrumb__link::before {
-    display: none !important;
-}
-</style>
     <!-- Home -->
     <li class="c-breadcrumb__item" role="listitem">
       <a href="<?php echo esc_url($home_url); ?>" class="c-breadcrumb__link" title="<?php esc_attr_e('Home', 'mp-academy'); ?>">

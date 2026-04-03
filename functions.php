@@ -74,6 +74,7 @@ function mp_academy_setup() {
   // Register navigation menus.
   register_nav_menus( array(
     'menu-1'         => esc_html__( 'Primary', 'mp-academy' ),
+    'corporate-menu' => esc_html__( 'Corporate', 'mp-academy' ),
     'footer-popular' => esc_html__( 'Footer - Popular Links', 'mp-academy' ),
     'footer-support' => esc_html__( 'Footer - Support and Services', 'mp-academy' ),
     'footer-company' => esc_html__( 'Footer - Company Profile', 'mp-academy' ),
@@ -120,6 +121,7 @@ function mp_academy_scripts() {
 
   mp_academy_enqueue_theme_style( 'mp-inter-font', '/assets/css/inter-font.css' );
   mp_academy_enqueue_theme_style( 'mp-progress-bar', '/assets/css/progress-bar.css' );
+  mp_academy_enqueue_theme_style( 'mp-academy-header', '/assets/css/header.css' );
   mp_academy_enqueue_theme_style( 'mp-my-courses-grid', '/assets/css/my-courses-grid.css', array( 'mp-inter-font' ) );
   mp_academy_enqueue_theme_style( 'mp-my-courses', '/assets/css/my-courses.css', array( 'mp-inter-font', 'mp-progress-bar' ) );
   mp_academy_enqueue_theme_script( 'mp-academy-navigation', '/assets/js/navigation.js' );
