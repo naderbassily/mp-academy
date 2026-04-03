@@ -1,0 +1,19 @@
+
+    .c-header__primary {
+        min-height: 65px;
+        margin: auto !important;
+        width: 100%;
+        align-items:center !important;
+        flex-direction: row !important;
+        
+       
+    }
+   
+    
+      .c-navigation__list{list-style: none; 
+}
+
+      .c-header__search {
+        margin-bottom: 0 !important;
+      }
+

@@ -1,0 +1,99 @@
+/* --------------------------------- */
+/* Native LearnDash Alerts           */
+/* --------------------------------- */
+.ld-alert, 
+.ld-status,
+.ld-topic-status,
+.ld-navigation__back-to-course,
+.ld-navigation__progress-completed-action,
+.ld-navigation__progress {
+ 
+}
+.ld-navigation {background-color: var(--color-petrol-step-3);
+  border-radius: 5px ;
+  padding: 30px !important;
+  display: flex !important;
+    justify-content: space-between !important;
+  margin-bottom: 30px !important;
+
+  }
+  
+.ld-navigation__back-to-course  {
+  display: none !important;
+}
+/* --------------------------------- */
+/* Native LearnDash Pagination       */
+/* --------------------------------- */
+
+.ld-navigation__previous {order: 1 !important;}
+.ld-navigation__progress{order: 2 !important; }
+.ld-navigation__next {order: 3 !important;}
+
+.ld-navigation__previous, 
+.ld-navigation__next {
+  padding: 0 !important;
+}
+
+.ld-navigation__previous-link, 
+.ld-navigation__next-link {
+  background-color: transparent !important;
+  padding: 0 !important;
+  border: 0 !important;
+  color: var(--color-petrol-step-0) !important;
+  text-decoration: none !important;
+  font-weight: 600 !important;
+}
+
+.ld-navigation__previous-link:hover, 
+.ld-navigation__next-link:hover {
+  background-color: transparent !important;
+  border: 0 !important;
+  color: var(--color-petrol-step-1) !important;
+  text-decoration: none !important;
+}
+
+/* --------------------------------- */
+/* Custom Video Wrapper              */
+/* --------------------------------- */
+.mp-topic-video-wrapper {
+  border-radius: 8px;
+  overflow: hidden;
+  
+}
+
+/* --------------------------------- */
+/* Single Lesson / Topic Hero Layout */
+/* --------------------------------- */
+.c-hero__wrap {
+  padding: 50px !important;
+  grid-template-columns: 1fr !important;
+}
+
+.c-hero__main {
+  gap: 5px !important;
+}
+
+/* Precise control over the small hero layout */
+#mp-custom-small-hero.mp-small-hero {
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+  min-height: 0 !important;
+}
+
+#mp-custom-small-hero .c-hero__wrap {
+  min-height: 0 !important;
+  height: auto !important;
+}
+
+#mp-custom-small-hero .c-hero__main {
+  min-height: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+#mp-custom-small-hero .c-hero__heading {
+  margin-bottom: 0 !important;
+  margin-top: 0.5rem !important;
+  font-size: clamp(1.8rem, 4vw, 2.5rem) !important;
+  line-height: 1.1 !important;
+}

@@ -1,0 +1,172 @@
+.mp-hero,
+.mp-home-cats,
+.mp-course-search,
+.mp-my-courses,
+.mp-featured-courses{
+  margin-block-end: var(--space-2xl);        /* Figma big section gap */
+}
+
+/* --- Home Hero --- */
+.mpa-home-hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+.mpa-home-hero-inner {
+  background: linear-gradient(90deg, rgba(235, 241, 242, 1) 0%, rgba(255, 255, 255, 1) 100%);
+  border-radius: 6px;
+  min-height: 420px;
+  z-index: 99;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.mpa-home-hero-inner::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: url('/wp-content/uploads/2025/12/mp-x-bg.png');
+  background-repeat: no-repeat;
+  background-position: right bottom;
+  background-size: contain;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.mpa-home-hero__wrap {
+  min-height: 420px;
+  margin: 0;
+  padding-left: 5rem;
+  padding-right: 5rem;
+}
+
+.mpa-home-hero-header {
+  position: relative;
+  z-index: 1;
+  max-width: 34rem;
+}
+
+.mpa-home-hero-header .c-hero__heading {
+  max-width: 18rem;
+  margin: 0 0 1rem;
+  color: #002f36;
+  font-size: clamp(3.25rem, 6vw, 4.75rem);
+  line-height: 0.95;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.mpa-home-hero-subtitle {
+  font-size: 1.05rem;
+  line-height: 1.45;
+  color: #3f4548;
+  max-width: 34rem;
+  margin: 0 0 1.5rem;
+}
+
+.mpa-home-hero-search {
+  max-width: 32rem;
+}
+
+.mpa-home-hero-search .c-form__input-wrap {
+  display: flex;
+  align-items: stretch;
+  position: relative;
+}
+
+.mpa-home-hero-search .c-input {
+  height: 3.25rem;
+  padding: 0 3.5rem 0 1rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background: #fff;
+  box-shadow: none;
+  font-size: 1rem;
+}
+
+.mpa-home-hero-search .c-input::placeholder {
+  color: #7a7f83;
+}
+
+.mpa-home-hero-search__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 3.5rem;
+  height: 3.25rem;
+  border: 0;
+  background: transparent;
+  color: #0b5668;
+  cursor: pointer;
+  z-index: 1;
+  padding: 0;
+}
+
+.mpa-home-hero-search__icon {
+  width: 1.375rem;
+  height: 1.375rem;
+}
+
+@media (max-width: 960px) {
+  .mpa-home-hero__wrap {
+    min-height: 360px;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .mpa-home-hero__wrap {
+    min-height: auto;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .mpa-home-hero-header {
+    max-width: 100%;
+  }
+
+  .mpa-home-hero-search {
+    max-width: 100%;
+  }
+}
+
+/* Featured courses Grid */
+.mp-featured-courses__hd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.mp-featured-courses__browse {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.mp-featured-courses__browse:hover {
+  text-decoration: underline;
+}
+
+.mp-featured-courses__browse-icon {
+  font-size: 16px;
+}
+
+/* Optional: make sure cards don’t stretch weirdly */
+.mp-featured-courses__grid .mp-course-card--featured {
+  height: 100%;
+}

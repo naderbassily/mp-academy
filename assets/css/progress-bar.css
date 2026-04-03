@@ -1,0 +1,142 @@
+/**
+ * Universal Progress Bar Component
+ * Contexts: 'card' (home page), 'course-page' (single course)
+ * 
+ * File: assets/css/progress-bar.css
+ */
+
+
+
+.mp .mp-progress--card {
+  width: 100%;
+}
+
+/* Bar – white pill with inner grey track */
+.mp .mp-progress--card .c-progress {
+  margin-bottom: 8px;
+  height: 16px;
+  background-color: #ffffff;
+  border-radius: 999px;
+  padding: 4px;
+  box-sizing: border-box;
+}
+
+.mp .mp-progress--card .c-progress__track {
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;   
+  border-radius: 999px;
+}
+
+.mp .mp-progress--card .c-progress__value {
+  height: 100%;
+  border-radius: 999px;
+  background-color: #00A2C2;
+  transition: width 0.25s ease;
+}
+
+.mp .mp-progress--card .c-progress.is-complete .c-progress__value {
+  background-color: #00B140;
+}
+
+/* Text row under bar */
+.mp .mp-progress--card .mp-progress__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.mp .mp-progress--card .mp-progress__stat-left {
+  color: var(--color-text-primary);
+  font-weight: 700;
+}
+
+.mp .mp-progress--card .mp-progress__stat-right {
+  color: #4b5563;
+  font-size: 14px;
+}
+
+/* Small screens: stack text */
+@media (max-width: 520px) {
+  .mp .mp-progress--card .mp-progress__meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
+
+/* =========================
+   COURSE-PAGE Context (Single Course Page)
+   ========================= */
+
+.mp-progress--course-page {
+  margin-bottom: 2rem;
+}
+
+/* Bar – flat design, no white pill */
+.mp-progress--course-page .c-progress {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.mp-progress--course-page .c-progress__track {
+  width: 100%;
+  height: 16px;
+    padding: 4px;
+
+	background-color: var(--color-petrol-step-3);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.mp-progress--course-page .c-progress__value {
+  height: 100%;
+  background-color:var(--color-blue-step-0);
+  border-radius: 4px;
+   transition: width 0.3s ease;
+}
+
+/* Complete state - green */
+.mp-progress--course-page .c-progress.is-complete .c-progress__value {
+  background-color: #00B140;
+}
+
+/* Text row under bar */
+.mp-progress--course-page .mp-progress__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.875rem;
+}
+
+.mp-progress--course-page .mp-progress__stat-left {
+  color: #1a1a1a;
+}
+
+.mp-progress--course-page .mp-progress__stat-left strong {
+  font-weight: 600;
+}
+
+.mp-progress--course-page .mp-progress__stat-right {
+  color: #6b7280;
+  text-align: right;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mp-progress--course-page .mp-progress__meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+  
+  .mp-progress--course-page .mp-progress__stat-right {
+    text-align: left;
+  }
+}

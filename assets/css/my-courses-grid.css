@@ -1,0 +1,104 @@
+.mp.mp-my-courses.mp-section {
+  padding-block: var(--space-24, 24px);
+}
+
+.mp .mp-my-courses__hd {
+  margin-bottom: var(--space-16, 16px);
+}
+.mp .mp-my-courses__note {
+  color: var(--color-text-weak, #6b7280);
+  margin-top: var(--space-8, 8px);
+}
+
+
+.mp .mp-my-courses__grid {
+  display: grid;
+  gap: var(--space-24, 24px);
+  grid-template-columns: 1fr;
+}
+
+/* ≥ 640px → 2 columns (tablet) */
+@media (min-width: 640px) {
+  .mp .mp-my-courses__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 980px) {
+  .mp .mp-my-courses__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.mp .mp-my-courses__grid > * {
+  min-width: 0;          /* prevents overflow in grid items */
+  height: 100%;
+}
+
+.mp .mp-my-courses__grid .c-card {
+  height: 100%;
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+
+.mp .mp-my-courses__grid .c-card__image {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.mp .mp-my-courses__grid .c-card__image img,
+.mp .mp-my-courses__grid .mp-course-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media (min-width: 1280px) {
+  .mp .u-wrap {
+
+  }
+}
+
+.mp .u-muted.u-mb-8 {
+  display: block;
+  font-size: var(--font-size-12, 12px);
+}
+
+/* 4-column archive grid (wins over o-grid defaults) */
+.o-grid.mp-courses-grid {
+  display: grid !important;                     /* o-grid may be flex; force grid */
+  gap: var(--space-24, 24px) !important;
+  grid-template-columns: 1fr;                   /* mobile: 1 */
+}
+
+@media (min-width: 640px) {
+  .o-grid.mp-courses-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;  /* tablet: 2 */
+  }
+}
+
+@media (min-width: 980px) {
+  .o-grid.mp-courses-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;  /* desktop: 4 */
+  }
+}
+.o-grid.mp-courses-grid > * { min-width: 0; }
+
+
+/*My Courses – Empty state*/
+
+.mp .mp-my-courses__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;      /* center horizontally */
+  justify-content: center;
+  text-align: center;
+  margin: 32px 0 40px;      /* space under heading */
+}
+
+.mp .mp-my-courses__empty-icon {
+  width: 80px;
+  height: auto;
+  margin-bottom: 12px;
+}

@@ -1,0 +1,23 @@
+
+/* Make card wrapper flex column */
+.c-card__wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Let primary section grow to fill available space */
+.c-card__primary {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Push footer to bottom */
+.c-card__footer {
+  margin-top: auto;
+}
+
+.c-card {
+border-radius: 0px;
+}

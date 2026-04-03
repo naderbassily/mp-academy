@@ -1,0 +1,314 @@
+/**
+ * Single Course Page Styles
+ * Franklin Design System + Custom Module List
+ * 
+ * File: assets/css/single-course.css
+ */
+
+
+.mp-course-hero .c-hero__wrap {
+	min-height: 29rem;
+}
+
+.mp-course-hero .c-hero__media-wrap {
+	background-image: var(--placeholder-image);
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.mp-course-hero .c-hero__main {
+	max-width: 42rem;
+}
+
+.mp-course-hero .c-breadcrumb {
+	margin-bottom: 1.5rem;
+}
+
+.mp-course-hero .c-hero__heading {
+	margin-bottom: 0.75rem;
+}
+
+.mp-course-hero .c-hero__lede {
+	max-width: 34rem;
+	margin-bottom: 0;
+}
+
+.mp-single-course {
+	padding-top: 2.5rem;
+}
+
+/* ================================
+   Course Header
+   ================================ */
+.mp-course-header {
+	/* Franklin spacing */
+}
+
+.mp-course-header__desc {
+	color: #4b5563;
+	line-height: 1.6;
+}
+
+/* ================================
+   Modules Section
+   ================================ */
+.mp-course-modules__login-msg {
+	font-size: 0.875rem;
+	color: #6b7280;
+}
+
+/* ================================
+   Module Accordion
+   ================================ */
+.mp-module-accordion {
+	display: flex;
+	flex-direction: column;
+	gap: 0.15rem;
+}
+
+.mp-accordion-item {
+	background-color: var(--color-petrol-step-3);
+	overflow: hidden;
+	transition: background-color 0.2s;
+}
+
+/* Accordion Header (Button) */
+.mp-accordion-header {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 1rem 1.25rem;
+	background: none;
+	border: none;
+	cursor: pointer;
+	transition: background-color 0.2s;
+	text-align: left;
+}
+
+.mp-accordion-header:hover {
+ background-color: var(--color-petrol-step-2);
+}
+
+.mp-accordion-header__content {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	flex: 1;
+}
+
+/* Accordion Icon */
+.mp-accordion-icon {
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	border: 2px solid #d1d5db;
+	background-color: #ffffff;
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.mp-accordion-icon--complete {
+	border: none;
+}
+
+.mp-accordion-icon--complete svg {
+	display: block;
+}
+
+
+
+/* Accordion Badge */
+.mp-accordion-badge {
+	margin-left: auto;
+	margin-right: 0.5rem;
+}
+
+.mp-badge {
+	display: inline-block;
+	padding: 0.25rem 0.75rem;
+	border-radius: 1rem;
+	font-size: 0.875rem;
+	font-weight: 500;
+}
+
+.mp-badge--complete {
+	background-color: #d1fae5;
+	color: #065f46;
+}
+
+.mp-badge--in-progress {
+	background-color: var(--color-blue-step-2);
+	color: var(--color-petrol-step-0);
+}
+
+/* Accordion Chevron */
+.mp-accordion-chevron {
+	flex-shrink: 0;
+	transition: transform 0.2s;
+	color:var(--color-petrol-step-0);
+}
+
+.mp-accordion-header[aria-expanded="true"] .mp-accordion-chevron {
+	transform: rotate(180deg);
+}
+
+/* ================================
+   Accordion Content (Topics)
+   ================================ */
+.mp-accordion-content {
+	padding: 1rem;
+	background-color: #ffffff;
+}
+
+.mp-accordion-content[hidden] {
+	display: none;
+}
+
+.mp-topic-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.mp-topic-item {
+	/* No additional styling needed */
+}
+
+.mp-topic-link {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.5rem;
+	padding: 0.5rem 0.75rem;
+	background-color: #ffffff;
+	border-radius: 0.25rem;
+	text-decoration: none;
+	color: #1a1a1a;
+	transition: background-color 0.2s;
+}
+
+.mp-topic-link:hover {
+	background-color: #f9fafb;
+	color:var(--color-blue-step-0);
+	border-radius: 10px;
+
+}
+
+.mp-topic-link--disabled {
+	cursor: default;
+	opacity: 0.6;
+}
+
+.mp-topic-link--disabled:hover {
+	background-color: #ffffff;
+}
+
+.mp-topic-icon {
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	border: 2px solid #d1d5db;
+	background-color: #ffffff;
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.75rem;
+	color: #9ca3af;
+}
+
+.mp-topic-icon--complete {
+	border-color: #00B140;
+	background-color: #00B140;
+	color: #ffffff;
+}
+
+.mp-topic-text {
+	display: flex;
+	flex-direction: column;
+	gap: 0.15rem;
+	min-width: 0;
+}
+
+.mp-topic-title {
+	font-size: 0.9375rem;
+	font-weight: 400;
+}
+
+.mp-topic-excerpt {
+	display: block;
+	line-height: 1.45;
+}
+
+/* ================================
+   Module States
+   ================================ */
+.mp-accordion-item--complete {
+	background-color: var(--color-petrol-step-1);
+	color: #ffffff;
+}
+
+.mp-accordion-item--complete .mp-accordion-header:hover {
+	background-color: var(--color-petrol-step-0);
+}
+
+.mp-accordion-item--in-progress {
+ background-color: var(--color-petrol-step-3);
+}
+
+.mp-accordion-item--in-progress .mp-accordion-header:hover {
+ background-color: var(--color-petrol-step-2);
+}
+
+/* ================================
+   Course Overview
+   ================================ */
+.mp-course-overview {
+	/* Franklin prose handles styling */
+}
+
+.mp-course-overview__content {
+	/* o-prose from Franklin */
+}
+
+/* ================================
+   Responsive Design
+   ================================ */
+@media (max-width: 768px) {
+	.mp-course-hero .c-hero__wrap {
+		min-height: 24rem;
+	}
+
+	.mp-single-course {
+		padding-top: 2rem;
+	}
+
+	.mp-module-item {
+		padding: 0.875rem 1rem;
+	}
+	
+	.mp-module-item__header {
+		gap: 0.5rem;
+	}
+	
+	.mp-module-item__title {
+		font-size: 0.9375rem;
+	}
+	
+	.mp-badge {
+		font-size: 0.8125rem;
+		padding: 0.1875rem 0.625rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.mp-module-item__badge {
+		display: none;
+	}
+}
