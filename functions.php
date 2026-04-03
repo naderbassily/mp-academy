@@ -7,7 +7,7 @@
  */
 
 if ( ! defined( 'MP_ACADEMY_VERSION' ) ) {
-  define( 'MP_ACADEMY_VERSION', '1.0.0' );
+  define( 'MP_ACADEMY_VERSION', '1.0.1' );
 }
 
 /**

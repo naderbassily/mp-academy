@@ -96,18 +96,19 @@ mp-academy/
 
 ## Known Risks / Follow-up Items
 
-- The LearnDash topic template currently strips some native LearnDash markup with regex; replacing that with hook-based customization would be safer.
 - A full translation file regeneration has not been run in this branch.
 - The staging workflow still depends on the correct WP Engine SSH key being configured in GitHub and WP Engine.
 
 ## Changelog
 
-### Unreleased
+### 1.0.1
 
 - Replaced starter-theme metadata in theme, package, composer, PHPCS, and translation headers.
 - Consolidated theme asset loading into `functions.php` and removed duplicate enqueue logic from `inc/template-functions.php`.
 - Fixed the Customizer preview script path and removed debug logging from the single-course accordion script.
 - Removed unused files that were not loaded by the active theme bootstrap.
+- Cleaned header and breadcrumb integration, including the missing corporate menu registration.
+- Hardened the LearnDash topic template by replacing regex-based content extraction with DOM-based parsing.
 - Replaced the old SFTP workflow with a WP Engine staging deployment workflow for the `main` branch.
 - Documented repository workflow, theme structure, staging deployment, and follow-up risks.
 
