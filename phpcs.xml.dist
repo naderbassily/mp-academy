@@ -73,8 +73,7 @@
 	</rule>
 
 	<!-- Set the minimum supported WP version. This is used by several sniffs.
-		 The minimum version set here should be in line with the minimum WP version
-		 as set in the "Requires at least" tag in the readme.txt file. -->
+		 Keep this aligned with the supported version documented for the theme. -->
 	<config name="minimum_supported_wp_version" value="6.4"/>
 
 	<rule ref="WordPress.Arrays.MultipleStatementAlignment">

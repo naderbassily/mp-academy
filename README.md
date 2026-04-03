@@ -53,10 +53,9 @@ mp-academy/
 │   └── js/                  Frontend behavior
 ├── inc/
 │   ├── customizer.php       Theme customizer integration
-│   ├── jetpack.php          Jetpack compatibility
 │   ├── menu-walker.php      Custom menu walker
-│   ├── template-functions.php
-│   └── template-tags.php
+│   ├── template-functions.php LearnDash/theme helpers
+│   └── template-tags.php    Generic template helpers
 ├── languages/               Translation files
 ├── learndash/               LearnDash template overrides
 ├── template-parts/
@@ -67,7 +66,14 @@ mp-academy/
 │   ├── lesson/              Lesson/topic hero components
 │   └── video/               Video library components
 ├── .github/workflows/       Deployment automation
-├── functions.php            Theme setup and asset loading
+├── functions.php            Theme setup and consolidated asset loading
+├── front-page.php           Homepage shell
+├── archive-sfwd-courses.php LearnDash course archive
+├── single-sfwd-courses.php  Single course shell
+├── single-sfwd-lessons.php  Lesson shell
+├── single-sfwd-topic.php    Topic shell
+├── page-videos-library.php  Video library shell
+├── single-video.php         Single video shell
 ├── style.css                Theme metadata and root stylesheet
 └── style-rtl.css            RTL stylesheet
 ```
@@ -82,11 +88,17 @@ mp-academy/
 - `page-videos-library.php`: video library
 - `single-video.php`: single video
 
+## Cleanup Notes
+
+- Removed unused starter or orphaned files that were not loaded by the theme bootstrap.
+- Consolidated frontend asset registration into one place to reduce duplicate logic.
+- Kept only the project README as the source of truth for structure and workflow documentation.
+
 ## Known Risks / Follow-up Items
 
-- `secure-video.php` still contains placeholder access and file-path configuration and should be finalized before relying on it in production.
 - The LearnDash topic template currently strips some native LearnDash markup with regex; replacing that with hook-based customization would be safer.
 - A full translation file regeneration has not been run in this branch.
+- The staging workflow still depends on the correct WP Engine SSH key being configured in GitHub and WP Engine.
 
 ## Changelog
 
@@ -95,6 +107,7 @@ mp-academy/
 - Replaced starter-theme metadata in theme, package, composer, PHPCS, and translation headers.
 - Consolidated theme asset loading into `functions.php` and removed duplicate enqueue logic from `inc/template-functions.php`.
 - Fixed the Customizer preview script path and removed debug logging from the single-course accordion script.
+- Removed unused files that were not loaded by the active theme bootstrap.
 - Replaced the old SFTP workflow with a WP Engine staging deployment workflow for the `main` branch.
 - Documented repository workflow, theme structure, staging deployment, and follow-up risks.
 
