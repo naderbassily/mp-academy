@@ -1,146 +1,242 @@
 <?php
+/**
+ * Template: LearnDash Single Topic
+ *
+ * @package MP_Academy
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+if ( ! function_exists( 'mp_academy_get_topic_navigation_url' ) ) {
+	/**
+	 * Resolve a LearnDash step navigation URL.
+	 *
+	 * @param int $course_id Course ID.
+	 * @param int $topic_id  Topic ID.
+	 * @param int $step_id   Previous/next step ID.
+	 * @return string
+	 */
+	function mp_academy_get_topic_navigation_url( $course_id, $topic_id, $step_id ) {
+		if ( empty( $course_id ) || empty( $topic_id ) || empty( $step_id ) ) {
+			return '';
+		}
+
+		return (string) get_permalink( $step_id );
+	}
+}
+
+if ( ! function_exists( 'mp_academy_strip_topic_ui_nodes' ) ) {
+	/**
+	 * Remove LearnDash UI fragments that are replaced by the theme.
+	 *
+	 * @param DOMXPath $xpath Document xpath helper.
+	 * @return void
+	 */
+	function mp_academy_strip_topic_ui_nodes( DOMXPath $xpath ) {
+		$selectors = array(
+			"//*[contains(concat(' ', normalize-space(@class), ' '), ' ld-breadcrumbs ')]",
+			"//*[contains(concat(' ', normalize-space(@class), ' '), ' ld-progress ')]",
+			"//div[@id='ld-tab-panel-content' and not(normalize-space()) and not(*)]",
+		);
+
+		foreach ( $selectors as $selector ) {
+			foreach ( $xpath->query( $selector ) as $node ) {
+				if ( $node->parentNode ) {
+					$node->parentNode->removeChild( $node );
+				}
+			}
+		}
+	}
+}
+
+if ( ! function_exists( 'mp_academy_extract_topic_content_parts' ) ) {
+	/**
+	 * Split rendered topic content into video and body fragments.
+	 *
+	 * @param string $html Rendered topic content.
+	 * @return array{video:string,body:string}
+	 */
+	function mp_academy_extract_topic_content_parts( $html ) {
+		if ( '' === trim( $html ) || ! class_exists( 'DOMDocument' ) ) {
+			return array(
+				'video' => '',
+				'body'  => $html,
+			);
+		}
+
+		$internal_errors = libxml_use_internal_errors( true );
+		$document        = new DOMDocument();
+		$loaded          = $document->loadHTML(
+			'<?xml encoding="utf-8" ?><div id="mp-topic-root">' . $html . '</div>',
+			LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD
+		);
+
+		if ( ! $loaded ) {
+			libxml_clear_errors();
+			libxml_use_internal_errors( $internal_errors );
+
+			return array(
+				'video' => '',
+				'body'  => $html,
+			);
+		}
+
+		$xpath = new DOMXPath( $document );
+		mp_academy_strip_topic_ui_nodes( $xpath );
+
+		$video_html = '';
+		$video_node = $xpath->query( "//*[contains(concat(' ', normalize-space(@class), ' '), ' ld-video ')]" )->item( 0 );
+
+		if ( $video_node instanceof DOMNode ) {
+			$container = $video_node->parentNode;
+
+			if ( $container instanceof DOMElement && 1 === $container->childNodes->length ) {
+				$video_node = $container;
+			}
+
+			$video_html = $document->saveHTML( $video_node );
+
+			if ( $video_node->parentNode ) {
+				$video_node->parentNode->removeChild( $video_node );
+			}
+		}
+
+		$root      = $document->getElementById( 'mp-topic-root' );
+		$body_html = '';
+
+		if ( $root instanceof DOMElement ) {
+			foreach ( $root->childNodes as $child ) {
+				$body_html .= $document->saveHTML( $child );
+			}
+		} else {
+			$body_html = $html;
+		}
+
+		libxml_clear_errors();
+		libxml_use_internal_errors( $internal_errors );
+
+		return array(
+			'video' => $video_html,
+			'body'  => $body_html,
+		);
+	}
+}
+
+if ( ! function_exists( 'mp_academy_get_topic_video_settings' ) ) {
+	/**
+	 * Read LearnDash video settings for a topic safely.
+	 *
+	 * @param int $topic_id Topic ID.
+	 * @return array<string,string>
+	 */
+	function mp_academy_get_topic_video_settings( $topic_id ) {
+		$keys     = array(
+			'lesson_video_enabled'       => 'progression',
+			'lesson_video_auto_start'    => 'autostart',
+			'lesson_video_focus_pause'   => 'focus_pause',
+			'lesson_video_track_video'   => 'resume',
+			'lesson_video_show_controls' => 'controls',
+			'lesson_video_auto_complete' => 'auto_complete',
+		);
+		$settings = array_fill_keys( array_values( $keys ), '' );
+
+		if ( ! function_exists( 'learndash_get_setting' ) ) {
+			return $settings;
+		}
+
+		foreach ( $keys as $setting_key => $mapped_key ) {
+			$settings[ $mapped_key ] = (string) learndash_get_setting( $topic_id, $setting_key );
+		}
+
+		return $settings;
+	}
+}
+
 get_header();
 
-$topic_id = get_the_ID();
-$user_id = get_current_user_id();
+$topic_id   = get_the_ID();
+$user_id    = get_current_user_id();
+$lesson_id  = function_exists( 'learndash_get_setting' ) ? (int) learndash_get_setting( $topic_id, 'lesson' ) : 0;
+$course_id  = function_exists( 'learndash_get_course_id' ) ? (int) learndash_get_course_id( $topic_id ) : 0;
+$course_url = $course_id ? get_permalink( $course_id ) : '';
 
-$lesson_id = function_exists('learndash_get_setting') ? (int)learndash_get_setting($topic_id, 'lesson') : 0;
-$course_id = function_exists('learndash_get_course_id') ? (int)learndash_get_course_id($topic_id) : 0;
-
-$course_url = $course_id ? get_permalink($course_id) : '';
-
-/**
- * Status pill
- */
 $is_completed = false;
-if (function_exists('learndash_is_topic_complete')) {
-  $is_completed = $course_id ? (bool)learndash_is_topic_complete($user_id, $topic_id, $course_id) : (bool)learndash_is_topic_complete($user_id, $topic_id);
-}
-elseif (function_exists('learndash_is_item_complete')) {
-  $is_completed = (bool)learndash_is_item_complete($user_id, $topic_id, $course_id);
-}
-
-/**
- * Prev/Next step
- */
-$prev_id = function_exists('learndash_get_previous_step_id') ? (int)learndash_get_previous_step_id($course_id, $topic_id) : 0;
-$next_id = function_exists('learndash_get_next_step_id') ? (int)learndash_get_next_step_id($course_id, $topic_id) : 0;
-
-$prev_url = $prev_id ? get_permalink($prev_id) : '';
-$next_url = $next_id ? get_permalink($next_id) : '';
-
-/**
- * Strip breadcrumbs and progress bars (navigation kept for Mark Complete & CSS styling)
- */
-if (!function_exists('mp_strip_learndash_ui_blocks')) {
-  function mp_strip_learndash_ui_blocks($html)
-  {
-    if (!$html)
-      return $html;
-
-    // Strip breadcrumbs and progress using basic regex 
-    // Note: Regex on HTML can be fragile, CSS display:none is safer long term.
-    $html = preg_replace('/<([a-z0-9]+)\b[^>]*class="[^"]*\bld-breadcrumbs\b[^"]*"[^>]*>.*?<\/\1>/is', '', $html);
-    $html = preg_replace('/<([a-z0-9]+)\b[^>]*class="[^"]*\bld-progress\b[^"]*"[^>]*>.*?<\/\1>/is', '', $html);
-
-    return $html;
-  }
+if ( function_exists( 'learndash_is_topic_complete' ) ) {
+	$is_completed = $course_id ? (bool) learndash_is_topic_complete( $user_id, $topic_id, $course_id ) : (bool) learndash_is_topic_complete( $user_id, $topic_id );
+} elseif ( function_exists( 'learndash_is_item_complete' ) ) {
+	$is_completed = (bool) learndash_is_item_complete( $user_id, $topic_id, $course_id );
 }
 
-/**
- * Extract complete LearnDash video wrapper
- */
-if (!function_exists('mp_extract_first_video')) {
-  function mp_extract_first_video($content)
-  {
-    // Extracts the first div with class ld-video assuming a single inner wrapper
-    $pattern = '/<div\s+class="ld-video"[^>]*>.*?<\/div>\s*<\/div>/is';
+$prev_id             = function_exists( 'learndash_get_previous_step_id' ) ? (int) learndash_get_previous_step_id( $course_id, $topic_id ) : 0;
+$next_id             = function_exists( 'learndash_get_next_step_id' ) ? (int) learndash_get_next_step_id( $course_id, $topic_id ) : 0;
+$prev_url            = mp_academy_get_topic_navigation_url( $course_id, $topic_id, $prev_id );
+$next_url            = mp_academy_get_topic_navigation_url( $course_id, $topic_id, $next_id );
+$topic_video_settings = mp_academy_get_topic_video_settings( $topic_id );
 
-    if (preg_match($pattern, $content, $m)) {
-      $video = $m[0];
-      $rest = str_replace($video, '', $content);
-      return [$video, $rest];
-    }
-
-    return ['', $content];
-  }
-}
+get_template_part(
+	'template-parts/lesson/single/hero',
+	null,
+	array(
+		'post_id'      => $topic_id,
+		'lesson_id'    => $lesson_id,
+		'course_id'    => $course_id,
+		'show_eyebrow' => true,
+		'is_completed' => $is_completed,
+	)
+);
 ?>
 
-<?php
-// Generic Small Hero Section
-get_template_part('template-parts/lesson/single/hero', null, [
-  'post_id' => $topic_id,
-  'lesson_id' => $lesson_id,
-  'course_id' => $course_id,
-  'show_eyebrow' => true,
-  'is_completed' => $is_completed,
-]);
-?>
-<main id="primary" class="site-main u-wrap u-space--section u-flow u-margin-top-xl ">
+<main id="primary" class="site-main u-wrap u-space--section u-flow u-margin-top-xl">
+	<header class="u-flow--s">
+		<div class="u-display-flex u-flex-wrap u-gap-s u-align-items-center u-margin-top-xl u-justify-content-between">
+			<span class="u-margin-left-auto"></span>
 
-  <header class="u-flow--s">
+			<?php if ( $prev_url ) : ?>
+				<a href="<?php echo esc_url( $prev_url ); ?>" class="mp c-button c-button--outline-green">← Previous Topic</a>
+			<?php endif; ?>
 
-    <div class="u-display-flex u-flex-wrap u-gap-s u-align-items-center u-margin-top-xl u-justify-content-between">
+			<?php if ( $next_url ) : ?>
+				<a href="<?php echo esc_url( $next_url ); ?>" class="mp c-button c-button--green">Next Topic →</a>
+			<?php endif; ?>
+		</div>
+	</header>
 
+	<?php if ( have_posts() ) : ?>
+		<?php while ( have_posts() ) : the_post(); ?>
+			<?php
+			$content_parts = mp_academy_extract_topic_content_parts( apply_filters( 'the_content', get_the_content() ) );
+			$video_block   = $content_parts['video'];
+			$body_block    = $content_parts['body'];
+			?>
 
-      <span class="u-margin-left-auto"></span>
+			<?php if ( $video_block ) : ?>
+				<section
+					class="mp-topic-video-wrapper"
+					data-ld-topic-id="<?php echo esc_attr( $topic_id ); ?>"
+					data-ld-progression="<?php echo esc_attr( $topic_video_settings['progression'] ); ?>"
+					data-ld-autostart="<?php echo esc_attr( $topic_video_settings['autostart'] ); ?>"
+					data-ld-focus-pause="<?php echo esc_attr( $topic_video_settings['focus_pause'] ); ?>"
+					data-ld-resume="<?php echo esc_attr( $topic_video_settings['resume'] ); ?>"
+					data-ld-controls="<?php echo esc_attr( $topic_video_settings['controls'] ); ?>"
+					data-ld-auto-complete="<?php echo esc_attr( $topic_video_settings['auto_complete'] ); ?>"
+				>
+					<?php echo $video_block; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				</section>
+			<?php endif; ?>
 
-      <?php if ($prev_url): ?>
-      <a href="<?php echo esc_url($prev_url); ?>" class="mp c-button c-button--outline-green">← Previous Topic</a>
-      <?php
-endif; ?>
+			<div class="u-wrap">
+				<?php echo $body_block; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			</div>
 
-      <?php if ($next_url): ?>
-      <a href="<?php echo esc_url($next_url); ?>" class="mp c-button c-button--green">Next Topic →</a>
-      <?php
-endif; ?>
-    </div>
-  </header>
-
-  <?php
-if (have_posts()):
-  while (have_posts()):
-    the_post();
-
-    $raw = apply_filters('the_content', get_the_content());
-    $clean = mp_strip_learndash_ui_blocks($raw);
-
-    $clean = preg_replace('/<div\b[^>]*id="ld-tab-panel-content"[^>]*>\s*<\/div>/is', '', $clean);
-
-    list($video_block, $body_block) = mp_extract_first_video($clean);
-?>
-
-  <?php if (!empty($video_block)): ?>
-  <section class="mp-topic-video-wrapper" data-ld-topic-id="<?php echo esc_attr($topic_id); ?>"
-    data-ld-progression="<?php echo esc_attr(learndash_get_setting($topic_id, 'lesson_video_enabled')); ?>"
-    data-ld-autostart="<?php echo esc_attr(learndash_get_setting($topic_id, 'lesson_video_auto_start')); ?>"
-    data-ld-focus-pause="<?php echo esc_attr(learndash_get_setting($topic_id, 'lesson_video_focus_pause')); ?>"
-    data-ld-resume="<?php echo esc_attr(learndash_get_setting($topic_id, 'lesson_video_track_video')); ?>"
-    data-ld-controls="<?php echo esc_attr(learndash_get_setting($topic_id, 'lesson_video_show_controls')); ?>"
-    data-ld-auto-complete="<?php echo esc_attr(learndash_get_setting($topic_id, 'lesson_video_auto_complete')); ?>">
-    <?php echo $video_block; ?>
-  </section>
-  <?php
-    endif; ?>
-
-  <div class="u-wrap">
-    <?php echo $body_block; ?>
-  </div>
-
-  <?php if ($course_url): ?>
-  <div class="u-wrap u-space--section u-flow">
-    <p><a href="<?php echo esc_url($course_url); ?>" class="u-blue u-text-weight-bold">← Back to course overview</a></p>
-  </div>
-  <?php
-    endif; ?>
-
-  <?php
-  endwhile;
-endif;
-?>
-
-
+			<?php if ( $course_url ) : ?>
+				<div class="u-wrap u-space--section u-flow">
+					<p><a href="<?php echo esc_url( $course_url ); ?>" class="u-blue u-text-weight-bold">← Back to course overview</a></p>
+				</div>
+			<?php endif; ?>
+		<?php endwhile; ?>
+	<?php endif; ?>
 </main>
 
 <?php get_footer(); ?>

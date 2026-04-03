@@ -11,11 +11,10 @@
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Franklin Design System - Specific Version -->
+  <!-- Franklin Design System - Specific Version -->
   <link rel="stylesheet" href="https://unpkg.com/mp-design-system@2.0.82/dist/build/scss/main.css" />
   <link rel="stylesheet" href="https://unpkg.com/mp-design-system@2.0.82/dist/build/scss/mp-www.css" />
   <script src="https://unpkg.com/mp-design-system@2.0.82/dist/build/js/app.js" defer></script>
-  <link rel="stylesheet" href="<?php echo esc_url( get_template_directory_uri() . '/assets/css/header.css' ); ?>" />
 
 <?php wp_head(); ?>
 </head>
@@ -31,10 +30,6 @@
   <?php
     $is_logged_in = is_user_logged_in();
   ?>
-<?php
-echo '<!-- has primary-menu: ' . (has_nav_menu('primary-menu') ? 'yes' : 'no') . ' -->';
-echo '<!-- has menu-1: ' . (has_nav_menu('menu-1') ? 'yes' : 'no') . ' -->';
-?>
 
   <!-- TOP BAR -->
   <div class="c-header__primary">
