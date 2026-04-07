@@ -21,7 +21,7 @@ $items = [
     'label' => 'Video Library',
     'href'  => home_url('/videos-library/'),
     'slug'  => '',
-    'icon'  => trailingslashit(get_template_directory_uri()) . 'assets/images/training-icon.svg',
+    'icon'  => trailingslashit(get_template_directory_uri()) . 'assets/images/recorded-webinars-icon.svg',
   ],
   [
     'label' => 'Upcoming webinars',
