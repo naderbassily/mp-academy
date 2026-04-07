@@ -26,8 +26,8 @@ get_header();
   ?>
 
   <?php 
-  // Featured Courses Section
-  get_template_part('template-parts/home/featured-course-grid'); 
+  // Latest Videos Section
+  get_template_part('template-parts/home/featured-video-grid'); 
   ?>
   
 </main>
