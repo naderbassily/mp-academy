@@ -36,13 +36,6 @@ if (empty($lessons)) {
 ?>
 
 <section class="mp-course-modules u-margin-bottom-l">
-	<?php if (!$is_logged_in) : ?>
-		<!-- NOT Logged In State -->
-		<p class="mp-course-modules__login-msg u-margin-bottom-m">
-			<?php esc_html_e('Log in to access this course', 'mp-academy'); ?>
-		</p>
-	<?php endif; ?>
-	
 	<!-- Module Accordion -->
 	<div class="mp-module-accordion">
 		<?php 
