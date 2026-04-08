@@ -34,8 +34,8 @@
         'ld--ignore-inline-css'
       );
 
-      // (Franklin completely removed from Mark Complete buttons as requested)
-      
+      btn.classList.add('mp', 'c-button', 'c-button--blue');
+
       // remove inline styles LD may inject
       btn.removeAttribute('style');
       btn.value = 'Mark topic as complete';
@@ -62,7 +62,7 @@
       // Remove LD bloat
       link.classList.remove('ld-primary-color-hover', 'ld-primary-color', 'ld-button');
 
-      // (Franklin completely removed from pagination links)
+      link.classList.add('mp', 'c-button', 'c-button--outline-green');
     });
 
     // =========================

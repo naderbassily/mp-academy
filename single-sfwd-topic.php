@@ -272,7 +272,7 @@ get_template_part(
 			<?php endif; ?>
 
 			<?php if ( $next_url ) : ?>
-				<a href="<?php echo esc_url( $next_url ); ?>" class="mp c-button c-button--green">Next Topic →</a>
+				<a href="<?php echo esc_url( $next_url ); ?>" class="mp c-button c-button--outline-green">Next Topic →</a>
 			<?php endif; ?>
 		</div>
 	</header>
@@ -305,7 +305,7 @@ get_template_part(
 			</div>
 
 			<?php if ( $course_url ) : ?>
-				<div class="u-wrap u-space--section u-flow">
+				<div class="u-wrap u-space--section u-flow" style="text-align: center;">
 					<p><a href="<?php echo esc_url( $course_url ); ?>" class="u-blue u-text-weight-bold">← Back to course overview</a></p>
 				</div>
 			<?php endif; ?>
