@@ -1,55 +1,110 @@
 /* --------------------------------- */
-/* Native LearnDash Alerts           */
+/* Native LearnDash Navigation       */
 /* --------------------------------- */
-.ld-alert, 
-.ld-status,
-.ld-topic-status,
-.ld-navigation__back-to-course,
-.ld-navigation__progress-completed-action,
-.ld-navigation__progress {
- 
+.ld-navigation {
+  align-items: center !important;
+  background: #edf6f7 !important;
+  border: 1px solid #d7e7ea !important;
+  border-radius: 4px !important;
+  display: grid !important;
+  gap: 24px;
+  grid-template-columns: 1fr auto 1fr;
+  margin: 48px 0 30px !important;
+  min-height: 96px;
+  padding: 20px 32px !important;
 }
-.ld-navigation {background-color: var(--color-petrol-step-3);
-  border-radius: 5px ;
-  padding: 30px !important;
-  display: flex !important;
-    justify-content: space-between !important;
-  margin-bottom: 30px !important;
 
-  }
-  
-.ld-navigation__back-to-course  {
+.ld-navigation__back-to-course {
   display: none !important;
 }
-/* --------------------------------- */
-/* Native LearnDash Pagination       */
-/* --------------------------------- */
 
-.ld-navigation__previous {order: 1 !important;}
-.ld-navigation__progress{order: 2 !important; }
-.ld-navigation__next {order: 3 !important;}
+.ld-navigation__previous {
+  order: 1 !important;
+}
 
-.ld-navigation__previous, 
+.ld-navigation__progress {
+  align-items: center !important;
+  display: flex !important;
+  justify-content: center !important;
+  min-width: 0;
+  order: 2 !important;
+}
+
+.ld-navigation__next {
+  justify-self: end;
+  order: 3 !important;
+}
+
+.ld-navigation__previous,
 .ld-navigation__next {
   padding: 0 !important;
 }
 
-.ld-navigation__previous-link, 
-.ld-navigation__next-link {
-  background-color: transparent !important;
-  padding: 0 !important;
-  border: 0 !important;
-  color: var(--color-petrol-step-0) !important;
-  text-decoration: none !important;
-  font-weight: 600 !important;
+.ld-navigation__progress .ld-progress,
+.ld-navigation__progress .ld-status,
+.ld-navigation__progress .ld-topic-status,
+.ld-navigation__progress .ld-progress-inline,
+body.single-sfwd-topic .site-main .ld-progress,
+body.single-sfwd-topic .site-main .ld-status,
+body.single-sfwd-topic .site-main .ld-topic-status,
+body.single-sfwd-topic .site-main .ld-progress-inline {
+  display: none !important;
 }
 
-.ld-navigation__previous-link:hover, 
+.ld-navigation__progress-completed-action {
+  display: flex !important;
+  justify-content: center !important;
+  order: 2 !important;
+}
+
+.ld-navigation__previous-link,
+.ld-navigation__next-link {
+  background-color: transparent !important;
+  border: 0 !important;
+  color: var(--color-petrol-step-0) !important;
+  font-weight: 600 !important;
+  padding: 0 !important;
+  text-decoration: none !important;
+}
+
+.ld-navigation__previous-link:hover,
 .ld-navigation__next-link:hover {
   background-color: transparent !important;
   border: 0 !important;
   color: var(--color-petrol-step-1) !important;
   text-decoration: none !important;
+}
+
+body.single-sfwd-topic .learndash_mark_complete_button,
+body.single-sfwd-topic #learndash_mark_complete_button,
+body.single-sfwd-topic form[name="sfwd-mark-complete"] input[type="submit"] {
+  appearance: none !important;
+  background: #00b140 !important;
+  background-color: #00b140 !important;
+  background-image: none !important;
+  border: 2px solid #00b140 !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+  color: #ffffff !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  font-weight: 700 !important;
+  justify-content: center !important;
+  line-height: 1.2 !important;
+  min-height: 44px !important;
+  padding: 0.75rem 1.5rem !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  width: auto !important;
+}
+
+body.single-sfwd-topic .learndash_mark_complete_button:hover,
+body.single-sfwd-topic #learndash_mark_complete_button:hover,
+body.single-sfwd-topic form[name="sfwd-mark-complete"] input[type="submit"]:hover {
+  background: #078322 !important;
+  background-color: #078322 !important;
+  background-image: none !important;
+  border-color: #078322 !important;
 }
 
 /* --------------------------------- */
@@ -58,42 +113,135 @@
 .mp-topic-video-wrapper {
   border-radius: 8px;
   overflow: hidden;
-  
 }
 
 /* --------------------------------- */
 /* Single Lesson / Topic Hero Layout */
 /* --------------------------------- */
 .c-hero__wrap {
-  padding: 50px !important;
   grid-template-columns: 1fr !important;
+  padding: 50px !important;
 }
 
 .c-hero__main {
   gap: 5px !important;
 }
 
-/* Precise control over the small hero layout */
 #mp-custom-small-hero.mp-small-hero {
-  padding-top: 0.5rem !important;
-  padding-bottom: 0.5rem !important;
   min-height: 0 !important;
+  padding-bottom: 0.5rem !important;
+  padding-top: 0.5rem !important;
 }
 
 #mp-custom-small-hero .c-hero__wrap {
-  min-height: 0 !important;
   height: auto !important;
+  min-height: 0 !important;
 }
 
 #mp-custom-small-hero .c-hero__main {
   min-height: 0 !important;
-  padding-top: 0 !important;
   padding-bottom: 0 !important;
+  padding-top: 0 !important;
 }
 
 #mp-custom-small-hero .c-hero__heading {
-  margin-bottom: 0 !important;
-  margin-top: 0.5rem !important;
   font-size: clamp(1.8rem, 4vw, 2.5rem) !important;
   line-height: 1.1 !important;
+  margin-bottom: 0 !important;
+  margin-top: 0.5rem !important;
+}
+
+.mp-topic-hero-progress {
+  max-width: 720px;
+  padding-top: 0.5rem;
+}
+
+.mp-topic-hero-progress__row {
+  align-items: center;
+  display: grid;
+  gap: 0.65rem;
+  grid-template-columns: auto auto minmax(180px, 1fr) auto;
+}
+
+.mp-topic-hero-progress__label,
+.mp-topic-hero-progress__steps {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.mp-topic-hero-progress__percent {
+  color: #ffffff;
+  font-size: 0.95rem;
+}
+
+.mp-topic-hero-progress__bar {
+  background: rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  height: 0.65rem;
+  overflow: hidden;
+}
+
+.mp-topic-hero-progress__bar span {
+  background: #00b140;
+  border-radius: inherit;
+  display: block;
+  height: 100%;
+}
+
+.mp-topic-hero-progress__activity {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.9rem;
+  margin: 0.55rem 0 0;
+}
+
+@media (max-width: 720px) {
+  .ld-navigation {
+    grid-template-columns: 1fr;
+    padding: 24px !important;
+  }
+
+  .ld-navigation__next {
+    justify-self: start;
+  }
+
+  .mp-topic-hero-progress__row {
+    grid-template-columns: auto auto;
+  }
+
+  .mp-topic-hero-progress__bar {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Final LearnDash override: keep the native form, force MP/Malvern green button styling. */
+body.single-sfwd-topic .ld-navigation input.learndash_mark_complete_button[type="submit"],
+body.single-sfwd-topic .ld-navigation input#learndash_mark_complete_button[type="submit"],
+body.single-sfwd-topic .ld-navigation form[name="sfwd-mark-complete"] input[type="submit"] {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  background: #00b140 !important;
+  background-color: #00b140 !important;
+  background-image: none !important;
+  border: 2px solid #00b140 !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+  color: #ffffff !important;
+  font: inherit !important;
+  font-weight: 700 !important;
+  min-height: 44px !important;
+  outline-color: #00a2c2 !important;
+  padding: 0.75rem 1.75rem !important;
+  text-shadow: none !important;
+}
+
+body.single-sfwd-topic .ld-navigation input.learndash_mark_complete_button[type="submit"]:hover,
+body.single-sfwd-topic .ld-navigation input#learndash_mark_complete_button[type="submit"]:hover,
+body.single-sfwd-topic .ld-navigation form[name="sfwd-mark-complete"] input[type="submit"]:hover {
+  background: #078322 !important;
+  background-color: #078322 !important;
+  background-image: none !important;
+  border-color: #078322 !important;
 }
