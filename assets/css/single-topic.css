@@ -209,6 +209,6 @@ body.single-sfwd-topic .site-main .ld-topic-status,
 body.single-sfwd-topic .site-main .ld-progress-inline,
 body.single-sfwd-topic .site-main .ld-course-step-back,
 body.single-sfwd-topic .site-main .ld-alert:not(.ld-alert-warning):not(.ld-alert-success),
-body.single-sfwd-topic .ld-navigation__progress > *:not(form):not(.learndash_mark_complete_button) {
+body.single-sfwd-topic .ld-navigation__progress > *:not(form):not(.learndash_mark_complete_button):not(.ld-navigation__progress-mark-complete):not(.ld-navigation__progress-completed) {
   display: none !important;
 }

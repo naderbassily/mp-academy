@@ -119,10 +119,10 @@
         });
       }
 
-      // Progression: hide Mark Complete until ended (+ optional auto-complete)
+      // Progression: keep Mark Complete visible so users can manually complete
+      // the topic when needed, while still supporting optional auto-complete.
       if (progression) {
         var $mark = $('.learndash_mark_complete_button, #learndash_mark_complete_button, form[name="sfwd-mark-complete"] input[type="submit"]').first();
-        if ($mark.length) $mark.hide();
 
         $video.on('ended', function () {
           if ($mark.length) $mark.show();
