@@ -9,12 +9,6 @@ get_header();
 ?>
 
 <main id="primary" class="site-main u-flow">
-  <section class="mp-home-test-banner" aria-label="Temporary staging test banner">
-    <div class="u-wrap">
-      <p>Temporary staging test banner: Codex deploy verification.</p>
-    </div>
-  </section>
-  
   <?php 
   // Hero Section
   get_template_part('template-parts/home/home-hero'); 
