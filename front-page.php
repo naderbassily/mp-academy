@@ -9,6 +9,7 @@ get_header();
 ?>
 
 <main id="primary" class="site-main u-flow">
+  
   <?php 
   // Hero Section
   get_template_part('template-parts/home/home-hero'); 
@@ -25,8 +26,8 @@ get_header();
   ?>
 
   <?php 
-  // Latest Videos Section
-  get_template_part('template-parts/home/featured-video-grid'); 
+  // Featured Courses Section
+  get_template_part('template-parts/home/featured-course-grid'); 
   ?>
   
 </main>

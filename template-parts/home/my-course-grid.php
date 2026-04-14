@@ -4,17 +4,40 @@
  * Handles 3 states:
  * 1) Logged in + has courses  → show grid
  * 2) Logged in + no courses   → show empty state
- * 3) Logged out               → show latest featured courses
+ * 3) Logged out               → show “Welcome to the MP Academy”
  */
 
 if (!defined('ABSPATH')) exit;
 
 $user_id = get_current_user_id();
 
+/*
+|--------------------------------------------------------------------------
+| STATE 3 — NOT LOGGED IN
+|--------------------------------------------------------------------------
+*/
+if (!$user_id): ?>
+    <section class="mp mp-my-courses mp-section">
+        <div class="u-wrap">
+          			<p class="c-h c-h--step-4">
+Welcome to the MP Academy</p>
+        </div>
+    </section>
+    <?php return; ?>
+<?php endif; ?>
+
+
+<?php
+/*
+|--------------------------------------------------------------------------
+| USER IS LOGGED IN — FIND ENROLLED COURSES
+|--------------------------------------------------------------------------
+*/
+
 $course_ids = [];
 
-// Primary LearnDash method.
-if ($user_id && function_exists('learndash_user_get_enrolled_courses')) {
+// Primary LearnDash method
+if (function_exists('learndash_user_get_enrolled_courses')) {
     $course_ids = learndash_user_get_enrolled_courses($user_id, [
         'num'                   => 999,
         'post_status'           => ['publish', 'private'],
@@ -28,8 +51,8 @@ if (!is_array($course_ids)) {
     $course_ids = (array) $course_ids;
 }
 
-// Legacy fallback.
-if ($user_id && empty($course_ids) && function_exists('ld_get_mycourses')) {
+// Legacy fallback
+if (empty($course_ids) && function_exists('ld_get_mycourses')) {
     $legacy = ld_get_mycourses($user_id, ['posts_per_page' => 999]);
     if ($legacy instanceof WP_Query && $legacy->have_posts()) {
         $course_ids = wp_list_pluck($legacy->posts, 'ID');
@@ -54,45 +77,11 @@ if ($max_cards > 0 && count($course_ids) > $max_cards) {
     <div class="u-wrap">
 
         <header class="mp-my-courses__hd u-mb-12">
-            <p class="c-h c-h--step-4">
-                <?php echo esc_html($user_id ? __('My courses', 'mp-academy') : __('Featured courses', 'mp-academy')); ?>
-            </p>
+           			<p class="c-h c-h--step-4">
+
+                My courses
+</p>
         </header>
-
-        <?php if (!$user_id): ?>
-
-            <?php
-            $latest_courses = new WP_Query([
-                'post_type'      => 'sfwd-courses',
-                'post_status'    => ['publish', 'private'],
-                'posts_per_page' => 3,
-                'orderby'        => 'date',
-                'order'          => 'DESC',
-            ]);
-            ?>
-
-            <?php if ($latest_courses->have_posts()): ?>
-                <div class="o-grid o-grid--gap-24 o-grid--cols-3 mp-my-courses__grid">
-                    <?php
-                    while ($latest_courses->have_posts()):
-                        $latest_courses->the_post();
-
-                        get_template_part(
-                            'template-parts/components/cards/course-card-featured',
-                            null,
-                            [
-                                'course_id' => get_the_ID(),
-                            ]
-                        );
-                    endwhile;
-                    wp_reset_postdata();
-                    ?>
-                </div>
-            <?php else: ?>
-                <p class="mp-my-courses__empty-text u-charcoal u-step--1">
-                    <?php esc_html_e('No courses are available yet.', 'mp-academy'); ?>
-                </p>
-            <?php endif; ?>
 
         <?php
         /*
@@ -100,7 +89,7 @@ if ($max_cards > 0 && count($course_ids) > $max_cards) {
         | STATE 2 — LOGGED IN BUT NO COURSES
         |--------------------------------------------------------------------------
         */
-        elseif (empty($course_ids)): ?>
+        if (empty($course_ids)): ?>
 
             <div class="mp-my-courses__empty u-flex u-flex--column u-flex--align-center u-flex--justify-center u-text-center" style="margin: 40px 0;">
                 <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/no-courses.svg'); ?>"
@@ -109,7 +98,7 @@ if ($max_cards > 0 && count($course_ids) > $max_cards) {
                      style="width:180px; height: auto; margin-bottom: 16px;" />
 
                 <p class="mp-my-courses__empty-text u-charcoal u-step--1">
-                    <?php esc_html_e('You don’t have any courses in progress.', 'mp-academy'); ?>
+                    You don’t have any courses in progress.
                 </p>
             </div>
 

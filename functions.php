@@ -136,7 +136,6 @@ function mp_academy_scripts() {
 
   if ( is_front_page() ) {
     mp_academy_enqueue_theme_style( 'mp-academy-home', '/assets/css/home.css', array( 'mp-inter-font' ) );
-    mp_academy_enqueue_theme_style( 'mp-videos-library', '/assets/css/videos-library.css', array( 'mp-inter-font' ) );
   }
 
   if ( is_front_page() || is_post_type_archive( 'sfwd-courses' ) ) {

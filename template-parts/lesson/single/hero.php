@@ -12,12 +12,6 @@ $course_id = (int)($args['course_id'] ?? 0);
 
 $show_eyebrow = !empty($args['show_eyebrow']);
 $is_completed = !empty($args['is_completed']);
-$topic_progress = is_array($args['topic_progress'] ?? null) ? $args['topic_progress'] : [];
-$progress_percent = isset($topic_progress['percent']) ? (int) $topic_progress['percent'] : 0;
-$progress_percent = max(0, min(100, $progress_percent));
-$steps_done = isset($topic_progress['steps_done']) ? (int) $topic_progress['steps_done'] : 0;
-$steps_total = isset($topic_progress['steps_total']) ? (int) $topic_progress['steps_total'] : 0;
-$last_activity = isset($topic_progress['last_activity']) ? (string) $topic_progress['last_activity'] : '';
 
 $title = get_the_title($current_id);
 $excerpt = has_excerpt($current_id) ? get_the_excerpt($current_id) : '';
@@ -48,48 +42,12 @@ $hero_svg = 'https://dam.malvernpanalytical.com/fae4c741-f556-475a-b286-b36e0098
       </p>
       <?php endif; ?>
 
-      <?php if (!empty($topic_progress)): ?>
-        <div class="mp-topic-hero-progress" aria-label="<?php esc_attr_e('Lesson progress', 'mp-academy'); ?>">
-          <div class="mp-topic-hero-progress__row">
-            <span class="mp-topic-hero-progress__label"><?php esc_html_e('Lesson progress', 'mp-academy'); ?></span>
-            <strong class="mp-topic-hero-progress__percent"><?php echo esc_html($progress_percent); ?>%</strong>
-            <div
-              class="mp-topic-hero-progress__bar"
-              role="progressbar"
-              aria-valuenow="<?php echo esc_attr($progress_percent); ?>"
-              aria-valuemin="0"
-              aria-valuemax="100"
-            >
-              <span style="width: <?php echo esc_attr($progress_percent); ?>%;"></span>
-            </div>
-            <?php if ($steps_total > 0): ?>
-              <span class="mp-topic-hero-progress__steps">
-                <?php
-                printf(
-                  esc_html__('%1$d/%2$d steps', 'mp-academy'),
-                  $steps_done,
-                  $steps_total
-                );
-                ?>
-              </span>
-            <?php endif; ?>
-          </div>
-
-          <?php if ($last_activity): ?>
-            <p class="mp-topic-hero-progress__activity">
-              <?php esc_html_e('Last activity:', 'mp-academy'); ?>
-              <?php echo esc_html($last_activity); ?>
-            </p>
-          <?php endif; ?>
-        </div>
-      <?php endif; ?>
-
       <?php if ($show_eyebrow): ?>
         <div class="u-margin-top-m u-margin-bottom-xs">
           <?php if ($is_completed): ?>
-            <span class="mp c-eyebrow" style="background-color: #d1fae5; color: #065f46; border: none;"><?php esc_html_e('Topic completed', 'mp-academy'); ?></span>
+            <span class="mp c-eyebrow" style="background-color: #d1fae5; color: #065f46; border: none;">Completed</span>
           <?php else: ?>
-            <span class="mp c-eyebrow c-eyebrow--blue-step-2" style="background-color: #bfdbfe; color: #1e3a8a; border: none;"><?php esc_html_e('Topic in progress', 'mp-academy'); ?></span>
+            <span class="mp c-eyebrow c-eyebrow--blue-step-2" style="background-color: #bfdbfe; color: #1e3a8a; border: none;">In progress</span>
           <?php endif; ?>
         </div>
       <?php endif; ?>

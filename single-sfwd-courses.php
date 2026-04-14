@@ -33,20 +33,20 @@ get_template_part('template-parts/course/single/hero', null, [
 
         <!-- Not logged in -->
         <div class="u-margin-top-m u-margin-bottom-m">
-          <p><?php esc_html_e( 'Please log in to enroll in this course.', 'mp-academy' ); ?></p>
+          <p>Please log in to enroll in this course.</p>
         </div>
 
       <?php elseif ( ! $has_access ) : ?>
 
         <!-- Logged in but NOT enrolled -->
         <div class="u-margin-top-m u-margin-bottom-m">
-          <p><?php esc_html_e( 'Please enroll to access this course.', 'mp-academy' ); ?></p>
-
           <?php
           if ( shortcode_exists('learndash_payment_buttons') ) {
             echo do_shortcode('[learndash_payment_buttons course_id="' . (int) $course_id . '"]');
           } elseif ( shortcode_exists('learndash_course_info') ) {
             echo do_shortcode('[learndash_course_info course_id="' . (int) $course_id . '"]');
+          } else {
+            echo '<p>Please enroll to start this course.</p>';
           }
           ?>
         </div>
