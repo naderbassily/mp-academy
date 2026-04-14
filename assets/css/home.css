@@ -6,20 +6,6 @@
   margin-block-end: var(--space-2xl);        /* Figma big section gap */
 }
 
-.mp-home-test-banner {
-  background: #c8102e;
-  color: #ffffff;
-  margin: 0;
-  padding: 0.875rem 0;
-}
-
-.mp-home-test-banner p {
-  font-size: 1rem;
-  font-weight: 700;
-  margin: 0;
-  text-align: center;
-}
-
 /* --- Home Hero --- */
 .mpa-home-hero {
   display: flex;
