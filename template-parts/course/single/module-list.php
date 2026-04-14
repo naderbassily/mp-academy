@@ -36,13 +36,6 @@ if (empty($lessons)) {
 ?>
 
 <section class="mp-course-modules u-margin-bottom-l">
-	<?php if (!$is_logged_in) : ?>
-		<!-- NOT Logged In State -->
-		<p class="mp-course-modules__login-msg u-margin-bottom-m">
-			<?php esc_html_e('Log in to access this course', 'mp-academy'); ?>
-		</p>
-	<?php endif; ?>
-	
 	<!-- Module Accordion -->
 	<div class="mp-module-accordion">
 		<?php 
@@ -52,20 +45,47 @@ if (empty($lessons)) {
 			$lesson_title = get_the_title($lesson_id);
 			$lesson_link = get_permalink($lesson_id);
 			
-			// Get lesson status
-			$lesson_status = $is_logged_in ? mp_get_step_status($user_id, $course_id, $lesson_id, 'lesson') : null;
-			
 			// Get topics (sub-lessons) for this lesson
 			$topics = [];
 			if (function_exists('learndash_get_topic_list')) {
 				$topics = learndash_get_topic_list($lesson_id, $course_id);
 			}
+
+			$lesson_status = $is_logged_in ? mp_get_step_status($user_id, $course_id, $lesson_id, 'lesson') : null;
+			$module_status = $lesson_status;
+			$topic_statuses = [];
+
+			if (!empty($topics)) {
+				$all_topics_complete = true;
+				$any_topic_started   = false;
+
+				foreach ($topics as $topic) {
+					$topic_id = is_object($topic) ? $topic->ID : (int) $topic;
+					$status   = $is_logged_in ? mp_get_step_status($user_id, $course_id, $topic_id, 'topic') : null;
+
+					$topic_statuses[$topic_id] = $status;
+
+					if (!$status || empty($status['complete'])) {
+						$all_topics_complete = false;
+					}
+
+					if ($status && (!empty($status['started']) || !empty($status['complete']))) {
+						$any_topic_started = true;
+					}
+				}
+
+				$module_status = [
+					'complete' => $is_logged_in && $all_topics_complete,
+					'started'  => $any_topic_started || ($lesson_status && (!empty($lesson_status['started']) || !empty($lesson_status['complete']))),
+					'can_view' => $lesson_status['can_view'] ?? true,
+				];
+			}
 			
 			// Module classes
 			$module_classes = ['mp-accordion-item'];
-			if ($lesson_status && $lesson_status['complete']) {
+			if ($module_status && $module_status['complete']) {
 				$module_classes[] = 'mp-accordion-item--complete';
-			} elseif ($lesson_status && $lesson_status['started']) {
+			} elseif ($module_status && $module_status['started']) {
 				$module_classes[] = 'mp-accordion-item--in-progress';
 			}
 			
@@ -83,7 +103,7 @@ if (empty($lessons)) {
 					>
 					<div class="mp-accordion-header__content">
 						
-						<?php if ($lesson_status && $lesson_status['complete']) : ?>
+							<?php if ($module_status && $module_status['complete']) : ?>
 							<!-- Complete checkmark icon -->
 							<span class="mp-accordion-icon mp-accordion-icon--complete" aria-label="<?php esc_attr_e('Complete', 'mp-academy'); ?>">
 								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -106,16 +126,16 @@ if (empty($lessons)) {
 								?>
 						</div>
 						
-						<?php if ($lesson_status) : ?>
-							<div class="mp-accordion-badge">
-								<?php if ($lesson_status['complete']) : ?>
-									<span class="mp-badge mp-badge--complete">
-										<?php esc_html_e('Complete', 'mp-academy'); ?>
-									</span>
-								<?php elseif ($lesson_status['started']) : ?>
-									<span class="mp-badge mp-badge--in-progress">
-										<?php esc_html_e('In progress', 'mp-academy'); ?>
-									</span>
+							<?php if ($module_status) : ?>
+								<div class="mp-accordion-badge">
+									<?php if ($module_status['complete']) : ?>
+										<span class="mp-badge mp-badge--complete">
+											<?php esc_html_e('Complete', 'mp-academy'); ?>
+										</span>
+									<?php elseif ($module_status['started']) : ?>
+										<span class="mp-badge mp-badge--in-progress">
+											<?php esc_html_e('In progress', 'mp-academy'); ?>
+										</span>
 								<?php endif; ?>
 							</div>
 						<?php endif; ?>
@@ -141,8 +161,7 @@ if (empty($lessons)) {
 								$topic_title = get_the_title($topic_id);
 								$topic_link = get_permalink($topic_id);
 								
-								// Get topic status
-								$topic_status = $is_logged_in ? mp_get_step_status($user_id, $course_id, $topic_id, 'topic') : null;
+									$topic_status = $topic_statuses[$topic_id] ?? null;
 								?>
 								
 									<li class="mp-topic-item">

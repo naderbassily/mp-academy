@@ -2,7 +2,7 @@
 .mp-home-cats,
 .mp-course-search,
 .mp-my-courses,
-.mp-featured-courses{
+.mp-featured-videos{
   margin-block-end: var(--space-2xl);        /* Figma big section gap */
 }
 
@@ -140,8 +140,8 @@
   }
 }
 
-/* Featured courses Grid */
-.mp-featured-courses__hd {
+/* Featured videos grid */
+.mp-featured-videos__hd {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -149,7 +149,7 @@
   margin-bottom: 16px;
 }
 
-.mp-featured-courses__browse {
+.mp-featured-videos__browse {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -158,15 +158,26 @@
   text-decoration: none;
 }
 
-.mp-featured-courses__browse:hover {
+.mp-featured-videos__browse:hover {
   text-decoration: underline;
 }
 
-.mp-featured-courses__browse-icon {
+.mp-featured-videos__browse-icon {
   font-size: 16px;
 }
 
-/* Optional: make sure cards don’t stretch weirdly */
-.mp-featured-courses__grid .mp-course-card--featured {
-  height: 100%;
+.mp-featured-videos .mp-video-cards {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 1024px) {
+  .mp-featured-videos .mp-video-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .mp-featured-videos .mp-video-cards {
+    grid-template-columns: 1fr;
+  }
 }

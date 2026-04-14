@@ -21,11 +21,11 @@ $items = [
     'label' => 'Video Library',
     'href'  => home_url('/videos-library/'),
     'slug'  => '',
-    'icon'  => trailingslashit(get_template_directory_uri()) . 'assets/images/training-icon.svg',
+    'icon'  => trailingslashit(get_template_directory_uri()) . 'assets/images/recorded-webinars-icon.svg',
   ],
   [
     'label' => 'Upcoming webinars',
-    'href'  => 'https://www.malvernpanalytical.com/en/learn/events-and-training?size=n_10_n&filters%5B0%5D%5Bfield%5D=startdate&filters%5B0%5D%5Bvalues%5D%5B0%5D%5Bfrom%5D=2026-03-16T00:00:00.000Z&filters%5B0%5D%5Btype%5D=all&filters%5B1%5D%5Bfield%5D=eventtype_bizaboo&filters%5B1%5D%5Bvalues%5D%5B0%5D=Webinar&filters%5B1%5D%5Bvalues%5D%5B1%5D=Launch%20Event&filters%5B1%5D%5Btype%5D=any&sort-field=startdate&sort-direction=asc',
+    'href'  => 'https://www.malvernpanalytical.com/en/learn/events-and-training',
     'slug'  => '',
     'icon'  => trailingslashit(get_template_directory_uri()) . 'assets/images/training-icon.svg',
   ],

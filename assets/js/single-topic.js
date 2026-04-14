@@ -34,10 +34,25 @@
         'ld--ignore-inline-css'
       );
 
-      // (Franklin completely removed from Mark Complete buttons as requested)
-      
+      btn.classList.add('mp', 'c-button', 'c-button--blue');
+
       // remove inline styles LD may inject
       btn.removeAttribute('style');
+      btn.value = 'Mark topic as complete';
+      btn.textContent = 'Mark topic as complete';
+      btn.setAttribute('aria-label', 'Mark topic as complete');
+    });
+
+    document.querySelectorAll('.ld-progress, .ld-status, .ld-topic-status, .ld-progress-inline').forEach(function (el) {
+      if (!el.querySelector('.learndash_mark_complete_button, #learndash_mark_complete_button, input[type="submit"]')) {
+        el.remove();
+      }
+    });
+
+    document.querySelectorAll('.ld-navigation__progress > *').forEach(function (el) {
+      if (!el.querySelector('.learndash_mark_complete_button, #learndash_mark_complete_button, input[type="submit"]')) {
+        el.remove();
+      }
     });
 
     // =========================
@@ -47,7 +62,7 @@
       // Remove LD bloat
       link.classList.remove('ld-primary-color-hover', 'ld-primary-color', 'ld-button');
 
-      // (Franklin completely removed from pagination links)
+      link.classList.add('mp', 'c-button', 'c-button--outline-green');
     });
 
     // =========================
@@ -104,10 +119,10 @@
         });
       }
 
-      // Progression: hide Mark Complete until ended (+ optional auto-complete)
+      // Progression: keep Mark Complete visible so users can manually complete
+      // the topic when needed, while still supporting optional auto-complete.
       if (progression) {
         var $mark = $('.learndash_mark_complete_button, #learndash_mark_complete_button, form[name="sfwd-mark-complete"] input[type="submit"]').first();
-        if ($mark.length) $mark.hide();
 
         $video.on('ended', function () {
           if ($mark.length) $mark.show();
