@@ -305,8 +305,12 @@ get_template_part(
 			</div>
 
 			<?php if ( $course_url ) : ?>
-				<div class="u-wrap u-space--section u-flow" style="text-align: center;">
-					<p><a href="<?php echo esc_url( $course_url ); ?>" class="u-blue u-text-weight-bold">← Back to course overview</a></p>
+				<div class="u-wrap u-space--section u-flow mp-topic-back-link-wrap">
+					<p>
+						<a href="<?php echo esc_url( $course_url ); ?>" class="mp-topic-back-link c-button c-button--outline-green">
+							← Back to course overview
+						</a>
+					</p>
 				</div>
 			<?php endif; ?>
 		<?php endwhile; ?>
