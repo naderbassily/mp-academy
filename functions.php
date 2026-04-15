@@ -157,6 +157,10 @@ function mp_academy_scripts() {
     mp_academy_enqueue_theme_script( 'mp-single-course-js', '/assets/js/single-course.js' );
   }
 
+  if ( is_singular( 'sfwd-quiz' ) ) {
+    mp_academy_enqueue_theme_style( 'mp-single-quiz', '/assets/css/single-quiz.css', array( 'mp-inter-font' ) );
+  }
+
   if ( is_singular( 'sfwd-topic' ) || is_singular( 'sfwd-lessons' ) ) {
     mp_academy_enqueue_theme_style( 'mp-single-topic', '/assets/css/single-topic.css', array( 'mp-inter-font' ) );
     mp_academy_enqueue_theme_script( 'mp-single-topic-js', '/assets/js/single-topic.js', array( 'jquery' ) );
