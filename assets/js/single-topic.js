@@ -38,9 +38,16 @@
 
       // remove inline styles LD may inject
       btn.removeAttribute('style');
-      btn.value = 'Mark topic as complete';
-      btn.textContent = 'Mark topic as complete';
-      btn.setAttribute('aria-label', 'Mark topic as complete');
+      btn.style.setProperty('background', '#00a2c2', 'important');
+      btn.style.setProperty('background-color', '#00a2c2', 'important');
+      btn.style.setProperty('background-image', 'none', 'important');
+      btn.style.setProperty('border', 'none', 'important');
+      btn.style.setProperty('border-color', '#00a2c2', 'important');
+      btn.style.setProperty('color', '#ffffff', 'important');
+      btn.style.setProperty('box-shadow', 'none', 'important');
+      btn.value = 'Mark as complete';
+      btn.textContent = 'Mark as complete';
+      btn.setAttribute('aria-label', 'Mark as complete');
     });
 
     document.querySelectorAll('.ld-progress, .ld-status, .ld-topic-status, .ld-progress-inline').forEach(function (el) {
@@ -83,6 +90,7 @@
       var resume = isOn($wrap.data('ld-resume')) || isOn($ld.data('video-resume'));
       var controlsOn = !isOff($wrap.data('ld-controls'));
       var autoComplete = isOn($wrap.data('ld-auto-complete'));
+      var isCompleted = isOn($wrap.data('ld-is-complete'));
 
       // Use LearnDash cookie key if present, else fallback to topic id
       var fallbackId = $wrap.data('ld-topic-id');
@@ -123,6 +131,10 @@
       // the topic when needed, while still supporting optional auto-complete.
       if (progression) {
         var $mark = $('.learndash_mark_complete_button, #learndash_mark_complete_button, form[name="sfwd-mark-complete"] input[type="submit"]').first();
+
+        if ($mark.length && !isCompleted) {
+          $mark.hide();
+        }
 
         $video.on('ended', function () {
           if ($mark.length) $mark.show();

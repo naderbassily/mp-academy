@@ -225,6 +225,8 @@ $topic_video_settings = mp_academy_get_topic_video_settings( $topic_id );
 $lesson_topics        = ( $lesson_id && function_exists( 'learndash_get_topic_list' ) ) ? learndash_get_topic_list( $lesson_id, $course_id ) : array();
 $lesson_step_total    = is_array( $lesson_topics ) ? count( $lesson_topics ) : 0;
 $lesson_step_complete = 0;
+$progression_locked   = false;
+$previous_item        = null;
 
 if ( $lesson_step_total && $user_id && function_exists( 'learndash_is_topic_complete' ) ) {
 	foreach ( $lesson_topics as $lesson_topic ) {
@@ -241,6 +243,23 @@ $last_activity           = mp_academy_get_activity_date( $user_id, $course_id, $
 
 if ( ! $last_activity && $lesson_id ) {
 	$last_activity = mp_academy_get_activity_date( $user_id, $course_id, $lesson_id, 'lesson' );
+}
+
+if (
+	$user_id
+	&& $course_id
+	&& function_exists( 'learndash_lesson_progression_enabled' )
+	&& learndash_lesson_progression_enabled( $course_id )
+	&& ! $is_completed
+	&& ! ( function_exists( 'learndash_can_user_bypass' ) && learndash_can_user_bypass( $user_id, 'learndash_course_progression' ) )
+	&& function_exists( 'learndash_user_progress_get_previous_incomplete_step' )
+) {
+	$previous_item_id = (int) learndash_user_progress_get_previous_incomplete_step( $user_id, $course_id, $topic_id );
+
+	if ( $previous_item_id && $previous_item_id !== $topic_id ) {
+		$progression_locked = true;
+		$previous_item      = get_post( $previous_item_id );
+	}
 }
 
 get_template_part(
@@ -277,7 +296,22 @@ get_template_part(
 		</div>
 	</header>
 
-	<?php if ( have_posts() ) : ?>
+	<?php if ( $progression_locked ) : ?>
+		<div class="u-wrap">
+			<?php
+			learndash_get_template_part(
+				'modules/messages/lesson-progression.php',
+				array(
+					'previous_item' => $previous_item,
+					'course_id'     => $course_id,
+					'context'       => 'topic',
+					'user_id'       => $user_id,
+				),
+				true
+			);
+			?>
+		</div>
+	<?php elseif ( have_posts() ) : ?>
 		<?php while ( have_posts() ) : the_post(); ?>
 			<?php
 			$content_parts = mp_academy_extract_topic_content_parts( apply_filters( 'the_content', get_the_content() ) );
@@ -289,6 +323,7 @@ get_template_part(
 				<section
 					class="mp-topic-video-wrapper"
 					data-ld-topic-id="<?php echo esc_attr( $topic_id ); ?>"
+					data-ld-is-complete="<?php echo esc_attr( $is_completed ? '1' : '0' ); ?>"
 					data-ld-progression="<?php echo esc_attr( $topic_video_settings['progression'] ); ?>"
 					data-ld-autostart="<?php echo esc_attr( $topic_video_settings['autostart'] ); ?>"
 					data-ld-focus-pause="<?php echo esc_attr( $topic_video_settings['focus_pause'] ); ?>"

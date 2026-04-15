@@ -206,12 +206,21 @@ body.single-sfwd-topic .ld-navigation input.learndash_mark_complete_button[type=
 body.single-sfwd-topic .ld-navigation input#learndash_mark_complete_button[type="submit"],
 body.single-sfwd-topic .ld-navigation form[name="sfwd-mark-complete"] input[type="submit"],
 body.single-sfwd-topic .learndash_mark_complete_button,
-body.single-sfwd-topic #learndash_mark_complete_button {
+body.single-sfwd-topic #learndash_mark_complete_button,
+body.single-sfwd-lessons .ld-navigation input.learndash_mark_complete_button[type="submit"],
+body.single-sfwd-lessons .ld-navigation input#learndash_mark_complete_button[type="submit"],
+body.single-sfwd-lessons .ld-navigation form[name="sfwd-mark-complete"] input[type="submit"],
+body.single-sfwd-lessons .learndash_mark_complete_button,
+body.single-sfwd-lessons #learndash_mark_complete_button,
+.learndash-wrapper input.learndash_mark_complete_button[type="submit"],
+.learndash-wrapper input#learndash_mark_complete_button[type="submit"],
+.learndash-wrapper form[name="sfwd-mark-complete"] input[type="submit"] {
   -webkit-appearance: none !important;
   appearance: none !important;
   background: #00a2c2 !important;
   background-color: #00a2c2 !important;
   background-image: none !important;
+  border: none !important;
   border-color: #00a2c2 !important;
   box-shadow: none !important;
   color: #fff !important;
@@ -223,9 +232,18 @@ body.single-sfwd-topic .ld-navigation input.learndash_mark_complete_button[type=
 body.single-sfwd-topic .ld-navigation input#learndash_mark_complete_button[type="submit"]:hover,
 body.single-sfwd-topic .ld-navigation form[name="sfwd-mark-complete"] input[type="submit"]:hover,
 body.single-sfwd-topic .learndash_mark_complete_button:hover,
-body.single-sfwd-topic #learndash_mark_complete_button:hover {
+body.single-sfwd-topic #learndash_mark_complete_button:hover,
+body.single-sfwd-lessons .ld-navigation input.learndash_mark_complete_button[type="submit"]:hover,
+body.single-sfwd-lessons .ld-navigation input#learndash_mark_complete_button[type="submit"]:hover,
+body.single-sfwd-lessons .ld-navigation form[name="sfwd-mark-complete"] input[type="submit"]:hover,
+body.single-sfwd-lessons .learndash_mark_complete_button:hover,
+body.single-sfwd-lessons #learndash_mark_complete_button:hover,
+.learndash-wrapper input.learndash_mark_complete_button[type="submit"]:hover,
+.learndash-wrapper input#learndash_mark_complete_button[type="submit"]:hover,
+.learndash-wrapper form[name="sfwd-mark-complete"] input[type="submit"]:hover {
   background: #00758c !important;
   background-color: #00758c !important;
+  border: none !important;
   border-color: #00758c !important;
 }
 
