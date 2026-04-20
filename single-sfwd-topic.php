@@ -243,6 +243,13 @@ if ( ! $last_activity && $lesson_id ) {
 	$last_activity = mp_academy_get_activity_date( $user_id, $course_id, $lesson_id, 'lesson' );
 }
 
+$topic_step_status = 'not-started';
+if ( $is_completed ) {
+	$topic_step_status = 'complete';
+} elseif ( $lesson_step_complete > 0 || $lesson_progress_percent > 0 ) {
+	$topic_step_status = 'in-progress';
+}
+
 get_template_part(
 	'template-parts/lesson/single/hero',
 	null,
@@ -252,6 +259,8 @@ get_template_part(
 		'course_id'      => $course_id,
 		'course_url'     => $course_url,
 		'show_eyebrow'   => true,
+		'step_type'      => 'topic',
+		'step_status'    => $topic_step_status,
 		'is_completed'   => $is_completed,
 		'topic_progress' => array(
 			'percent'       => $lesson_progress_percent,
