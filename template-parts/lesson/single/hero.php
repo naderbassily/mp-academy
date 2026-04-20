@@ -7,24 +7,48 @@ if (!defined('ABSPATH'))
   exit;
 
 $current_id = (int)($args['post_id'] ?? get_the_ID());
-$lesson_id = (int)($args['lesson_id'] ?? 0);
-$course_id = (int)($args['course_id'] ?? 0);
+$lesson_id  = (int)($args['lesson_id'] ?? 0);
+$course_id  = (int)($args['course_id'] ?? 0);
 
-$show_eyebrow = !empty($args['show_eyebrow']);
-$is_completed = !empty($args['is_completed']);
+$show_eyebrow   = !empty($args['show_eyebrow']);
+$is_completed   = !empty($args['is_completed']);
+$step_type      = isset($args['step_type']) ? (string) $args['step_type'] : 'topic';
+$step_status    = isset($args['step_status']) ? (string) $args['step_status'] : ($is_completed ? 'complete' : 'in-progress');
 $topic_progress = is_array($args['topic_progress'] ?? null) ? $args['topic_progress'] : [];
+
 $progress_percent = isset($topic_progress['percent']) ? (int) $topic_progress['percent'] : 0;
 $progress_percent = max(0, min(100, $progress_percent));
-$steps_done = isset($topic_progress['steps_done']) ? (int) $topic_progress['steps_done'] : 0;
-$steps_total = isset($topic_progress['steps_total']) ? (int) $topic_progress['steps_total'] : 0;
-$last_activity = isset($topic_progress['last_activity']) ? (string) $topic_progress['last_activity'] : '';
+$steps_done       = isset($topic_progress['steps_done']) ? (int) $topic_progress['steps_done'] : 0;
+$steps_total      = isset($topic_progress['steps_total']) ? (int) $topic_progress['steps_total'] : 0;
+$last_activity    = isset($topic_progress['last_activity']) ? (string) $topic_progress['last_activity'] : '';
 
-$title = get_the_title($current_id);
+$title   = get_the_title($current_id);
 $excerpt = has_excerpt($current_id) ? get_the_excerpt($current_id) : '';
 
 $hero_svg = 'https://dam.malvernpanalytical.com/fae4c741-f556-475a-b286-b36e0098eefe/website%20hero%20placeholder_Original%20file.svg';
-?>
 
+// Status badge config
+$status_labels = [
+	'lesson' => [
+		'complete'    => __('Lesson completed', 'mp-academy'),
+		'in-progress' => __('Lesson in progress', 'mp-academy'),
+		'not-started' => __('Not started', 'mp-academy'),
+	],
+	'topic' => [
+		'complete'    => __('Topic completed', 'mp-academy'),
+		'in-progress' => __('Topic in progress', 'mp-academy'),
+		'not-started' => __('Not started', 'mp-academy'),
+	],
+];
+$status_styles = [
+	'complete'    => 'background-color:#d1fae5;color:#065f46;border:none;',
+	'in-progress' => 'background-color:#bfdbfe;color:#1e3a8a;border:none;',
+	'not-started' => 'background-color:#f3f4f6;color:#6b7280;border:none;',
+];
+$type_key    = isset($status_labels[$step_type]) ? $step_type : 'topic';
+$badge_label = $status_labels[$type_key][$step_status] ?? $status_labels[$type_key]['in-progress'];
+$badge_style = $status_styles[$step_status] ?? $status_styles['in-progress'];
+?>
 
 <section id="mp-custom-small-hero" class="c-hero c-hero--dark mp-small-hero"
   style="--placeholder-image: url('<?php echo esc_url($hero_svg); ?>')">
@@ -32,8 +56,8 @@ $hero_svg = 'https://dam.malvernpanalytical.com/fae4c741-f556-475a-b286-b36e0098
     <div class="c-hero__main">
       <?php
       get_template_part('template-parts/components/breadcrumbs', null, [
-        'course_id' => $course_id,
-        'lesson_id' => $lesson_id,
+        'course_id'   => $course_id,
+        'lesson_id'   => $lesson_id,
         'extra_class' => 'c-breadcrumb--dark',
       ]);
       ?>
@@ -49,9 +73,9 @@ $hero_svg = 'https://dam.malvernpanalytical.com/fae4c741-f556-475a-b286-b36e0098
       <?php endif; ?>
 
       <?php if (!empty($topic_progress)): ?>
-        <div class="mp-topic-hero-progress" aria-label="<?php esc_attr_e('Lesson progress', 'mp-academy'); ?>">
+        <div class="mp-topic-hero-progress" aria-label="<?php esc_attr_e('Progress', 'mp-academy'); ?>">
           <div class="mp-topic-hero-progress__row">
-            <span class="mp-topic-hero-progress__label"><?php esc_html_e('Lesson progress', 'mp-academy'); ?></span>
+            <span class="mp-topic-hero-progress__label"><?php esc_html_e('Progress', 'mp-academy'); ?></span>
             <strong class="mp-topic-hero-progress__percent"><?php echo esc_html($progress_percent); ?>%</strong>
             <div
               class="mp-topic-hero-progress__bar"
@@ -86,11 +110,9 @@ $hero_svg = 'https://dam.malvernpanalytical.com/fae4c741-f556-475a-b286-b36e0098
 
       <?php if ($show_eyebrow): ?>
         <div class="u-margin-top-m u-margin-bottom-xs">
-          <?php if ($is_completed): ?>
-            <span class="mp c-eyebrow" style="background-color: #d1fae5; color: #065f46; border: none;"><?php esc_html_e('Topic completed', 'mp-academy'); ?></span>
-          <?php else: ?>
-            <span class="mp c-eyebrow c-eyebrow--blue-step-2" style="background-color: #bfdbfe; color: #1e3a8a; border: none;"><?php esc_html_e('Topic in progress', 'mp-academy'); ?></span>
-          <?php endif; ?>
+          <span class="mp c-eyebrow" style="<?php echo esc_attr($badge_style); ?>">
+            <?php echo esc_html($badge_label); ?>
+          </span>
         </div>
       <?php endif; ?>
     </div>
