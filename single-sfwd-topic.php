@@ -250,6 +250,7 @@ get_template_part(
 		'post_id'        => $topic_id,
 		'lesson_id'      => $lesson_id,
 		'course_id'      => $course_id,
+		'course_url'     => $course_url,
 		'show_eyebrow'   => true,
 		'is_completed'   => $is_completed,
 		'topic_progress' => array(
@@ -304,16 +305,6 @@ get_template_part(
 			<div class="u-wrap">
 				<?php echo $body_block; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			</div>
-
-			<?php if ( $course_url ) : ?>
-				<div class="u-wrap u-space--section u-flow mp-topic-back-link-wrap">
-					<p>
-						<a href="<?php echo esc_url( $course_url ); ?>" class="mp-topic-back-link c-button c-button--outline-green">
-							← Back to course overview
-						</a>
-					</p>
-				</div>
-			<?php endif; ?>
 		<?php endwhile; ?>
 	<?php endif; ?>
 </main>

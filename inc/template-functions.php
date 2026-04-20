@@ -93,3 +93,50 @@ function mp_get_step_status( $user_id, $course_id, $step_id, $step_type = 'lesso
 
   return $status;
 }
+
+/**
+ * Get the formatted last activity date for a LearnDash step.
+ *
+ * @param int    $user_id   Current user ID.
+ * @param int    $course_id Course ID.
+ * @param int    $step_id   Step ID.
+ * @param string $step_type LearnDash activity type.
+ * @return string
+ */
+function mp_academy_get_activity_date( $user_id, $course_id, $step_id, $step_type ) {
+  if ( ! $user_id || ! function_exists( 'learndash_get_user_activity' ) ) {
+    return '';
+  }
+
+  $activity = learndash_get_user_activity(
+    array(
+      'user_id'       => $user_id,
+      'course_id'     => $course_id,
+      'post_id'       => $step_id,
+      'activity_type' => $step_type,
+      'per_page'      => 1,
+    )
+  );
+
+  if ( is_array( $activity ) ) {
+    $activity = reset( $activity );
+  }
+
+  if ( ! is_object( $activity ) ) {
+    return '';
+  }
+
+  $timestamp = 0;
+
+  if ( ! empty( $activity->activity_updated ) ) {
+    $timestamp = strtotime( (string) $activity->activity_updated );
+  } elseif ( ! empty( $activity->activity_started ) ) {
+    $timestamp = strtotime( (string) $activity->activity_started );
+  }
+
+  if ( ! $timestamp ) {
+    return '';
+  }
+
+  return wp_date( get_option( 'date_format' ), $timestamp );
+}
