@@ -160,56 +160,76 @@ function mp_academy_scripts() {
   if ( is_singular( 'sfwd-quiz' ) ) {
     mp_academy_enqueue_theme_style( 'mp-single-topic', '/assets/css/single-topic.css', array( 'mp-inter-font' ) );
     mp_academy_enqueue_theme_style( 'mp-single-quiz', '/assets/css/single-quiz.css', array( 'mp-inter-font', 'mp-single-topic' ) );
+    mp_academy_enqueue_theme_script( 'mp-single-quiz-js', '/assets/js/single-quiz.js' );
 
     // Injected last in <head> — beats LearnDash Focus Mode !important overrides
     wp_add_inline_style( 'mp-single-quiz', '
       /* Restore Inter font — Focus Mode stylesheet overrides it globally */
-      body.single-sfwd-quiz,
-      body.single-sfwd-quiz h1,
-      body.single-sfwd-quiz h2,
-      body.single-sfwd-quiz h3,
-      body.single-sfwd-quiz h4,
-      body.single-sfwd-quiz p,
-      body.single-sfwd-quiz a,
-      body.single-sfwd-quiz li,
-      body.single-sfwd-quiz span,
-      body.single-sfwd-quiz input,
-      body.single-sfwd-quiz button,
-      body.single-sfwd-quiz label,
+      body.single-sfwd-quiz .site-main,
+      body.single-sfwd-quiz .site-main h1,
+      body.single-sfwd-quiz .site-main h2,
+      body.single-sfwd-quiz .site-main h3,
+      body.single-sfwd-quiz .site-main h4,
+      body.single-sfwd-quiz .site-main p,
+      body.single-sfwd-quiz .site-main a,
+      body.single-sfwd-quiz .site-main li,
+      body.single-sfwd-quiz .site-main span,
+      body.single-sfwd-quiz .site-main input,
+      body.single-sfwd-quiz .site-main button,
+      body.single-sfwd-quiz .site-main label,
       body.single-sfwd-quiz .learndash-wrapper,
       body.single-sfwd-quiz .wpProQuiz_content,
       body.single-sfwd-quiz .learndash-wrapper * {
         font-family: "Inter", "InterVariable", sans-serif !important;
       }
 
-      /* Start Quiz button — outline green (Franklin c-button--outline-green style) */
+      /* Start Quiz button — match topic navigation button geometry */
       body.single-sfwd-quiz input[name="startQuiz"],
-      body.single-sfwd-quiz .wpProQuiz_button[name="startQuiz"] {
+      body.single-sfwd-quiz .wpProQuiz_button[name="startQuiz"],
+      body.single-sfwd-quiz .wpProQuiz_text .wpProQuiz_button2,
+      body.single-sfwd-quiz .wpProQuiz_startOnlyRegisteredUser .wpProQuiz_button2 {
+        align-items: center !important;
         background: transparent !important;
         background-color: transparent !important;
         background-image: none !important;
         border: 2px solid #00b140 !important;
         border-radius: 0.5rem !important;
+        box-sizing: border-box !important;
         color: #00b140 !important;
+        display: inline-flex !important;
         font-size: 1rem !important;
         font-weight: 700 !important;
+        height: 44px !important;
+        justify-content: center !important;
         letter-spacing: 0 !important;
         line-height: 1.2 !important;
+        min-width: 170px !important;
         padding: 0.625rem 1.1rem !important;
-        min-width: 10rem !important;
         box-shadow: none !important;
+        outline: none !important;
         text-shadow: none !important;
         cursor: pointer !important;
-        display: inline-block !important;
         text-align: center !important;
         text-decoration: none !important;
-        transition: background-color 0.2s ease, color 0.2s ease !important;
+        transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease !important;
       }
       body.single-sfwd-quiz input[name="startQuiz"]:hover,
-      body.single-sfwd-quiz .wpProQuiz_button[name="startQuiz"]:hover {
+      body.single-sfwd-quiz .wpProQuiz_button[name="startQuiz"]:hover,
+      body.single-sfwd-quiz .wpProQuiz_text .wpProQuiz_button2:hover,
+      body.single-sfwd-quiz .wpProQuiz_startOnlyRegisteredUser .wpProQuiz_button2:hover,
+      body.single-sfwd-quiz input[name="startQuiz"]:focus,
+      body.single-sfwd-quiz .wpProQuiz_button[name="startQuiz"]:focus,
+      body.single-sfwd-quiz .wpProQuiz_text .wpProQuiz_button2:focus,
+      body.single-sfwd-quiz .wpProQuiz_startOnlyRegisteredUser .wpProQuiz_button2:focus {
         background: #00b140 !important;
         background-color: #00b140 !important;
+        border: none !important;
+        border-color: transparent !important;
+        box-shadow: none !important;
         color: #ffffff !important;
+        height: 44px !important;
+        min-width: 170px !important;
+        padding: 0.625rem 1.1rem !important;
       }
     ' );
   }
