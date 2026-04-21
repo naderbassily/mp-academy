@@ -158,7 +158,60 @@ function mp_academy_scripts() {
   }
 
   if ( is_singular( 'sfwd-quiz' ) ) {
-    mp_academy_enqueue_theme_style( 'mp-single-quiz', '/assets/css/single-quiz.css', array( 'mp-inter-font' ) );
+    mp_academy_enqueue_theme_style( 'mp-single-topic', '/assets/css/single-topic.css', array( 'mp-inter-font' ) );
+    mp_academy_enqueue_theme_style( 'mp-single-quiz', '/assets/css/single-quiz.css', array( 'mp-inter-font', 'mp-single-topic' ) );
+
+    // Injected last in <head> — beats LearnDash Focus Mode !important overrides
+    wp_add_inline_style( 'mp-single-quiz', '
+      /* Restore Inter font — Focus Mode stylesheet overrides it globally */
+      body.single-sfwd-quiz,
+      body.single-sfwd-quiz h1,
+      body.single-sfwd-quiz h2,
+      body.single-sfwd-quiz h3,
+      body.single-sfwd-quiz h4,
+      body.single-sfwd-quiz p,
+      body.single-sfwd-quiz a,
+      body.single-sfwd-quiz li,
+      body.single-sfwd-quiz span,
+      body.single-sfwd-quiz input,
+      body.single-sfwd-quiz button,
+      body.single-sfwd-quiz label,
+      body.single-sfwd-quiz .learndash-wrapper,
+      body.single-sfwd-quiz .wpProQuiz_content,
+      body.single-sfwd-quiz .learndash-wrapper * {
+        font-family: "Inter", "InterVariable", sans-serif !important;
+      }
+
+      /* Start Quiz button — outline green (Franklin c-button--outline-green style) */
+      body.single-sfwd-quiz input[name="startQuiz"],
+      body.single-sfwd-quiz .wpProQuiz_button[name="startQuiz"] {
+        background: transparent !important;
+        background-color: transparent !important;
+        background-image: none !important;
+        border: 2px solid #00b140 !important;
+        border-radius: 0.5rem !important;
+        color: #00b140 !important;
+        font-size: 1rem !important;
+        font-weight: 700 !important;
+        letter-spacing: 0 !important;
+        line-height: 1.2 !important;
+        padding: 0.625rem 1.1rem !important;
+        min-width: 10rem !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+        cursor: pointer !important;
+        display: inline-block !important;
+        text-align: center !important;
+        text-decoration: none !important;
+        transition: background-color 0.2s ease, color 0.2s ease !important;
+      }
+      body.single-sfwd-quiz input[name="startQuiz"]:hover,
+      body.single-sfwd-quiz .wpProQuiz_button[name="startQuiz"]:hover {
+        background: #00b140 !important;
+        background-color: #00b140 !important;
+        color: #ffffff !important;
+      }
+    ' );
   }
 
   if ( is_singular( 'sfwd-topic' ) || is_singular( 'sfwd-lessons' ) ) {

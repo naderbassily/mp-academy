@@ -30,8 +30,9 @@ $is_courses_archive = is_post_type_archive('sfwd-courses');
 $is_single_course   = is_singular('sfwd-courses');
 $is_single_lesson   = is_singular('sfwd-lessons');
 $is_single_topic    = is_singular('sfwd-topic');
+$is_single_quiz     = is_singular('sfwd-quiz');
 
-$is_learndash_context = ($is_courses_archive || $is_single_course || $is_single_lesson || $is_single_topic);
+$is_learndash_context = ($is_courses_archive || $is_single_course || $is_single_lesson || $is_single_topic || $is_single_quiz);
 
 $post_id = get_the_ID();
 
@@ -57,8 +58,13 @@ if ($is_single_course) {
   $topic_id = $post_id;
 }
 
-if (!$course_id && ($is_single_lesson || $is_single_topic) && function_exists('learndash_get_course_id')) {
+if (!$course_id && ($is_single_lesson || $is_single_topic || $is_single_quiz) && function_exists('learndash_get_course_id')) {
   $course_id = (int) learndash_get_course_id($post_id);
+}
+
+// Allow override via args (e.g. from quiz hero)
+if (!$course_id && !empty($args['course_id'])) {
+  $course_id = (int) $args['course_id'];
 }
 
 if ($is_single_topic && function_exists('learndash_get_setting')) {
@@ -106,7 +112,7 @@ $topic_title  = $topic_id ? get_the_title($topic_id) : '';
 
           <?php
           // Show chevron if more crumbs follow
-          if ($is_single_course || $is_single_lesson || $is_single_topic) {
+          if ($is_single_course || $is_single_lesson || $is_single_topic || $is_single_quiz) {
             mp_bc_chevron($sprite_path);
           }
           ?>
@@ -133,6 +139,20 @@ $topic_title  = $topic_id ? get_the_title($topic_id) : '';
         <li class="c-breadcrumb__item" role="listitem">
           <span class="c-breadcrumb__current" aria-current="page">
             <?php echo esc_html($lesson_title ?: get_the_title($post_id)); ?>
+          </span>
+        </li>
+      <?php endif; ?>
+
+      <?php if ($is_single_quiz && $course_id): ?>
+        <li class="c-breadcrumb__item" role="listitem">
+          <a href="<?php echo esc_url($course_link); ?>" class="c-breadcrumb__link">
+            <?php echo esc_html($course_title); ?>
+          </a>
+          <?php mp_bc_chevron($sprite_path); ?>
+        </li>
+        <li class="c-breadcrumb__item" role="listitem">
+          <span class="c-breadcrumb__current" aria-current="page">
+            <?php echo esc_html(get_the_title($post_id)); ?>
           </span>
         </li>
       <?php endif; ?>

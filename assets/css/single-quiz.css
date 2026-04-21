@@ -1,91 +1,86 @@
-body.single-sfwd-quiz {
-  background:
-    radial-gradient(circle at top left, rgba(0, 162, 194, 0.12), transparent 32%),
-    radial-gradient(circle at bottom right, rgba(0, 84, 97, 0.14), transparent 28%),
-    linear-gradient(180deg, #f6fbfc 0%, #eef6f7 100%);
-}
-
-.mp-quiz-page {
-  min-height: calc(100vh - 9rem);
-  display: flex;
-  align-items: center;
-  padding: 3rem 0 4rem;
-}
-
-.mp-quiz-shell {
-  width: min(100%, 74rem);
-}
-
-.mp-quiz-card {
-  overflow: hidden;
-  border: 1px solid rgba(0, 84, 97, 0.1);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 252, 252, 0.98));
-}
-
-.mp-quiz-card__header {
-  padding: 2.25rem 2.25rem 1.5rem;
-  text-align: center;
-  border-bottom: 1px solid rgba(0, 84, 97, 0.08);
-}
-
-.mp-quiz-card__eyebrow {
-  margin: 0 0 0.65rem;
-  color: #005461;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.mp-quiz-card__title {
-  margin-bottom: 0.75rem;
-}
-
-.mp-quiz-card__lede {
-  max-width: 38rem;
-  margin: 0 auto;
-  color: #4b5563;
-}
-
-.mp-quiz-card__meta {
+/* --------------------------------- */
+/* Quiz Hero Meta                    */
+/* --------------------------------- */
+.mp-quiz-hero-meta {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.75rem;
-  margin-top: 1.25rem;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.75rem;
 }
 
-.mp-quiz-chip {
+.mp-quiz-hero-pass-score {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  padding: 0.45rem 0.85rem;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 999px;
-  background: rgba(0, 84, 97, 0.08);
-  color: #005461;
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 0.35rem 0.85rem;
+}
+
+.mp-quiz-hero-activity {
+  color: rgba(255, 255, 255, 0.78);
   font-size: 0.9rem;
-  font-weight: 600;
 }
 
-.mp-quiz-chip--accent {
-  background: rgba(0, 162, 194, 0.14);
-  color: #00758c;
+/* --------------------------------- */
+/* Quiz Intro Message                */
+/* --------------------------------- */
+.mp-quiz-intro {
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.25rem;
+  background: #f0f9ff;
+  border-left: 4px solid #00a2c2;
+  border-radius: 0 0.5rem 0.5rem 0;
 }
 
-.mp-quiz-card__back {
-  margin: 1rem 0 0;
+.mp-quiz-intro__text {
+  margin: 0;
+  color: #14323b;
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 
-.mp-quiz-card__back a {
-  color: #005461;
-  font-weight: 600;
-  text-decoration: underline;
-  text-underline-offset: 0.15em;
+/* --------------------------------- */
+/* Backend Content                   */
+/* --------------------------------- */
+.mp-quiz-content {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.7;
+  color: #1a1a1a;
 }
 
-.mp-quiz-card__body {
-  padding: 2rem 2.25rem 2.25rem;
+.mp-quiz-content p {
+  margin-bottom: 1rem;
+}
+
+/* --------------------------------- */
+/* Quiz Body                         */
+/* --------------------------------- */
+.mp-quiz-body {
+  padding-top: 0;
+}
+
+/* Fix extra whitespace — LearnDash wrapper sometimes has min-height */
+body.single-sfwd-quiz .site-main {
+  min-height: 0 !important;
+}
+
+body.single-sfwd-quiz .learndash-wrapper {
+  min-height: 0 !important;
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+body.single-sfwd-quiz .wpProQuiz_content {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 .single-sfwd-quiz .learndash-wrapper,
@@ -93,15 +88,14 @@ body.single-sfwd-quiz {
   max-width: none;
 }
 
-.single-sfwd-quiz .wpProQuiz_content {
-  margin: 0;
-}
-
+/* --------------------------------- */
+/* Quiz Form Layout                  */
+/* --------------------------------- */
 .single-sfwd-quiz .wpProQuiz_quiz {
-  padding: 1.25rem;
+  padding: 1.5rem;
   border-radius: 1.25rem;
   background: #fff;
-  box-shadow: inset 0 0 0 1px rgba(0, 84, 97, 0.08);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06), inset 0 0 0 1px rgba(0, 84, 97, 0.08);
 }
 
 .single-sfwd-quiz .wpProQuiz_header,
@@ -148,14 +142,17 @@ body.single-sfwd-quiz {
   font-weight: 500;
 }
 
-.single-sfwd-quiz .wpProQuiz_button,
-.single-sfwd-quiz .learndash-wrapper .wpProQuiz_content .wpProQuiz_button:not(.wpProQuiz_button_reShowQuestion):not([disabled]),
-.single-sfwd-quiz .learndash-wrapper .wpProQuiz_content input[type="button"],
-.single-sfwd-quiz .learndash-wrapper .wpProQuiz_content input[type="submit"] {
+/* --------------------------------- */
+/* All Quiz Buttons (default style)  */
+/* Excludes the Start Quiz button    */
+/* --------------------------------- */
+body.single-sfwd-quiz .learndash-wrapper .wpProQuiz_content .wpProQuiz_button:not([name="startQuiz"]),
+body.single-sfwd-quiz .learndash-wrapper .wpProQuiz_content input[type="button"]:not([name="startQuiz"]),
+body.single-sfwd-quiz .learndash-wrapper .wpProQuiz_content input[type="submit"]:not([name="startQuiz"]) {
   -webkit-appearance: none !important;
   appearance: none !important;
-  min-height: 2.9rem;
-  padding: 0.72rem 1.2rem !important;
+  min-height: 2.75rem;
+  padding: 0.65rem 1.2rem !important;
   border: none !important;
   border-radius: 999px !important;
   background: #00a2c2 !important;
@@ -164,58 +161,41 @@ body.single-sfwd-quiz {
   color: #fff !important;
   font: inherit !important;
   font-weight: 600 !important;
-  line-height: 1.1;
+  line-height: 1.2 !important;
   text-shadow: none !important;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-.single-sfwd-quiz .wpProQuiz_text,
-.single-sfwd-quiz .wpProQuiz_startOnlyRegisteredUser,
-.single-sfwd-quiz .wpProQuiz_button2 {
-  text-align: center;
-}
-
-.single-sfwd-quiz .wpProQuiz_button[name="startQuiz"],
-.single-sfwd-quiz .learndash-wrapper .wpProQuiz_content input.wpProQuiz_button[name="startQuiz"],
-.single-sfwd-quiz .learndash-wrapper .wpProQuiz_content input[type="button"][name="startQuiz"] {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  min-width: 11rem;
-  margin: 1.25rem auto 0 !important;
-  background: #1f8cff !important;
-  background-color: #1f8cff !important;
-  border-color: #1f8cff !important;
-}
-
-.single-sfwd-quiz .wpProQuiz_button:hover,
-.single-sfwd-quiz .wpProQuiz_button:focus,
-.single-sfwd-quiz .learndash-wrapper .wpProQuiz_content input[type="button"]:hover,
-.single-sfwd-quiz .learndash-wrapper .wpProQuiz_content input[type="button"]:focus,
-.single-sfwd-quiz .learndash-wrapper .wpProQuiz_content input[type="submit"]:hover,
-.single-sfwd-quiz .learndash-wrapper .wpProQuiz_content input[type="submit"]:focus {
+body.single-sfwd-quiz .learndash-wrapper .wpProQuiz_content .wpProQuiz_button:not([name="startQuiz"]):hover,
+body.single-sfwd-quiz .learndash-wrapper .wpProQuiz_content input[type="button"]:not([name="startQuiz"]):hover,
+body.single-sfwd-quiz .learndash-wrapper .wpProQuiz_content input[type="submit"]:not([name="startQuiz"]):hover {
   background: #00758c !important;
-  transform: translateY(-1px);
 }
 
-.single-sfwd-quiz .wpProQuiz_button[name="startQuiz"]:hover,
-.single-sfwd-quiz .wpProQuiz_button[name="startQuiz"]:focus,
-.single-sfwd-quiz .learndash-wrapper .wpProQuiz_content input.wpProQuiz_button[name="startQuiz"]:hover,
-.single-sfwd-quiz .learndash-wrapper .wpProQuiz_content input.wpProQuiz_button[name="startQuiz"]:focus,
-.single-sfwd-quiz .learndash-wrapper .wpProQuiz_content input[type="button"][name="startQuiz"]:hover,
-.single-sfwd-quiz .learndash-wrapper .wpProQuiz_content input[type="button"][name="startQuiz"]:focus {
-  background: #0f6fdd !important;
-  background-color: #0f6fdd !important;
-  border-color: #0f6fdd !important;
+/* --------------------------------- */
+/* Start Quiz button alignment       */
+/* --------------------------------- */
+body.single-sfwd-quiz .learndash-wrapper .wpProQuiz_content .wpProQuiz_text,
+body.single-sfwd-quiz .learndash-wrapper .wpProQuiz_content .wpProQuiz_startOnlyRegisteredUser {
+  text-align: left !important;
 }
 
-.single-sfwd-quiz .wpProQuiz_button[disabled],
-.single-sfwd-quiz .learndash-wrapper .wpProQuiz_content input[disabled] {
-  opacity: 0.55;
-  cursor: not-allowed;
-  transform: none;
+/* Start Quiz styles injected via wp_add_inline_style in functions.php
+   to ensure they load after all plugin stylesheets */
+
+/* --------------------------------- */
+/* Disabled                          */
+/* --------------------------------- */
+body.single-sfwd-quiz .learndash-wrapper .wpProQuiz_content input[disabled],
+body.single-sfwd-quiz .learndash-wrapper .wpProQuiz_content .wpProQuiz_button[disabled] {
+  opacity: 0.55 !important;
+  cursor: not-allowed !important;
 }
 
+/* --------------------------------- */
+/* Quiz Results                      */
+/* --------------------------------- */
 .single-sfwd-quiz .wpProQuiz_response,
 .single-sfwd-quiz .wpProQuiz_results,
 .single-sfwd-quiz .wpProQuiz_catOverview {
@@ -228,16 +208,14 @@ body.single-sfwd-quiz {
   border-radius: 0.85rem;
 }
 
+/* --------------------------------- */
+/* Responsive                        */
+/* --------------------------------- */
 @media (max-width: 720px) {
-  .mp-quiz-page {
-    align-items: stretch;
-    padding: 1.75rem 0 2.5rem;
-  }
-
-  .mp-quiz-card__header,
-  .mp-quiz-card__body {
-    padding-left: 1.15rem;
-    padding-right: 1.15rem;
+  .mp-quiz-hero-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 
   .single-sfwd-quiz .wpProQuiz_quiz,
