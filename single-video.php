@@ -67,8 +67,8 @@ function mp_get_youtube_id_from_url($url) {
 
 				<?php if (!empty($tech_terms) && !is_wp_error($tech_terms)) : ?>
 					<div class="mp-video-meta u-margin-top-sm">
-						<span class="mp-video-pill">
-							<strong>Technology:</strong>
+						<span class="mp c-eyebrow mp-video-pill">
+							<span class="mp-video-pill__label"><?php esc_html_e('Technology:', 'mp-academy'); ?></span>
 							<?php
 							$names = array_map(static fn($t) => $t->name, $tech_terms);
 							echo esc_html(implode(', ', $names));
@@ -98,13 +98,13 @@ function mp_get_youtube_id_from_url($url) {
 			<?php endif; ?>
 
 			<?php if (!empty(trim(wp_strip_all_tags($video_description)))) : ?>
-				<section class="mp-video-description">
-					<?php echo wpautop(wp_kses_post($video_description)); ?>
+				<section class="mp-video-description o-prose u-flow--prose">
+					<?php echo apply_filters('the_content', $video_description); ?>
 				</section>
 			<?php endif; ?>
 
 			<?php if (trim(get_the_content())) : ?>
-				<section class="mp-video-content u-margin-top-lg">
+				<section class="mp-video-content o-prose u-flow--prose u-margin-top-lg">
 					<?php the_content(); ?>
 				</section>
 			<?php endif; ?>
