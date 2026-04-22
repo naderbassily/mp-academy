@@ -158,19 +158,80 @@
     });
   }
 
+  function styleQuestionButton(button) {
+    if (!button) {
+      return;
+    }
+
+    button.style.setProperty('background', 'transparent', 'important');
+    button.style.setProperty('background-color', 'transparent', 'important');
+    button.style.setProperty('background-image', 'none', 'important');
+    button.style.setProperty('border', '2px solid #00b140', 'important');
+    button.style.setProperty('border-radius', '0.5rem', 'important');
+    button.style.setProperty('box-shadow', 'none', 'important');
+    button.style.setProperty('color', '#00b140', 'important');
+    button.style.setProperty('font-family', '"Inter", "InterVariable", sans-serif', 'important');
+    button.style.setProperty('font-size', '1rem', 'important');
+    button.style.setProperty('font-weight', '700', 'important');
+    button.style.setProperty('height', '44px', 'important');
+    button.style.setProperty('min-width', '170px', 'important');
+    button.style.setProperty('padding', '0.625rem 1.1rem', 'important');
+    button.style.setProperty('text-shadow', 'none', 'important');
+
+    if (button.dataset.mpQuestionButtonBound === 'true') {
+      return;
+    }
+
+    button.dataset.mpQuestionButtonBound = 'true';
+
+    ['mouseenter', 'mouseover', 'focus'].forEach(function (eventName) {
+      button.addEventListener(eventName, function () {
+        button.style.setProperty('background', '#00b140', 'important');
+        button.style.setProperty('background-color', '#00b140', 'important');
+        button.style.setProperty('background-image', 'none', 'important');
+        button.style.setProperty('border-color', '#00b140', 'important');
+        button.style.setProperty('color', '#ffffff', 'important');
+      });
+    });
+
+    ['mouseleave', 'mouseout', 'blur'].forEach(function (eventName) {
+      button.addEventListener(eventName, function () {
+        button.style.setProperty('background', 'transparent', 'important');
+        button.style.setProperty('background-color', 'transparent', 'important');
+        button.style.setProperty('background-image', 'none', 'important');
+        button.style.setProperty('border-color', '#00b140', 'important');
+        button.style.setProperty('color', '#00b140', 'important');
+      });
+    });
+  }
+
+  function syncQuestionButtons() {
+    var buttons = document.querySelectorAll(
+      '.single-sfwd-quiz .wpProQuiz_button.wpProQuiz_QuestionButton, .single-sfwd-quiz .wpProQuiz_button2.wpProQuiz_QuestionButton, .single-sfwd-quiz input.wpProQuiz_QuestionButton'
+    );
+
+    buttons.forEach(function (button) {
+      styleQuestionButton(button);
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     syncStartQuizButton();
+    syncQuestionButtons();
     setQuizStartedState();
     labelVisibleQuestions();
     window.setTimeout(syncStartQuizButton, 150);
+    window.setTimeout(syncQuestionButtons, 150);
     window.setTimeout(setQuizStartedState, 150);
     window.setTimeout(labelVisibleQuestions, 150);
     window.setTimeout(syncStartQuizButton, 600);
+    window.setTimeout(syncQuestionButtons, 600);
     window.setTimeout(setQuizStartedState, 600);
     window.setTimeout(labelVisibleQuestions, 600);
 
     document.addEventListener('click', function (event) {
       if (event.target.closest('.single-sfwd-quiz .wpProQuiz_content')) {
+        window.setTimeout(syncQuestionButtons, 100);
         window.setTimeout(setQuizStartedState, 100);
         window.setTimeout(labelVisibleQuestions, 100);
       }
