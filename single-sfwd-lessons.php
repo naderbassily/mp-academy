@@ -122,11 +122,20 @@ if ( ! function_exists( 'mp_academy_extract_lesson_prose' ) ) {
 	}
 }
 
-get_header();
-
 $lesson_id = get_the_ID();
 $user_id   = get_current_user_id();
 $course_id = function_exists('learndash_get_course_id') ? (int) learndash_get_course_id($lesson_id) : 0;
+$course_url = $course_id ? get_permalink( $course_id ) : '';
+$is_enrolled = $user_id && $course_id ? mp_ld_is_enrolled( $user_id, $course_id ) : false;
+$lesson_ids = $course_id ? mp_ld_get_course_lesson_ids( $course_id, $user_id ) : array();
+$can_access_lesson = ! $is_enrolled || ! $course_id ? true : mp_ld_can_access_lesson( $user_id, $course_id, $lesson_id, $lesson_ids );
+
+if ( $is_enrolled && ! $can_access_lesson ) {
+	wp_safe_redirect( $course_url ?: home_url( '/' ) );
+	exit;
+}
+
+get_header();
 
 // Topics for this lesson
 $lesson_topics = [];
@@ -150,6 +159,10 @@ if ( $user_id && function_exists('learndash_is_lesson_complete') ) {
 	$is_completed = (bool) learndash_is_lesson_complete($user_id, $lesson_id, $course_id);
 }
 
+if ( $steps_total > 0 ) {
+	$is_completed = ( $steps_done >= $steps_total );
+}
+
 $progress_percent = $steps_total
 	? (int) round(($steps_done / $steps_total) * 100)
 	: ($is_completed ? 100 : 0);
@@ -163,7 +176,7 @@ $lesson_step_status = function_exists('mp_get_step_status')
 $step_status = 'not-started';
 if ( $is_completed ) {
 	$step_status = 'complete';
-} elseif ( ! empty($lesson_step_status['started']) ) {
+} elseif ( $steps_done > 0 || $progress_percent > 0 || ! empty($lesson_step_status['started']) ) {
 	$step_status = 'in-progress';
 }
 
@@ -171,6 +184,7 @@ get_template_part('template-parts/lesson/single/hero', null, [
 	'post_id'        => $lesson_id,
 	'lesson_id'      => $lesson_id,
 	'course_id'      => $course_id,
+	'course_url'     => $course_url,
 	'show_eyebrow'   => true,
 	'step_type'      => 'lesson',
 	'step_status'    => $step_status,
@@ -210,6 +224,7 @@ get_template_part('template-parts/lesson/single/hero', null, [
 							$topic_title   = get_the_title($topic_id);
 							$topic_link    = get_permalink($topic_id);
 							$topic_excerpt = trim(get_post_field('post_excerpt', $topic_id));
+							$topic_can_access = $is_enrolled ? mp_ld_can_access_topic( $user_id, $course_id, $lesson_id, $topic_id ) : false;
 
 							$topic_complete = false;
 							if ($user_id && function_exists('learndash_is_topic_complete')) {
@@ -218,12 +233,9 @@ get_template_part('template-parts/lesson/single/hero', null, [
 									: (bool) learndash_is_topic_complete($user_id, $topic_id);
 							}
 
-							$is_enrolled = $user_id && $course_id && function_exists('sfwd_lms_has_access')
-								? (bool) sfwd_lms_has_access($course_id, $user_id)
-								: (bool) $user_id;
 						?>
 							<li class="mp-topic-item">
-								<?php if ($is_enrolled && $topic_link): ?>
+								<?php if ($is_enrolled && $topic_link && $topic_can_access): ?>
 									<a href="<?php echo esc_url($topic_link); ?>" class="mp-topic-link">
 								<?php else: ?>
 									<span class="mp-topic-link mp-topic-link--disabled">
