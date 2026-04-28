@@ -5,6 +5,7 @@
 if (!defined('ABSPATH')) exit;
 
 $q = isset($_GET['s']) ? sanitize_text_field(wp_unslash($_GET['s'])) : '';
+$hero_bg = home_url('/wp-content/uploads/2025/12/mp-x-bg.png');
 ?>
 
 <section class="mpa-home-hero">
@@ -46,7 +47,7 @@ $q = isset($_GET['s']) ? sanitize_text_field(wp_unslash($_GET['s'])) : '';
             </div>
           </form>
         </div>
-        <div class="c-hero__media-wrap"></div>
+        <div class="c-hero__media-wrap mpa-home-hero__media" style="background-image: url('<?php echo esc_url($hero_bg); ?>');"></div>
       </div>
     </div>
   </div>

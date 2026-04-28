@@ -43,6 +43,8 @@ if ( $terms && ! is_wp_error( $terms ) && ! empty( $terms ) ) {
 
 // Check if we should show progress bar (only on archive page)
 $show_progress = isset( $args['show_progress'] ) ? (bool) $args['show_progress'] : false;
+$show_enroll_cta = ! empty( $args['show_enroll_cta'] );
+$enroll_cta_label = isset( $args['enroll_cta_label'] ) ? (string) $args['enroll_cta_label'] : __( 'Enroll now', 'mp-academy' );
 
 // Check if user is enrolled (only if we need to show progress)
 $is_enrolled = false;
@@ -92,6 +94,12 @@ if ( $show_progress && $user_id && function_exists( 'sfwd_lms_has_access' ) ) {
 						'show_bar'  => true,
 					] ); 
 					?>
+				<?php elseif ( $show_enroll_cta ) : ?>
+					<div class="mp-course-card__actions">
+						<a class="c-button c-button--outline-green" href="<?php echo esc_url( $permalink ); ?>">
+							<?php echo esc_html( $enroll_cta_label ); ?>
+						</a>
+					</div>
 				<?php endif; ?>
 			</div>
 		</div>

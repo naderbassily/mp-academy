@@ -60,17 +60,17 @@ foreach ($lessons as $lesson) :
 				$topics = learndash_get_topic_list($lesson_id, $course_id);
 			}
 
-			$lesson_status = $is_logged_in ? mp_get_step_status($user_id, $course_id, $lesson_id, 'lesson') : null;
+			$lesson_status = $is_enrolled ? mp_get_step_status($user_id, $course_id, $lesson_id, 'lesson') : null;
 			$module_status = $lesson_status;
 			$topic_statuses = [];
 
-			if (!empty($topics)) {
+			if ($is_enrolled && !empty($topics)) {
 				$all_topics_complete = true;
 				$any_topic_started   = false;
 
 				foreach ($topics as $topic) {
 					$topic_id = is_object($topic) ? $topic->ID : (int) $topic;
-					$status   = $is_logged_in ? mp_get_step_status($user_id, $course_id, $topic_id, 'topic') : null;
+					$status   = mp_get_step_status($user_id, $course_id, $topic_id, 'topic');
 
 					$topic_statuses[$topic_id] = $status;
 

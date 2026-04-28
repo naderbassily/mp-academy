@@ -104,6 +104,21 @@ function mp_academy_setup() {
 add_action( 'after_setup_theme', 'mp_academy_setup' );
 
 /**
+ * Show the front-end admin bar to administrators only.
+ *
+ * @param bool $show Whether WordPress would show the admin bar.
+ * @return bool
+ */
+function mp_academy_show_admin_bar_for_administrators( $show ) {
+  if ( ! is_user_logged_in() ) {
+    return false;
+  }
+
+  return current_user_can( 'administrator' );
+}
+add_filter( 'show_admin_bar', 'mp_academy_show_admin_bar_for_administrators' );
+
+/**
  * Set the content width.
  */
 function mp_academy_content_width() {
@@ -244,6 +259,24 @@ function mp_academy_scripts() {
   }
 }
 add_action( 'wp_enqueue_scripts', 'mp_academy_scripts' );
+
+/**
+ * Disable public author archives so they use the branded 404 template.
+ *
+ * @return void
+ */
+function mp_academy_disable_author_archives() {
+  if ( ! is_author() ) {
+    return;
+  }
+
+  global $wp_query;
+
+  $wp_query->set_404();
+  status_header( 404 );
+  nocache_headers();
+}
+add_action( 'template_redirect', 'mp_academy_disable_author_archives' );
 
 /**
  * Keep users on the current topic page after marking it complete.

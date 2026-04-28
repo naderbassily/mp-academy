@@ -5,6 +5,10 @@
 .mp .mp-my-courses__hd {
   margin-bottom: var(--space-16, 16px);
 }
+
+.mp .mp-my-courses__hd .mp-my-courses__empty-text {
+  margin-top: 0.5rem;
+}
 .mp .mp-my-courses__note {
   color: var(--color-text-weak, #6b7280);
   margin-top: var(--space-8, 8px);
@@ -63,6 +67,10 @@
 .mp .u-muted.u-mb-8 {
   display: block;
   font-size: var(--font-size-12, 12px);
+}
+
+.mp .mp-course-card__actions {
+  margin-top: 1rem;
 }
 
 /* 4-column archive grid (wins over o-grid defaults) */

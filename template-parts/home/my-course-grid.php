@@ -12,6 +12,7 @@ if (!defined('ABSPATH')) exit;
 $user_id = get_current_user_id();
 
 $course_ids = [];
+$latest_courses_query = null;
 
 // Primary LearnDash method.
 if ($user_id && function_exists('learndash_user_get_enrolled_courses')) {
@@ -47,6 +48,16 @@ $max_cards  = 8;
 if ($max_cards > 0 && count($course_ids) > $max_cards) {
     $course_ids = array_slice($course_ids, 0, $max_cards);
 }
+
+if (!$user_id || empty($course_ids)) {
+    $latest_courses_query = new WP_Query([
+        'post_type'      => 'sfwd-courses',
+        'post_status'    => ['publish', 'private'],
+        'posts_per_page' => 3,
+        'orderby'        => 'date',
+        'order'          => 'DESC',
+    ]);
+}
 ?>
 
 
@@ -55,27 +66,21 @@ if ($max_cards > 0 && count($course_ids) > $max_cards) {
 
         <header class="mp-my-courses__hd u-mb-12">
             <p class="c-h c-h--step-4">
-                <?php echo esc_html($user_id ? __('My courses', 'mp-academy') : __('Featured courses', 'mp-academy')); ?>
+                <?php echo esc_html(($user_id && !empty($course_ids)) ? __('My courses', 'mp-academy') : __('Featured courses', 'mp-academy')); ?>
             </p>
+            <?php if ($user_id && empty($course_ids)): ?>
+                <p class="mp-my-courses__empty-text u-charcoal u-step--1">
+                    <?php esc_html_e('You don’t have any courses in progress.', 'mp-academy'); ?>
+                </p>
+            <?php endif; ?>
         </header>
 
         <?php if (!$user_id): ?>
-
-            <?php
-            $latest_courses = new WP_Query([
-                'post_type'      => 'sfwd-courses',
-                'post_status'    => ['publish', 'private'],
-                'posts_per_page' => 3,
-                'orderby'        => 'date',
-                'order'          => 'DESC',
-            ]);
-            ?>
-
-            <?php if ($latest_courses->have_posts()): ?>
+            <?php if ($latest_courses_query && $latest_courses_query->have_posts()): ?>
                 <div class="o-grid o-grid--gap-24 o-grid--cols-3 mp-my-courses__grid">
                     <?php
-                    while ($latest_courses->have_posts()):
-                        $latest_courses->the_post();
+                    while ($latest_courses_query->have_posts()):
+                        $latest_courses_query->the_post();
 
                         get_template_part(
                             'template-parts/components/cards/course-card-featured',
@@ -101,17 +106,30 @@ if ($max_cards > 0 && count($course_ids) > $max_cards) {
         |--------------------------------------------------------------------------
         */
         elseif (empty($course_ids)): ?>
+            <?php if ($latest_courses_query && $latest_courses_query->have_posts()): ?>
+                <div class="o-grid o-grid--gap-24 o-grid--cols-3 mp-my-courses__grid">
+                    <?php
+                    while ($latest_courses_query->have_posts()):
+                        $latest_courses_query->the_post();
 
-            <div class="mp-my-courses__empty u-flex u-flex--column u-flex--align-center u-flex--justify-center u-text-center" style="margin: 40px 0;">
-                <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/no-courses.svg'); ?>"
-                     alt=""
-                     class="mp-my-courses__empty-icon"
-                     style="width:180px; height: auto; margin-bottom: 16px;" />
-
+                        get_template_part(
+                            'template-parts/components/cards/course-card-featured',
+                            null,
+                            [
+                                'course_id'         => get_the_ID(),
+                                'show_enroll_cta'   => true,
+                                'enroll_cta_label'  => __('Enroll now', 'mp-academy'),
+                            ]
+                        );
+                    endwhile;
+                    wp_reset_postdata();
+                    ?>
+                </div>
+            <?php else: ?>
                 <p class="mp-my-courses__empty-text u-charcoal u-step--1">
-                    <?php esc_html_e('You don’t have any courses in progress.', 'mp-academy'); ?>
+                    <?php esc_html_e('No courses are available yet.', 'mp-academy'); ?>
                 </p>
-            </div>
+            <?php endif; ?>
 
         <?php
         /*

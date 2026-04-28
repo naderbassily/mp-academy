@@ -24,26 +24,17 @@
   overflow: hidden;
 }
 
-.mpa-home-hero-inner::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: url('/wp-content/uploads/2025/12/mp-x-bg.png');
-  background-repeat: no-repeat;
-  background-position: right bottom;
-  background-size: contain;
-  pointer-events: none;
-  z-index: 0;
-}
-
 .mpa-home-hero__wrap {
   min-height: 420px;
   margin: 0;
   padding-left: 5rem;
   padding-right: 5rem;
+}
+
+.mpa-home-hero__media {
+  background-repeat: no-repeat;
+  background-position: right bottom;
+  background-size: contain;
 }
 
 .mpa-home-hero-header {

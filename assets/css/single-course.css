@@ -283,6 +283,61 @@
 	/* o-prose from Franklin */
 }
 
+.mp-course-enroll-cta {
+	margin-top: 1.5rem;
+}
+
+.mp-course-enroll-cta .learndash-wrapper,
+.mp-course-enroll-cta [class*="learndash_payment"],
+.mp-course-enroll-cta [class*="ld-course"],
+.mp-course-enroll-cta [class*="ld-payment"] {
+	background: transparent !important;
+	border: 0 !important;
+	box-shadow: none !important;
+	padding: 0 !important;
+	margin: 0 !important;
+}
+
+.mp-course-enroll-cta .btn-join.button.button-primary.button-large.wp-element-button,
+.mp-course-enroll-cta input.btn-join.button.button-primary.button-large.wp-element-button,
+.mp-course-enroll-cta a.btn-join.button.button-primary.button-large.wp-element-button,
+.mp-course-enroll-cta button.btn-join.button.button-primary.button-large.wp-element-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: transparent !important;
+	background-color: transparent !important;
+	background-image: none !important;
+	border: 2px solid #00b140 !important;
+	border-radius: 0.5rem !important;
+	box-shadow: none !important;
+	color: #00b140 !important;
+	font: inherit !important;
+	font-weight: 700 !important;
+	line-height: 1.2 !important;
+	padding: 0.625rem 1.1rem !important;
+	text-decoration: none !important;
+	text-shadow: none !important;
+	cursor: pointer !important;
+	-webkit-appearance: none !important;
+	appearance: none !important;
+}
+
+.mp-course-enroll-cta .btn-join.button.button-primary.button-large.wp-element-button:hover,
+.mp-course-enroll-cta .btn-join.button.button-primary.button-large.wp-element-button:focus,
+.mp-course-enroll-cta input.btn-join.button.button-primary.button-large.wp-element-button:hover,
+.mp-course-enroll-cta input.btn-join.button.button-primary.button-large.wp-element-button:focus,
+.mp-course-enroll-cta a.btn-join.button.button-primary.button-large.wp-element-button:hover,
+.mp-course-enroll-cta a.btn-join.button.button-primary.button-large.wp-element-button:focus,
+.mp-course-enroll-cta button.btn-join.button.button-primary.button-large.wp-element-button:hover,
+.mp-course-enroll-cta button.btn-join.button.button-primary.button-large.wp-element-button:focus {
+	background: #00b140 !important;
+	background-color: #00b140 !important;
+	background-image: none !important;
+	border-color: #00b140 !important;
+	color: #ffffff !important;
+}
+
 /* ================================
    Responsive Design
    ================================ */
