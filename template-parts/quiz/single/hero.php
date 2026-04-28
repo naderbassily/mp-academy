@@ -10,27 +10,10 @@ $course_id  = (int)($args['course_id'] ?? 0);
 $quiz_title = get_the_title($quiz_id);
 $excerpt    = has_excerpt($quiz_id) ? get_the_excerpt($quiz_id) : '';
 
-$quiz_status   = isset($args['quiz_status'])   ? (string) $args['quiz_status']   : 'not-started';
 $pass_score    = isset($args['pass_score'])    ? (int)    $args['pass_score']     : 0;
 $last_activity = isset($args['last_activity']) ? (string) $args['last_activity'] : '';
 
 $hero_svg = 'https://dam.malvernpanalytical.com/fae4c741-f556-475a-b286-b36e0098eefe/website%20hero%20placeholder_Original%20file.svg';
-
-$status_map = [
-  'not-started' => [
-    'label' => __('Not started',  'mp-academy'),
-    'style' => 'background-color:#e5e7eb;color:#374151;border:none;',
-  ],
-  'passed' => [
-    'label' => __('Quiz passed',  'mp-academy'),
-    'style' => 'background-color:#d1fae5;color:#065f46;border:none;',
-  ],
-  'failed' => [
-    'label' => __('Quiz failed',  'mp-academy'),
-    'style' => 'background-color:#fee2e2;color:#991b1b;border:none;',
-  ],
-];
-$badge = $status_map[$quiz_status] ?? $status_map['not-started'];
 ?>
 
 <section id="mp-custom-small-hero" class="c-hero c-hero--dark mp-small-hero"
@@ -75,12 +58,6 @@ $badge = $status_map[$quiz_status] ?? $status_map['not-started'];
             <?php echo esc_html($last_activity); ?>
           </span>
         <?php endif; ?>
-      </div>
-
-      <div class="u-margin-top-m u-margin-bottom-xs">
-        <span class="mp c-eyebrow" style="<?php echo esc_attr($badge['style']); ?>">
-          <?php echo esc_html($badge['label']); ?>
-        </span>
       </div>
 
     </div>

@@ -246,6 +246,33 @@ function mp_academy_scripts() {
 add_action( 'wp_enqueue_scripts', 'mp_academy_scripts' );
 
 /**
+ * Keep users on the current topic page after marking it complete.
+ *
+ * This lets the UI unlock the next-topic button without immediately redirecting.
+ *
+ * @param bool $redirect_immediately Whether LearnDash should redirect immediately.
+ * @return bool
+ */
+function mp_academy_disable_topic_complete_redirect( $redirect_immediately ) {
+  if ( ! is_singular( 'sfwd-topic' ) ) {
+    return $redirect_immediately;
+  }
+
+  if ( empty( $_POST['sfwd_mark_complete'] ) || empty( $_POST['post'] ) ) {
+    return $redirect_immediately;
+  }
+
+  $post_id = absint( wp_unslash( $_POST['post'] ) );
+
+  if ( $post_id > 0 && 'sfwd-topic' === get_post_type( $post_id ) ) {
+    return false;
+  }
+
+  return $redirect_immediately;
+}
+add_filter( 'learndash_step_completed_redirect_immediately', 'mp_academy_disable_topic_complete_redirect', 20 );
+
+/**
  * Include additional files.
  */
 require get_template_directory() . '/inc/template-tags.php';

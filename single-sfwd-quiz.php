@@ -20,8 +20,7 @@ if (function_exists('learndash_get_setting')) {
   $pass_score = (int) learndash_get_setting($quiz_id, 'passingpercentage');
 }
 
-// Quiz status + last activity
-$quiz_status   = 'not-started';
+// Last activity
 $last_activity = '';
 
 if ($user_id && function_exists('learndash_get_user_activity')) {
@@ -38,11 +37,7 @@ if ($user_id && function_exists('learndash_get_user_activity')) {
   if (!empty($activity)) {
     $last = is_array($activity) ? reset($activity) : $activity;
 
-    if (isset($last->activity_status)) {
-      $quiz_status = $last->activity_status ? 'passed' : 'failed';
-    }
-
-    $updated_raw = $last->activity_updated ?? '';
+    $updated_raw = !empty($last->activity_completed) ? $last->activity_completed : ($last->activity_updated ?? '');
     if ($updated_raw) {
       $timestamp = is_numeric($updated_raw) ? (int) $updated_raw : strtotime($updated_raw);
       if ($timestamp > 1000000000000) {
@@ -58,7 +53,6 @@ if ($user_id && function_exists('learndash_get_user_activity')) {
 get_template_part('template-parts/quiz/single/hero', null, [
   'quiz_id'       => $quiz_id,
   'course_id'     => $course_id,
-  'quiz_status'   => $quiz_status,
   'pass_score'    => $pass_score,
   'last_activity' => $last_activity,
 ]);

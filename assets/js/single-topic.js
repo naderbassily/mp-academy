@@ -15,7 +15,85 @@
     return val === false || val === 0 || val === '0' || val === 'off' || val === '' || val === null || typeof val === 'undefined';
   }
 
+  function unlockNextTopicButtons() {
+    document.querySelectorAll('body.single-sfwd-topic [data-mp-next-topic-url]').forEach(function (button) {
+      var nextUrl = button.getAttribute('data-mp-next-topic-url');
+      if (!nextUrl) {
+        return;
+      }
+
+      var link = document.createElement('a');
+      link.href = nextUrl;
+      link.className = button.className;
+      link.textContent = button.textContent;
+      link.removeAttribute('disabled');
+      link.removeAttribute('aria-disabled');
+      link.removeAttribute('title');
+      link.style.removeProperty('opacity');
+      link.style.removeProperty('cursor');
+      button.replaceWith(link);
+    });
+
+    document.querySelectorAll('.ld-navigation__next-link, .ld-js-next-lesson, .ld-lesson-nav-next a, .ld-content-action__next .ld-button').forEach(function (link) {
+      var nextUrl = link.getAttribute('data-mp-next-url');
+      if (nextUrl && link.tagName.toLowerCase() === 'a') {
+        link.setAttribute('href', nextUrl);
+      }
+
+      link.removeAttribute('aria-disabled');
+      link.classList.remove('is-disabled');
+      link.style.removeProperty('opacity');
+      link.style.removeProperty('cursor');
+      link.style.removeProperty('pointer-events');
+    });
+  }
+
+  function submitTopicCompleteForm(form, topicMain, submitButton) {
+    if (!form || form.dataset.mpSubmitting === 'true') {
+      return;
+    }
+
+    form.dataset.mpSubmitting = 'true';
+
+    if (submitButton) {
+      submitButton.disabled = true;
+    }
+
+    fetch(form.getAttribute('action') || window.location.href, {
+      method: (form.getAttribute('method') || 'POST').toUpperCase(),
+      body: new FormData(form),
+      credentials: 'same-origin',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    }).then(function (response) {
+      if (!response.ok) {
+        throw new Error('Mark complete failed');
+      }
+
+      if (topicMain) {
+        topicMain.setAttribute('data-mp-topic-complete', '1');
+      }
+
+      unlockNextTopicButtons();
+
+      if (submitButton) {
+        submitButton.value = 'Completed';
+        submitButton.textContent = 'Completed';
+        submitButton.setAttribute('aria-label', 'Completed');
+      }
+    }).catch(function () {
+      form.dataset.mpSubmitting = 'false';
+      if (submitButton) {
+        submitButton.disabled = false;
+      }
+      form.submit();
+    });
+  }
+
   $(function () {
+    var topicMain = document.querySelector('body.single-sfwd-topic main[data-mp-topic-complete]');
+    var topicIsComplete = topicMain ? topicMain.getAttribute('data-mp-topic-complete') === '1' : true;
 
     // =========================
     // 1) Add Franklin wrapper to LD navigation
@@ -71,6 +149,72 @@
 
       link.classList.add('mp', 'c-button', 'c-button--outline-green');
     });
+
+    if (!topicIsComplete) {
+      document.querySelectorAll('.ld-navigation__next-link, .ld-js-next-lesson, .ld-lesson-nav-next a, .ld-content-action__next .ld-button').forEach(function (link) {
+        if (link.tagName.toLowerCase() === 'a') {
+          if (link.getAttribute('href')) {
+            link.setAttribute('data-mp-next-url', link.getAttribute('href'));
+          }
+          link.removeAttribute('href');
+        }
+
+        link.setAttribute('aria-disabled', 'true');
+        link.classList.add('is-disabled');
+        link.style.setProperty('opacity', '0.45', 'important');
+        link.style.setProperty('cursor', 'not-allowed', 'important');
+        link.style.setProperty('pointer-events', 'none', 'important');
+      });
+    }
+
+    if (document.body.classList.contains('single-sfwd-topic')) {
+      document.addEventListener('click', function (event) {
+        if (topicIsComplete) {
+          return;
+        }
+
+        var submitButton = event.target.closest('form[name="sfwd-mark-complete"] input[type="submit"], form[name="sfwd-mark-complete"] button[type="submit"], .learndash_mark_complete_button');
+        if (!submitButton) {
+          return;
+        }
+
+        var form = submitButton.closest('form[name="sfwd-mark-complete"]');
+        if (!form) {
+          return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+        if (typeof event.stopImmediatePropagation === 'function') {
+          event.stopImmediatePropagation();
+        }
+
+        topicIsComplete = true;
+        submitTopicCompleteForm(form, topicMain, submitButton);
+      }, true);
+
+      document.addEventListener('submit', function (event) {
+        if (topicIsComplete) {
+          return;
+        }
+
+        var form = event.target.closest('form[name="sfwd-mark-complete"]');
+        if (!form) {
+          return;
+        }
+
+        var submitButton = form.querySelector('input[type="submit"], button[type="submit"], .learndash_mark_complete_button');
+
+        event.preventDefault();
+        event.stopPropagation();
+        if (typeof event.stopImmediatePropagation === 'function') {
+          event.stopImmediatePropagation();
+        }
+
+        topicIsComplete = true;
+        submitTopicCompleteForm(form, topicMain, submitButton);
+      }, true);
+    }
 
     // =========================
     // 4) Small LearnDash video options helper

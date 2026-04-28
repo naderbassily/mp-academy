@@ -33,6 +33,14 @@ if (function_exists('learndash_get_course_lessons_list')) {
 if (empty($lessons)) {
 	return;
 }
+
+$lesson_ids = array();
+foreach ( $lessons as $lesson_item ) {
+	$lesson_item_id = is_object( $lesson_item ) ? (int) $lesson_item->ID : (int) $lesson_item;
+	if ( $lesson_item_id > 0 ) {
+		$lesson_ids[] = $lesson_item_id;
+	}
+}
 ?>
 
 <section class="mp-course-modules u-margin-bottom-l">
@@ -40,10 +48,11 @@ if (empty($lessons)) {
 	<div class="mp-module-accordion">
 		<?php 
 		$module_number = 1;
-		foreach ($lessons as $lesson) :
+foreach ($lessons as $lesson) :
 			$lesson_id = is_object($lesson) ? $lesson->ID : (int) $lesson;
 			$lesson_title = get_the_title($lesson_id);
 			$lesson_link = get_permalink($lesson_id);
+			$lesson_can_access = $is_logged_in ? mp_ld_can_access_lesson( $user_id, $course_id, $lesson_id, $lesson_ids ) : false;
 			
 			// Get topics (sub-lessons) for this lesson
 			$topics = [];
@@ -160,12 +169,13 @@ if (empty($lessons)) {
 								$topic_id = is_object($topic) ? $topic->ID : (int) $topic;
 								$topic_title = get_the_title($topic_id);
 								$topic_link = get_permalink($topic_id);
+								$topic_can_access = $is_logged_in ? mp_ld_can_access_topic( $user_id, $course_id, $lesson_id, $topic_id ) : false;
 								
 									$topic_status = $topic_statuses[$topic_id] ?? null;
 								?>
 								
 									<li class="mp-topic-item">
-										<?php if ($is_enrolled && $topic_link) : ?>
+										<?php if ($is_enrolled && $topic_link && $lesson_can_access && $topic_can_access) : ?>
 											<a href="<?php echo esc_url($topic_link); ?>" class="mp-topic-link">
 												<?php if ($topic_status && $topic_status['complete']) : ?>
 													<span class="mp-topic-icon mp-topic-icon--complete">✓</span>

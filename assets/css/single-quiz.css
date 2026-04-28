@@ -118,17 +118,57 @@ padding: 0.5rem;
 
 .single-sfwd-quiz .wpProQuiz_listItem {
   padding: 1.15rem 1.2rem;
-  border: 0;
+  border: 0px !important;
   border-radius: 0;
   background: transparent;
+  box-shadow: none;
 }
 
 .single-sfwd-quiz .wpProQuiz_listItem + .wpProQuiz_listItem {
   margin-top: 2rem;
 }
 
+.single-sfwd-quiz .wpProQuiz_question {
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.single-sfwd-quiz .wpProQuiz_question:focus,
+.single-sfwd-quiz .wpProQuiz_question:focus-visible,
+.single-sfwd-quiz .wpProQuiz_question:focus-within {
+  outline: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.single-sfwd-quiz .wpProQuiz_question_text {
+  margin-bottom: 0;
+}
+
+.single-sfwd-quiz .wpProQuiz_question_text,
+.single-sfwd-quiz .wpProQuiz_question_text > div,
+.single-sfwd-quiz .wpProQuiz_question_text > p {
+  border: 0 !important;
+  background: transparent !important;
+}
+
 .single-sfwd-quiz .wpProQuiz_question_text p:first-child {
   margin-top: 0;
+}
+
+.single-sfwd-quiz .wpProQuiz_question_text p:last-child {
+  margin-bottom: 0;
+}
+
+.single-sfwd-quiz .mp-quiz-question-heading {
+  margin: 0 0 1.75rem;
+  color: #14323b;
+}
+
+.single-sfwd-quiz .wpProQuiz_questionList {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 .single-sfwd-quiz .wpProQuiz_questionList[data-type="single"] .wpProQuiz_questionListItem,
@@ -142,7 +182,7 @@ padding: 0.5rem;
 
 .single-sfwd-quiz .wpProQuiz_questionListItem + .wpProQuiz_questionListItem {
   margin-top: 0;
-  border-top: 1px solid rgba(20, 50, 59, 0.08);
+  border-top: 1px solid rgba(216, 104, 18, 0.932);
 }
 
 .single-sfwd-quiz .wpProQuiz_questionListItem label {
@@ -153,6 +193,50 @@ padding: 0.5rem;
   color: #14323b;
   font-family: "Inter", "InterVariable", sans-serif;
   font-weight: 500;
+}
+
+.single-sfwd-quiz .wpProQuiz_questionListItem label.is-selected,
+.single-sfwd-quiz .wpProQuiz_questionListItem label:focus-within {
+  border-color: #3d7b87 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.single-sfwd-quiz .wpProQuiz_questionListItem label.is-selected {
+  background: rgba(20, 50, 59, 0.03) !important;
+}
+
+.single-sfwd-quiz .wpProQuiz_questionListItem input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.125rem;
+  height: 1.125rem;
+  margin: 0;
+  border: 1.5px solid #7f9aa1;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: none;
+  display: inline-grid;
+  place-content: center;
+  flex: 0 0 1.125rem;
+}
+
+.single-sfwd-quiz .wpProQuiz_questionListItem input[type="radio"]::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform 0.15s ease-in-out;
+  background: #55c255;
+}
+
+.single-sfwd-quiz .wpProQuiz_questionListItem input[type="radio"]:checked {
+  border-color: #3d7b87;
+}
+
+.single-sfwd-quiz .wpProQuiz_questionListItem input[type="radio"]:checked::before {
+  transform: scale(1);
 }
 
 .single-sfwd-quiz .wpProQuiz_questionListItem:hover {
@@ -356,9 +440,90 @@ body.single-sfwd-quiz .learndash-wrapper .wpProQuiz_content .wpProQuiz_startOnly
   background: #fff;
 }
 
+.single-sfwd-quiz .ld-quiz-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: 1rem;
+}
+
+.single-sfwd-quiz .ld-quiz-actions .quiz_continue_link {
+  display: contents;
+}
+
+.single-sfwd-quiz .ld-quiz-actions .c-button,
+.single-sfwd-quiz .ld-quiz-actions input.c-button {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 170px !important;
+  min-width: 170px !important;
+  height: 44px !important;
+  white-space: nowrap !important;
+  float: none !important;
+}
+
+.single-sfwd-quiz .ld-quiz-actions .c-button.c-button--outline-green,
+.single-sfwd-quiz .ld-quiz-actions input.c-button.c-button--outline-green {
+  border: 2px solid #00b140 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: #00b140 !important;
+}
+
+.single-sfwd-quiz .ld-quiz-actions .c-button.c-button--outline-green:hover,
+.single-sfwd-quiz .ld-quiz-actions .c-button.c-button--outline-green:focus,
+.single-sfwd-quiz .ld-quiz-actions input.c-button.c-button--outline-green:hover,
+.single-sfwd-quiz .ld-quiz-actions input.c-button.c-button--outline-green:focus {
+  border-color: #00b140 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: #00b140 !important;
+}
+
+.single-sfwd-quiz .ld-quiz-actions .c-button.c-button--green,
+.single-sfwd-quiz .ld-quiz-actions input.c-button.c-button--green {
+  border: 2px solid #00b140 !important;
+  background: #00b140 !important;
+  background-color: #00b140 !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: #ffffff !important;
+}
+
+.single-sfwd-quiz .ld-quiz-actions .c-button.c-button--green:hover,
+.single-sfwd-quiz .ld-quiz-actions .c-button.c-button--green:focus,
+.single-sfwd-quiz .ld-quiz-actions input.c-button.c-button--green:hover,
+.single-sfwd-quiz .ld-quiz-actions input.c-button.c-button--green:focus {
+  border-color: #00b140 !important;
+  background: #00b140 !important;
+  background-color: #00b140 !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: #ffffff !important;
+}
+
 .single-sfwd-quiz .wpProQuiz_incorrect,
 .single-sfwd-quiz .wpProQuiz_correct {
   border-radius: 0.85rem;
+}
+
+.single-sfwd-quiz .wpProQuiz_listItem.mp-quiz-question-error {
+  border: 1px solid #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+}
+
+.single-sfwd-quiz .mp-quiz-validation-message {
+  margin: 0 0 1rem;
+  color: #b91c1c;
+  font-family: "Inter", "InterVariable", sans-serif !important;
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
 /* --------------------------------- */
@@ -378,6 +543,14 @@ body.single-sfwd-quiz .learndash-wrapper .wpProQuiz_content .wpProQuiz_button[di
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
+  }
+
+  .single-sfwd-quiz .wpProQuiz_question_text {
+    font-size: inherit;
+  }
+
+  .single-sfwd-quiz .mp-quiz-question-heading {
+    margin-bottom: 1.25rem;
   }
 
   .single-sfwd-quiz .wpProQuiz_quiz,

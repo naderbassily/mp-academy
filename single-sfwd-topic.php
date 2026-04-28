@@ -202,13 +202,22 @@ if ( ! function_exists( 'mp_academy_get_activity_date' ) ) {
 	}
 }
 
-get_header();
-
 $topic_id   = get_the_ID();
 $user_id    = get_current_user_id();
 $lesson_id  = function_exists( 'learndash_get_setting' ) ? (int) learndash_get_setting( $topic_id, 'lesson' ) : 0;
 $course_id  = function_exists( 'learndash_get_course_id' ) ? (int) learndash_get_course_id( $topic_id ) : 0;
 $course_url = $course_id ? get_permalink( $course_id ) : '';
+$lesson_url = $lesson_id ? get_permalink( $lesson_id ) : $course_url;
+$is_enrolled = $user_id && $course_id ? mp_ld_is_enrolled( $user_id, $course_id ) : false;
+$topic_ids = ( $lesson_id && $course_id ) ? mp_ld_get_lesson_topic_ids( $lesson_id, $course_id ) : array();
+$can_access_topic = ! $is_enrolled || ! $course_id || ! $lesson_id ? true : mp_ld_can_access_topic( $user_id, $course_id, $lesson_id, $topic_id, $topic_ids );
+
+if ( $is_enrolled && ! $can_access_topic ) {
+	wp_safe_redirect( $lesson_url ?: $course_url ?: home_url( '/' ) );
+	exit;
+}
+
+get_header();
 
 $is_completed = false;
 if ( function_exists( 'learndash_is_topic_complete' ) ) {
@@ -272,7 +281,11 @@ get_template_part(
 );
 ?>
 
-<main id="primary" class="site-main u-wrap u-space--section u-flow u-margin-top-xl">
+<main
+	id="primary"
+	class="site-main u-wrap u-space--section u-flow u-margin-top-xl"
+	data-mp-topic-complete="<?php echo esc_attr( $is_completed ? '1' : '0' ); ?>"
+>
 	<header class="u-flow--s">
 		<div class="u-display-flex u-flex-wrap u-gap-s u-align-items-center u-margin-top-xl u-justify-content-between">
 			<span class="u-margin-left-auto"></span>
@@ -281,8 +294,20 @@ get_template_part(
 				<a href="<?php echo esc_url( $prev_url ); ?>" class="mp c-button c-button--outline-green">← Previous Topic</a>
 			<?php endif; ?>
 
-			<?php if ( $next_url ) : ?>
+			<?php if ( $next_url && $is_completed ) : ?>
 				<a href="<?php echo esc_url( $next_url ); ?>" class="mp c-button c-button--outline-green">Next Topic →</a>
+			<?php elseif ( $next_id ) : ?>
+				<button
+					type="button"
+					class="mp c-button c-button--outline-green"
+					data-mp-next-topic-url="<?php echo esc_url( $next_url ); ?>"
+					disabled
+					aria-disabled="true"
+					title="<?php esc_attr_e( 'Complete this topic to unlock the next one.', 'mp-academy' ); ?>"
+					style="opacity:0.45;cursor:not-allowed;"
+				>
+					Next Topic →
+				</button>
 			<?php endif; ?>
 		</div>
 	</header>

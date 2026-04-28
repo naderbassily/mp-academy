@@ -52,6 +52,194 @@ function mp_ld_is_enrolled($user_id, $course_id) {
 }
 
 /**
+ * Whether the course enforces linear lesson progression.
+ *
+ * @param int $course_id Course ID.
+ * @return bool
+ */
+function mp_ld_progression_enabled( $course_id ) {
+  if ( ! $course_id || ! function_exists( 'learndash_lesson_progression_enabled' ) ) {
+    return true;
+  }
+
+  return (bool) learndash_lesson_progression_enabled( $course_id );
+}
+
+/**
+ * Whether the current user can bypass course progression rules.
+ *
+ * @param int $user_id User ID.
+ * @return bool
+ */
+function mp_ld_user_can_bypass_progression( $user_id ) {
+  if ( ! $user_id || ! function_exists( 'learndash_can_user_bypass' ) ) {
+    return false;
+  }
+
+  return (bool) learndash_can_user_bypass( $user_id, 'learndash_course_progression' );
+}
+
+/**
+ * Get ordered lesson IDs for a course.
+ *
+ * @param int $course_id Course ID.
+ * @param int $user_id   User ID.
+ * @return int[]
+ */
+function mp_ld_get_course_lesson_ids( $course_id, $user_id = 0 ) {
+  if ( ! $course_id || ! function_exists( 'learndash_get_course_lessons_list' ) ) {
+    return array();
+  }
+
+  $lessons = array();
+  $raw     = learndash_get_course_lessons_list( $course_id, $user_id );
+
+  if ( ! is_array( $raw ) ) {
+    return $lessons;
+  }
+
+  foreach ( $raw as $row ) {
+    $lesson = is_object( $row ) ? $row : ( $row['post'] ?? null );
+
+    if ( $lesson && ! empty( $lesson->ID ) ) {
+      $lessons[] = (int) $lesson->ID;
+    }
+  }
+
+  return array_values( array_unique( array_filter( $lessons ) ) );
+}
+
+/**
+ * Get ordered topic IDs for a lesson.
+ *
+ * @param int $lesson_id Lesson ID.
+ * @param int $course_id Course ID.
+ * @return int[]
+ */
+function mp_ld_get_lesson_topic_ids( $lesson_id, $course_id ) {
+  if ( ! $lesson_id || ! $course_id || ! function_exists( 'learndash_get_topic_list' ) ) {
+    return array();
+  }
+
+  $topic_ids = array();
+  $topics    = learndash_get_topic_list( $lesson_id, $course_id );
+
+  if ( ! is_array( $topics ) ) {
+    return $topic_ids;
+  }
+
+  foreach ( $topics as $topic ) {
+    $topic_id = is_object( $topic ) ? (int) $topic->ID : (int) $topic;
+
+    if ( $topic_id > 0 ) {
+      $topic_ids[] = $topic_id;
+    }
+  }
+
+  return array_values( array_unique( $topic_ids ) );
+}
+
+/**
+ * Check whether a user has completed a LearnDash step.
+ *
+ * @param int    $user_id    User ID.
+ * @param int    $course_id  Course ID.
+ * @param int    $step_id    Step ID.
+ * @param string $step_type  Step type.
+ * @return bool
+ */
+function mp_ld_is_step_complete( $user_id, $course_id, $step_id, $step_type = 'lesson' ) {
+  if ( ! $user_id || ! $course_id || ! $step_id ) {
+    return false;
+  }
+
+  if ( function_exists( 'learndash_user_progress_is_step_complete' ) ) {
+    return (bool) learndash_user_progress_is_step_complete( $user_id, $course_id, $step_id );
+  }
+
+  if ( 'topic' === $step_type && function_exists( 'learndash_is_topic_complete' ) ) {
+    return (bool) learndash_is_topic_complete( $user_id, $step_id, $course_id );
+  }
+
+  if ( 'lesson' === $step_type && function_exists( 'learndash_is_lesson_complete' ) ) {
+    return (bool) learndash_is_lesson_complete( $user_id, $step_id, $course_id );
+  }
+
+  return false;
+}
+
+/**
+ * Whether a lesson is accessible in the course sequence.
+ *
+ * @param int        $user_id    User ID.
+ * @param int        $course_id  Course ID.
+ * @param int        $lesson_id  Lesson ID.
+ * @param int[]|null $lesson_ids Ordered lesson IDs.
+ * @return bool
+ */
+function mp_ld_can_access_lesson( $user_id, $course_id, $lesson_id, $lesson_ids = null ) {
+  if ( ! $lesson_id || ! $course_id ) {
+    return false;
+  }
+
+  if ( empty( $lesson_ids ) || ! is_array( $lesson_ids ) ) {
+    $lesson_ids = mp_ld_get_course_lesson_ids( $course_id, $user_id );
+  }
+
+  $position = array_search( (int) $lesson_id, $lesson_ids, true );
+
+  if ( false === $position ) {
+    return true;
+  }
+
+  if ( 0 === $position ) {
+    return true;
+  }
+
+  $previous_lesson_id = (int) $lesson_ids[ $position - 1 ];
+
+  return mp_ld_is_step_complete( $user_id, $course_id, $previous_lesson_id, 'lesson' );
+}
+
+/**
+ * Whether a topic is accessible in the lesson sequence.
+ *
+ * @param int        $user_id    User ID.
+ * @param int        $course_id  Course ID.
+ * @param int        $lesson_id  Lesson ID.
+ * @param int        $topic_id   Topic ID.
+ * @param int[]|null $topic_ids  Ordered topic IDs.
+ * @return bool
+ */
+function mp_ld_can_access_topic( $user_id, $course_id, $lesson_id, $topic_id, $topic_ids = null ) {
+  if ( ! $topic_id || ! $lesson_id || ! $course_id ) {
+    return false;
+  }
+
+  if ( ! mp_ld_can_access_lesson( $user_id, $course_id, $lesson_id ) ) {
+    return false;
+  }
+
+  if ( empty( $topic_ids ) || ! is_array( $topic_ids ) ) {
+    $topic_ids = mp_ld_get_lesson_topic_ids( $lesson_id, $course_id );
+  }
+
+  $position = array_search( (int) $topic_id, $topic_ids, true );
+
+  if ( false === $position ) {
+    return true;
+  }
+
+  if ( 0 === $position ) {
+    return true;
+  }
+
+  $previous_topic_id = (int) $topic_ids[ $position - 1 ];
+
+  return mp_ld_is_step_complete( $user_id, $course_id, $previous_topic_id, 'topic' );
+}
+
+/**
  * Get LearnDash lesson or topic status for the current user.
  *
  * @param int    $user_id   Current user ID.
