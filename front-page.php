@@ -15,11 +15,6 @@ get_header();
   ?>
   
   <?php 
-  // Categories Section (Theory 101, Instrument videos, User training)
-  get_template_part('template-parts/home/categories'); 
-  ?>
-  
-  <?php 
   // My Courses Section (Shows enrolled courses OR empty state)
   get_template_part('template-parts/home/my-course-grid'); 
   ?>

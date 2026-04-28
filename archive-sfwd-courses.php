@@ -27,11 +27,6 @@ get_header();
 			?>
 			
 			<?php 
-			// Category icons: Theory 101, Instrument videos, User training
-			get_template_part('template-parts/home/categories'); 
-			?>
-			
-			<?php 
 			// Course list organized by categories
 			get_template_part('template-parts/course/archive/course-list'); 
 			?>
