@@ -9,10 +9,12 @@
 
 ?>
 
-<section class="no-results not-found">
-	<header class="page-header">
-		<h1 class="page-title"><?php esc_html_e( 'Nothing Found', 'mp-academy' ); ?></h1>
-	</header><!-- .page-header -->
+<section class="no-results not-found u-wrap">
+	<?php if ( ! is_search() ) : ?>
+		<header class="page-header">
+			<h1 class="page-title"><?php esc_html_e( 'Nothing Found', 'mp-academy' ); ?></h1>
+		</header><!-- .page-header -->
+	<?php endif; ?>
 
 	<div class="page-content">
 		<?php
@@ -34,10 +36,25 @@
 		elseif ( is_search() ) :
 			?>
 
-			<p><?php esc_html_e( 'Sorry, but nothing matched your search terms. Please try again with some different keywords.', 'mp-academy' ); ?></p>
-			<?php
-			get_search_form();
+			<div class="mp-search-empty u-text-center">
+				<img
+					class="mp-search-empty__icon"
+					src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/no-courses.svg' ); ?>"
+					alt=""
+					loading="lazy"
+				/>
+				<h2 class="c-h c-h--step-2 mp-search-empty__title"><?php esc_html_e( 'No results', 'mp-academy' ); ?></h2>
+				<p class="mp-search-empty__copy">
+					<?php esc_html_e( 'Sorry, we couldn’t find anything for your search.', 'mp-academy' ); ?>
+				</p>
+				<p class="mp-search-empty__actions">
+					<a class="mp c-button c-button--inline c-button--outline-green" href="<?php echo esc_url( home_url( '/' ) ); ?>">
+						<?php esc_html_e( 'Back to homepage', 'mp-academy' ); ?>
+					</a>
+				</p>
+			</div>
 
+			<?php
 		else :
 			?>
 

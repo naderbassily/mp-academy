@@ -7,12 +7,13 @@ get_header();
 
 $current_user = wp_get_current_user();
 $user_id = $current_user->ID;
-$user_courses = learndash_user_get_enrolled_courses($user_id, ['num' => 100]);
+$is_logged_in = is_user_logged_in();
+$user_courses = $is_logged_in ? learndash_user_get_enrolled_courses($user_id, ['num' => 100]) : [];
 $completed_course_id = isset($_GET['course_completed']) ? absint($_GET['course_completed']) : 0;
 $completed_course = null;
 $completed_course_certificate_link = '';
 
-if ($completed_course_id > 0 && function_exists('learndash_course_completed') && learndash_course_completed($user_id, $completed_course_id)) {
+if ($is_logged_in && $completed_course_id > 0 && function_exists('learndash_course_completed') && learndash_course_completed($user_id, $completed_course_id)) {
   $completed_course = get_post($completed_course_id);
 
   if ($completed_course instanceof WP_Post && function_exists('learndash_get_course_certificate_link')) {
@@ -22,8 +23,22 @@ if ($completed_course_id > 0 && function_exists('learndash_course_completed') &&
 ?>
 
 <main id="primary" class="site-main u-flow">
-  <section class="u-wrap u-space--section u-margin-top-xl">
+  <section class="u-wrap mp-profile-page u-space--section u-margin-top-xl">
     <div class="c-card u-padding u-shadow--medium u-radius--2xl">
+      <?php if (!$is_logged_in) : ?>
+        <div class="mp c-usp c-usp--bordered mp-profile-guest-usp">
+          <div class="u-flow">
+            <h1 class="c-h c-h--step-2 c-usp__title">
+              <?php esc_html_e('Welcome to MP Academy', 'mp-academy'); ?>
+            </h1>
+            <div class="mp o-prose u-step--1">
+              <p>
+                <?php esc_html_e('Register for access to our learning resources, or log in to continue your training and view your progress.', 'mp-academy'); ?>
+              </p>
+            </div>
+          </div>
+        </div>
+      <?php else : ?>
       <?php if ($completed_course instanceof WP_Post) : ?>
         <div class="mp-course-complete-banner u-margin-bottom-l">
           <p class="mp-course-complete-banner__eyebrow">Course completed</p>
@@ -119,6 +134,7 @@ if ($completed_course_id > 0 && function_exists('learndash_course_completed') &&
       <?php else : ?>
         <p class="c-text">You are not enrolled in any courses yet.</p>
       <?php endif; ?>
+      <?php endif; ?>
     </div>
   </section>
 </main>
@@ -189,6 +205,36 @@ if ($completed_course_id > 0 && function_exists('learndash_course_completed') &&
 .mp-profile-certificate__link:focus {
   background: #003f48;
   color: #fff;
+}
+
+.mp-profile-page {
+  margin-bottom: 4rem;
+}
+
+.mp-profile-guest-usp {
+  max-width: 100%;
+}
+
+.mp-profile-guest-usp .c-usp__title {
+  display: inline-block;
+  max-width: 100%;
+  white-space: normal;
+}
+
+.page-template-page-ld-profile {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-template-page-ld-profile .site {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-template-page-ld-profile .site-main {
+  flex: 1 0 auto;
 }
 
 /* Space between cards (if not handled already) */

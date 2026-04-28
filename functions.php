@@ -158,6 +158,10 @@ function mp_academy_scripts() {
     mp_academy_enqueue_theme_style( 'mp-404', '/assets/css/404.css', array( 'mp-inter-font' ) );
   }
 
+  if ( is_search() ) {
+    mp_academy_enqueue_theme_style( 'mp-search-results', '/assets/css/search-results.css', array( 'mp-inter-font' ) );
+  }
+
   if ( is_front_page() || is_post_type_archive( 'sfwd-courses' ) ) {
     mp_academy_enqueue_theme_style( 'mp-categories', '/assets/css/categories.css', array( 'mp-inter-font' ) );
   }
@@ -338,6 +342,10 @@ add_action( 'init', 'mp_enable_excerpts_for_topics' );
  */
 function mp_academy_search_ld_category( $query ) {
   if ( is_admin() || ! $query->is_main_query() ) return;
+
+  if ( $query->is_search() && empty( $_GET['post_type'] ) ) {
+    $query->set( 'post_type', [ 'post', 'sfwd-courses', 'video' ] );
+  }
 
   if ( $query->is_search() && isset( $_GET['post_type'] ) && $_GET['post_type'] === 'sfwd-courses' ) {
     $taxes = [ 'ld_course_category', 'course_category' ];

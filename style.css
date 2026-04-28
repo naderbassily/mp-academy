@@ -34,3 +34,32 @@ Text Domain: mp-academy
 .c-card {
 border-radius: 0px;
 }
+
+.mp-search-empty {
+  max-width: 33rem;
+  margin: 0 auto;
+  padding: 3rem 0 1rem;
+}
+
+.mp-search-empty__icon {
+  width: 7.5rem;
+  height: auto;
+  margin: 0 auto 1.5rem;
+  display: block;
+}
+
+.mp-search-empty__title {
+  margin-bottom: 1rem;
+  color: #005f73;
+}
+
+.mp-search-empty__copy {
+  margin: 0;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: #334155;
+}
+
+.mp-search-empty__actions {
+  margin: 1.5rem 0 0;
+}

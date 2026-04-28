@@ -37,7 +37,6 @@ $hero_bg = home_url('/wp-content/uploads/2025/12/mp-x-bg.png');
                 placeholder="<?php esc_attr_e('Search', 'mp-academy'); ?>"
                 aria-label="<?php esc_attr_e('Search courses', 'mp-academy'); ?>"
               />
-              <input type="hidden" name="post_type" value="sfwd-courses" />
               <button type="submit" class="mpa-home-hero-search__submit" aria-label="<?php esc_attr_e('Search', 'mp-academy'); ?>">
                 <svg viewBox="0 0 24 24" role="img" aria-hidden="true" focusable="false" class="mpa-home-hero-search__icon">
                   <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"></circle>
