@@ -257,14 +257,20 @@
       var progression = isOn($wrap.data('ld-progression')) || isOn($ld.data('video-progression'));
       var autostart = isOn($wrap.data('ld-autostart')) || isOn($ld.data('video-autostart'));
       var focusPause = isOn($wrap.data('ld-focus-pause')) || isOn($ld.data('video-focus-pause'));
-      var resume = isOn($wrap.data('ld-resume')) || isOn($ld.data('video-resume'));
       var controlsOn = !isOff($wrap.data('ld-controls'));
       var autoComplete = isOn($wrap.data('ld-auto-complete'));
       var isCompleted = isOn($wrap.data('ld-is-complete'));
 
-      // Use LearnDash cookie key if present, else fallback to topic id
+      // Use LearnDash cookie key if present, else fallback to topic id.
+      // LearnDash only emits data-video-cookie-key when "Track Video Progress"
+      // is enabled (globally or per-topic), so its presence is the source of
+      // truth for whether resume should be active.
       var fallbackId = $wrap.data('ld-topic-id');
-      var cookieKey = $ld.data('video-cookie-key') || ('mp_ld_video_' + fallbackId);
+      var ldCookieKey = $ld.data('video-cookie-key');
+      var cookieKey = ldCookieKey || ('mp_ld_video_' + fallbackId);
+      var resume = !!ldCookieKey
+        || isOn($wrap.data('ld-resume'))
+        || isOn($ld.data('video-resume'));
 
       // Controls
       if (!controlsOn) {
@@ -272,7 +278,10 @@
         $video.removeAttr('controls');
       }
 
-      var resumeStorageKey = cookieKey + '_time';
+      // Match LearnDash's native cookie name exactly — `learndash-video-progress-<hash>` —
+      // so this resume state is interchangeable with LD's own storage if LD ever
+      // wires up `_wpmejsSettings.success` on this template.
+      var resumeStorageKey = cookieKey;
       var resumeApplied = !resume;
       var resumeTargetTime = 0;
       var resumeRetryTimer = null;
