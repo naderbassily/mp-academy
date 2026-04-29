@@ -170,7 +170,7 @@ $hero_placeholder = 'https://dam.malvernpanalytical.com/fae4c741-f556-475a-b286-
 			</div>
 		</section>
 
-		<div class="u-wrap mp-videos-content-wrap u-margin-bottom-xl">
+		<div id="mp-videos-library-results" class="u-wrap mp-videos-content-wrap u-margin-bottom-xl">
 			<div class="mp-videos-library">
 
 			<div class="mp-videos-layout">
@@ -203,7 +203,7 @@ $hero_placeholder = 'https://dam.malvernpanalytical.com/fae4c741-f556-475a-b286-
 							if (empty($terms) || is_wp_error($terms)) continue;
 
 							$facet_id = sanitize_html_class($tax_name . '-facet');
-							$is_open = false;
+							$is_open = ! empty( $selected );
 						?>
 							<li>
 								<details class="c-facet<?php echo $is_open ? ' c-facet--open' : ''; ?>"<?php echo $is_open ? ' open' : ''; ?>>
@@ -239,10 +239,6 @@ $hero_placeholder = 'https://dam.malvernpanalytical.com/fae4c741-f556-475a-b286-
 							</li>
 						<?php endforeach; ?>
 					</ul>
-
-					<div class="mp-filter-actions u-margin-top-md">
-						<button type="submit" class="mp c-button c-button--small">Apply</button>
-					</div>
 				</aside>
 
 				<!-- Results -->
@@ -321,26 +317,5 @@ $hero_placeholder = 'https://dam.malvernpanalytical.com/fae4c741-f556-475a-b286-
 		</div>
 	</form>
 </main>
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-	document.querySelectorAll('.mp-filters details.c-facet > summary.c-facet__toggle').forEach(function (summary) {
-		summary.addEventListener('click', function (event) {
-			event.preventDefault();
-
-			var details = summary.parentElement;
-			if (!details) {
-				return;
-			}
-
-			if (details.hasAttribute('open')) {
-				details.removeAttribute('open');
-			} else {
-				details.setAttribute('open', 'open');
-			}
-		});
-	});
-});
-</script>
 
 <?php get_footer(); ?>
