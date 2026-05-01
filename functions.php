@@ -147,6 +147,7 @@ function mp_academy_scripts() {
 
   if ( is_page_template( 'page-videos-library.php' ) ) {
     mp_academy_enqueue_theme_style( 'mp-videos-library', '/assets/css/videos-library.css', array( 'mp-inter-font' ) );
+    mp_academy_enqueue_theme_script( 'mp-videos-library', '/assets/js/videos-library.js' );
   }
 
   if ( is_front_page() ) {
