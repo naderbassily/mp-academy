@@ -15,6 +15,12 @@
   <link rel="stylesheet" href="https://unpkg.com/mp-design-system@2.0.82/dist/build/scss/main.css" />
   <link rel="stylesheet" href="https://unpkg.com/mp-design-system@2.0.82/dist/build/scss/mp-www.css" />
   <script src="https://unpkg.com/mp-design-system@2.0.82/dist/build/js/app.js" defer></script>
+  <!-- OneTrust Cookies Consent Notice start for academy.malvernpanalytical.com -->
+  <script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js" type="text/javascript" charset="UTF-8" data-domain-script="019e0327-d75d-7c5c-b506-5805599bb642"></script>
+  <script type="text/javascript">
+    function OptanonWrapper() {}
+  </script>
+  <!-- OneTrust Cookies Consent Notice end for academy.malvernpanalytical.com -->
 
 <?php wp_head(); ?>
 </head>
