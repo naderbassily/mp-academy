@@ -11,6 +11,36 @@ if ( ! defined( 'MP_ACADEMY_VERSION' ) ) {
 }
 
 /**
+ * Build the current request URL for SSO referrer handoff.
+ *
+ * @return string
+ */
+function mp_academy_get_current_url() {
+  $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '/';
+  $host        = isset( $_SERVER['HTTP_HOST'] ) ? wp_unslash( $_SERVER['HTTP_HOST'] ) : wp_parse_url( home_url(), PHP_URL_HOST );
+  $scheme      = is_ssl() ? 'https' : 'http';
+
+  return $scheme . '://' . $host . $request_uri;
+}
+
+/**
+ * Build the Malvern Panalytical registration URL with MP Academy attribution.
+ *
+ * @return string
+ */
+function mp_academy_get_register_url() {
+  return add_query_arg(
+    array(
+      'referrer'     => mp_academy_get_current_url(),
+      'utm_source'   => 'mp-academy',
+      'utm_medium'   => 'header-register',
+      'utm_campaign' => 'academy-sso',
+    ),
+    'https://www.malvernpanalytical.com/en/profile/register'
+  );
+}
+
+/**
  * Enqueue a theme stylesheet only when the file exists.
  *
  * @param string   $handle        Style handle.

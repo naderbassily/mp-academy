@@ -56,7 +56,7 @@
     <div class="c-header__group">
       <?php if (!$is_logged_in) : ?>
         <a class="c-button c-button--blue c-button--small" href="<?php echo esc_url('https://www.malvernpanalytical.com/en/support/login?referrer=' . urlencode('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'])); ?>">Login</a>
-        <a class="c-button c-button--outline-white c-button--small" href="<?php echo esc_url(wp_registration_url()); ?>">Register</a>
+        <a class="c-button c-button--outline-white c-button--small" href="<?php echo esc_url( mp_academy_get_register_url() ); ?>">Register</a>
       <?php else : ?>
         <a class="c-button c-button--outline-white c-button--small" href="<?php echo esc_url(home_url('/logout')); ?>">Logout</a>
       <?php endif; ?>
@@ -158,7 +158,7 @@
     <div class="c-header__group">
       <?php if (!$is_logged_in) : ?>
         <a class="c-button c-button--blue c-button--small" href="<?php echo esc_url('https://www.malvernpanalytical.com/en/support/login?referrer=' . urlencode('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'])); ?>">Login</a>
-        <a class="c-button c-button--outline-white c-button--small" href="<?php echo esc_url(wp_registration_url()); ?>">Register</a>
+        <a class="c-button c-button--outline-white c-button--small" href="<?php echo esc_url( mp_academy_get_register_url() ); ?>">Register</a>
       <?php else : ?>
         <a class="c-button c-button--outline-white c-button--small" href="<?php echo esc_url(home_url('/logout')); ?>">Logout</a>
       <?php endif; ?>
