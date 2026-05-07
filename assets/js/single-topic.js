@@ -40,7 +40,6 @@
   function deleteCookie(name) {
     document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
   }
-
   function unlockNextTopicButtons() {
     document.querySelectorAll('body.single-sfwd-topic [data-mp-next-topic-url]').forEach(function (button) {
       var nextUrl = button.getAttribute('data-mp-next-topic-url');
