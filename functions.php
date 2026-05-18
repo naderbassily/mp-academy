@@ -322,7 +322,7 @@ add_action( 'template_redirect', 'mp_academy_disable_author_archives' );
  * @return bool
  */
 function mp_academy_disable_topic_complete_redirect( $redirect_immediately ) {
-  if ( ! is_singular( 'sfwd-topic' ) ) {
+  if ( ! is_singular( 'sfwd-topic' ) && ! is_singular( 'sfwd-lessons' ) ) {
     return $redirect_immediately;
   }
 
@@ -332,7 +332,7 @@ function mp_academy_disable_topic_complete_redirect( $redirect_immediately ) {
 
   $post_id = absint( wp_unslash( $_POST['post'] ) );
 
-  if ( $post_id > 0 && 'sfwd-topic' === get_post_type( $post_id ) ) {
+  if ( $post_id > 0 && in_array( get_post_type( $post_id ), array( 'sfwd-topic', 'sfwd-lessons' ), true ) ) {
     return false;
   }
 
@@ -416,7 +416,7 @@ add_action( 'pre_get_posts', 'mp_academy_search_ld_category' );
  * Ensure LearnDash video assets are available on topic pages.
  */
 function mp_academy_enqueue_learndash_video_assets() {
-  if ( ! is_singular( 'sfwd-topic' ) ) {
+  if ( ! is_singular( 'sfwd-topic' ) && ! is_singular( 'sfwd-lessons' ) ) {
     return;
   }
 

@@ -40,9 +40,9 @@
   function deleteCookie(name) {
     document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
   }
-  function unlockNextTopicButtons() {
-    document.querySelectorAll('body.single-sfwd-topic [data-mp-next-topic-url]').forEach(function (button) {
-      var nextUrl = button.getAttribute('data-mp-next-topic-url');
+  function unlockNextStepButtons() {
+    document.querySelectorAll('[data-mp-next-step-url]').forEach(function (button) {
+      var nextUrl = button.getAttribute('data-mp-next-step-url');
       if (!nextUrl) {
         return;
       }
@@ -73,7 +73,7 @@
     });
   }
 
-  function submitTopicCompleteForm(form, topicMain, submitButton) {
+  function submitStepCompleteForm(form, stepMain, submitButton) {
     if (!form || form.dataset.mpSubmitting === 'true') {
       return;
     }
@@ -96,11 +96,11 @@
         throw new Error('Mark complete failed');
       }
 
-      if (topicMain) {
-        topicMain.setAttribute('data-mp-topic-complete', '1');
+      if (stepMain) {
+        stepMain.setAttribute('data-mp-step-complete', '1');
       }
 
-      unlockNextTopicButtons();
+      unlockNextStepButtons();
 
       if (submitButton) {
         submitButton.value = 'Completed';
@@ -117,8 +117,9 @@
   }
 
   $(function () {
-    var topicMain = document.querySelector('body.single-sfwd-topic main[data-mp-topic-complete]');
-    var topicIsComplete = topicMain ? topicMain.getAttribute('data-mp-topic-complete') === '1' : true;
+    var isStepPage = document.body.classList.contains('single-sfwd-topic') || document.body.classList.contains('single-sfwd-lessons');
+    var stepMain = document.querySelector('main[data-mp-step-complete]');
+    var stepIsComplete = stepMain ? stepMain.getAttribute('data-mp-step-complete') === '1' : true;
 
     // =========================
     // 1) Add Franklin wrapper to LD navigation
@@ -175,7 +176,7 @@
       link.classList.add('mp', 'c-button', 'c-button--outline-green');
     });
 
-    if (!topicIsComplete) {
+    if (!stepIsComplete) {
       document.querySelectorAll('.ld-navigation__next-link, .ld-js-next-lesson, .ld-lesson-nav-next a, .ld-content-action__next .ld-button').forEach(function (link) {
         if (link.tagName.toLowerCase() === 'a') {
           if (link.getAttribute('href')) {
@@ -192,9 +193,9 @@
       });
     }
 
-    if (document.body.classList.contains('single-sfwd-topic')) {
+    if (isStepPage) {
       document.addEventListener('click', function (event) {
-        if (topicIsComplete) {
+        if (stepIsComplete) {
           return;
         }
 
@@ -214,12 +215,12 @@
           event.stopImmediatePropagation();
         }
 
-        topicIsComplete = true;
-        submitTopicCompleteForm(form, topicMain, submitButton);
+        stepIsComplete = true;
+        submitStepCompleteForm(form, stepMain, submitButton);
       }, true);
 
       document.addEventListener('submit', function (event) {
-        if (topicIsComplete) {
+        if (stepIsComplete) {
           return;
         }
 
@@ -236,8 +237,8 @@
           event.stopImmediatePropagation();
         }
 
-        topicIsComplete = true;
-        submitTopicCompleteForm(form, topicMain, submitButton);
+        stepIsComplete = true;
+        submitStepCompleteForm(form, stepMain, submitButton);
       }, true);
     }
 
@@ -264,7 +265,7 @@
       // LearnDash only emits data-video-cookie-key when "Track Video Progress"
       // is enabled (globally or per-topic), so its presence is the source of
       // truth for whether resume should be active.
-      var fallbackId = $wrap.data('ld-topic-id');
+      var fallbackId = $wrap.data('ld-step-id') || $wrap.data('ld-topic-id');
       var ldCookieKey = $ld.data('video-cookie-key');
       var cookieKey = ldCookieKey || ('mp_ld_video_' + fallbackId);
       var resume = !!ldCookieKey

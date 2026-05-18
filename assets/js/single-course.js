@@ -14,8 +14,8 @@
 	/**
 	 * Initialize accordion functionality
 	 */
-	function initAccordion() {
-		const accordionHeaders = document.querySelectorAll('.mp-accordion-header');
+		function initAccordion() {
+			const accordionHeaders = document.querySelectorAll('.mp-accordion-header[aria-controls]');
 
 		if (!accordionHeaders.length) {
 			return;
@@ -31,8 +31,12 @@
 	/**
 	 * Toggle accordion open/close
 	 */
-	function toggleAccordion(header) {
-		const isExpanded = header.getAttribute('aria-expanded') === 'true';
+		function toggleAccordion(header) {
+			if (!header || !header.hasAttribute('aria-controls')) {
+				return;
+			}
+
+			const isExpanded = header.getAttribute('aria-expanded') === 'true';
 		const contentId = header.getAttribute('aria-controls');
 		const content = document.getElementById(contentId);
 

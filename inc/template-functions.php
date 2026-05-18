@@ -140,6 +140,80 @@ function mp_ld_get_lesson_topic_ids( $lesson_id, $course_id ) {
 }
 
 /**
+ * Get LearnDash video settings for a lesson or topic.
+ *
+ * @param int $step_id LearnDash step ID.
+ * @return array<string,string>
+ */
+function mp_ld_get_step_video_settings( $step_id ) {
+  $keys = array(
+    'lesson_video_enabled'       => 'enabled',
+    'lesson_video_url'           => 'url',
+    'lesson_video_auto_start'    => 'autostart',
+    'lesson_video_focus_pause'   => 'focus_pause',
+    'lesson_video_track_video'   => 'resume',
+    'lesson_video_show_controls' => 'controls',
+    'lesson_video_auto_complete' => 'auto_complete',
+  );
+
+  $settings = array_fill_keys( array_values( $keys ), '' );
+
+  if ( ! $step_id || ! function_exists( 'learndash_get_setting' ) ) {
+    return $settings;
+  }
+
+  foreach ( $keys as $setting_key => $mapped_key ) {
+    $settings[ $mapped_key ] = (string) learndash_get_setting( $step_id, $setting_key );
+  }
+
+  return $settings;
+}
+
+/**
+ * Whether a LearnDash step has a configured video.
+ *
+ * @param int $step_id LearnDash step ID.
+ * @return bool
+ */
+function mp_ld_step_has_video( $step_id ) {
+  $settings = mp_ld_get_step_video_settings( $step_id );
+
+  return 'on' === $settings['enabled'] && '' !== trim( $settings['url'] );
+}
+
+/**
+ * Whether a lesson should behave like a standalone content step.
+ *
+ * A standalone lesson has no child topics and contains body content or a
+ * LearnDash lesson video.
+ *
+ * @param int $lesson_id Lesson ID.
+ * @param int $course_id Course ID.
+ * @return bool
+ */
+function mp_ld_is_standalone_lesson( $lesson_id, $course_id = 0 ) {
+  $lesson_id = (int) $lesson_id;
+  $course_id = (int) $course_id;
+
+  if ( ! $lesson_id ) {
+    return false;
+  }
+
+  if ( ! $course_id && function_exists( 'learndash_get_course_id' ) ) {
+    $course_id = (int) learndash_get_course_id( $lesson_id );
+  }
+
+  if ( ! empty( mp_ld_get_lesson_topic_ids( $lesson_id, $course_id ) ) ) {
+    return false;
+  }
+
+  $raw_content = (string) get_post_field( 'post_content', $lesson_id );
+  $has_content = '' !== trim( wp_strip_all_tags( strip_shortcodes( $raw_content ) ) );
+
+  return $has_content || mp_ld_step_has_video( $lesson_id );
+}
+
+/**
  * Check whether a user has completed a LearnDash step.
  *
  * @param int    $user_id    User ID.

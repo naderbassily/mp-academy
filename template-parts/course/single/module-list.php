@@ -53,6 +53,7 @@ foreach ($lessons as $lesson) :
 			$lesson_title = get_the_title($lesson_id);
 			$lesson_link = get_permalink($lesson_id);
 			$lesson_can_access = $is_logged_in ? mp_ld_can_access_lesson( $user_id, $course_id, $lesson_id, $lesson_ids ) : false;
+			$lesson_is_standalone = mp_ld_is_standalone_lesson( $lesson_id, $course_id );
 			
 			// Get topics (sub-lessons) for this lesson
 			$topics = [];
@@ -92,6 +93,9 @@ foreach ($lessons as $lesson) :
 			
 			// Module classes
 			$module_classes = ['mp-accordion-item'];
+			if ( $lesson_is_standalone ) {
+				$module_classes[] = 'mp-accordion-item--standalone';
+			}
 			if ($module_status && $module_status['complete']) {
 				$module_classes[] = 'mp-accordion-item--complete';
 			} elseif ($module_status && $module_status['started']) {
@@ -103,16 +107,22 @@ foreach ($lessons as $lesson) :
 			
 			<div class="<?php echo esc_attr(implode(' ', $module_classes)); ?>">
 				
-				<!-- Accordion Header (clickable) -->
-					<button 
-						class="mp-accordion-header" 
-						aria-expanded="false" 
-						aria-controls="<?php echo esc_attr($accordion_id); ?>"
-						type="button"
-					>
-					<div class="mp-accordion-header__content">
-						
-							<?php if ($module_status && $module_status['complete']) : ?>
+					<!-- Accordion Header (clickable) -->
+						<?php if ( $lesson_is_standalone && $is_enrolled && $lesson_link && $lesson_can_access ) : ?>
+							<a class="mp-accordion-header mp-accordion-header--link" href="<?php echo esc_url( $lesson_link ); ?>">
+						<?php elseif ( $lesson_is_standalone ) : ?>
+							<span class="mp-accordion-header mp-accordion-header--link mp-accordion-header--disabled">
+						<?php else : ?>
+							<button
+								class="mp-accordion-header"
+								aria-expanded="false"
+								aria-controls="<?php echo esc_attr($accordion_id); ?>"
+								type="button"
+							>
+						<?php endif; ?>
+						<div class="mp-accordion-header__content">
+							
+								<?php if ($module_status && $module_status['complete']) : ?>
 							<!-- Complete checkmark icon -->
 							<span class="mp-accordion-icon mp-accordion-icon--complete" aria-label="<?php esc_attr_e('Complete', 'mp-academy'); ?>">
 								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -149,16 +159,24 @@ foreach ($lessons as $lesson) :
 							</div>
 						<?php endif; ?>
 						
-					</div>
+						</div>
+						
+						<?php if ( ! $lesson_is_standalone ) : ?>
+							<!-- Chevron icon -->
+							<svg class="mp-accordion-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
+						<?php endif; ?>
+						<?php if ( $lesson_is_standalone && $is_enrolled && $lesson_link && $lesson_can_access ) : ?>
+							</a>
+						<?php elseif ( $lesson_is_standalone ) : ?>
+							</span>
+						<?php else : ?>
+							</button>
+						<?php endif; ?>
 					
-					<!-- Chevron icon -->
-					<svg class="mp-accordion-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-					</svg>
-				</button>
-				
-				<!-- Accordion Content (topics/lessons) -->
-				<?php if (!empty($topics)) : ?>
+					<!-- Accordion Content (topics/lessons) -->
+					<?php if ( ! $lesson_is_standalone && !empty($topics) ) : ?>
 						<div 
 							id="<?php echo esc_attr($accordion_id); ?>" 
 							class="mp-accordion-content" 
