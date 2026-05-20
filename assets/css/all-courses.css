@@ -188,6 +188,20 @@
 	overflow: hidden;
 }
 
+.mp-course-archive .mp-course-card--featured .c-card__content {
+	display: flex;
+	flex-direction: column;
+}
+
+.mp-course-archive .mp-course-card--featured .mp-progress--card,
+.mp-course-archive .mp-course-card--featured .mp-course-card__actions {
+	margin-top: auto;
+}
+
+.mp-course-archive .mp-course-card--featured .mp-progress--card {
+	padding-top: 20px;
+}
+
 .mp-course-archive .mp-course-card--featured .c-card__image {
 	aspect-ratio: 16 / 9;
 	overflow: hidden;
