@@ -6,6 +6,15 @@
   margin-block-end: var(--space-2xl);        /* Figma big section gap */
 }
 
+.mp-home-update-test {
+  margin-block: calc(var(--space-l, 32px) * -1) var(--space-xl, 48px);
+  padding: 0.875rem 1.25rem;
+  background: #ffd84d;
+  color: #002f36;
+  font-weight: 700;
+  text-align: center;
+}
+
 /* --- Home Hero --- */
 .mpa-home-hero {
   display: flex;
