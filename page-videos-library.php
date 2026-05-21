@@ -230,7 +230,7 @@ $hero_placeholder = 'https://dam.malvernpanalytical.com/fae4c741-f556-475a-b286-
 													<?php checked($checked); ?>
 												/>
 												<label for="<?php echo esc_attr($input_id); ?>">
-													<?php echo esc_html($t->name); ?> (<?php echo (int) $t->count; ?>)
+													<?php echo esc_html($t->name); ?>
 												</label>
 											</li>
 										<?php endforeach; ?>

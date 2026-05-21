@@ -378,6 +378,27 @@ body.single-sfwd-lessons form[name="sfwd-mark-complete"] {
   display: none !important;
 }
 
+body.single-sfwd-lessons .mp-single-lesson--standalone .ld-navigation {
+  display: grid !important;
+  }
+
+body.single-sfwd-lessons .mp-single-lesson--standalone .ld-navigation {
+  margin: 18px 0 12px !important;
+}
+
+body.single-sfwd-lessons .mp-single-lesson--standalone .ld-progress,
+body.single-sfwd-lessons .mp-single-lesson--standalone .ld-status,
+body.single-sfwd-lessons .mp-single-lesson--standalone .ld-topic-status,
+body.single-sfwd-lessons .mp-single-lesson--standalone .ld-course-step-back,
+body.single-sfwd-lessons .mp-single-lesson--standalone .ld-alert:not(.ld-alert-warning):not(.ld-alert-success),
+body.single-sfwd-lessons .mp-single-lesson--standalone .ld-navigation__progress > *:not(form):not(.learndash_mark_complete_button):not(.ld-navigation__progress-mark-complete):not(.ld-navigation__progress-completed) {
+  display: none !important;
+}
+
+body.single-sfwd-lessons .mp-single-lesson--standalone .ld-layout__header {
+  display: none !important;
+}
+
 /* --------------------------------- */
 /* Back link                         */
 /* --------------------------------- */

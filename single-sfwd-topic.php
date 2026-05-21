@@ -281,11 +281,11 @@ get_template_part(
 );
 ?>
 
-<main
-	id="primary"
-	class="site-main u-wrap u-space--section u-flow u-margin-top-xl"
-	data-mp-topic-complete="<?php echo esc_attr( $is_completed ? '1' : '0' ); ?>"
->
+	<main
+		id="primary"
+		class="site-main u-wrap u-space--section u-flow u-margin-top-xl"
+		data-mp-step-complete="<?php echo esc_attr( $is_completed ? '1' : '0' ); ?>"
+	>
 	<header class="u-flow--s">
 		<div class="u-display-flex u-flex-wrap u-gap-s u-align-items-center u-margin-top-xl u-justify-content-between">
 			<span class="u-margin-left-auto"></span>
@@ -297,13 +297,13 @@ get_template_part(
 			<?php if ( $next_url && $is_completed ) : ?>
 				<a href="<?php echo esc_url( $next_url ); ?>" class="mp c-button c-button--outline-green">Next Topic →</a>
 			<?php elseif ( $next_id ) : ?>
-				<button
-					type="button"
-					class="mp c-button c-button--outline-green"
-					data-mp-next-topic-url="<?php echo esc_url( $next_url ); ?>"
-					disabled
-					aria-disabled="true"
-					title="<?php esc_attr_e( 'Complete this topic to unlock the next one.', 'mp-academy' ); ?>"
+					<button
+						type="button"
+						class="mp c-button c-button--outline-green"
+						data-mp-next-step-url="<?php echo esc_url( $next_url ); ?>"
+						disabled
+						aria-disabled="true"
+						title="<?php esc_attr_e( 'Complete this topic to unlock the next one.', 'mp-academy' ); ?>"
 					style="opacity:0.45;cursor:not-allowed;"
 				>
 					Next Topic →
@@ -320,12 +320,12 @@ get_template_part(
 			$body_block    = $content_parts['body'];
 			?>
 
-			<?php if ( $video_block ) : ?>
-				<section
-					class="mp-topic-video-wrapper"
-					data-ld-topic-id="<?php echo esc_attr( $topic_id ); ?>"
-					data-ld-is-complete="<?php echo esc_attr( $is_completed ? '1' : '0' ); ?>"
-					data-ld-progression="<?php echo esc_attr( $topic_video_settings['progression'] ); ?>"
+				<?php if ( $video_block ) : ?>
+					<section
+						class="mp-topic-video-wrapper"
+						data-ld-step-id="<?php echo esc_attr( $topic_id ); ?>"
+						data-ld-is-complete="<?php echo esc_attr( $is_completed ? '1' : '0' ); ?>"
+						data-ld-progression="<?php echo esc_attr( $topic_video_settings['progression'] ); ?>"
 					data-ld-autostart="<?php echo esc_attr( $topic_video_settings['autostart'] ); ?>"
 					data-ld-focus-pause="<?php echo esc_attr( $topic_video_settings['focus_pause'] ); ?>"
 					data-ld-resume="<?php echo esc_attr( $topic_video_settings['resume'] ); ?>"
