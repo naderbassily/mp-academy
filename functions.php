@@ -6,9 +6,47 @@
  * @package MP_Academy
  */
 
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
+
 if ( ! defined( 'MP_ACADEMY_VERSION' ) ) {
-  define( 'MP_ACADEMY_VERSION', '1.0.1' );
+  define( 'MP_ACADEMY_VERSION', '1.0.3' );
 }
+
+/**
+ * Initialize GitHub-based theme updates.
+ *
+ * Plugin Update Checker reads the local theme version from style.css and compares
+ * it with GitHub releases, tags, or the configured stable branch.
+ */
+function mp_academy_init_github_theme_updater() {
+  $puc_loader = get_template_directory() . '/inc/plugin-update-checker/plugin-update-checker.php';
+
+  if ( ! file_exists( $puc_loader ) ) {
+    return;
+  }
+
+  require_once $puc_loader;
+
+  if ( ! class_exists( PucFactory::class ) ) {
+    return;
+  }
+
+  $update_checker = PucFactory::buildUpdateChecker(
+    'https://github.com/naderbassily/mp-academy/',
+    __FILE__,
+    'mp-academy'
+  );
+
+  $update_checker->setBranch( 'main' );
+
+  /*
+   * Optional private repository support:
+   * Add a GitHub token with read-only repository access if this repository
+   * becomes private. Never commit a real token to the theme repository.
+   */
+  // $update_checker->setAuthentication( 'TOKEN_HERE' );
+}
+mp_academy_init_github_theme_updater();
 
 /**
  * Build the current request URL for SSO referrer handoff.
