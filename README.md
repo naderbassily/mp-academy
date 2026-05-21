@@ -92,13 +92,21 @@ Avoid prereleases for production updates. Plugin Update Checker ignores GitHub r
 
 ### Private Repository Support
 
-The updater includes a commented authentication line in `functions.php`:
+The GitHub repository is private, so production/staging WordPress installs need a GitHub token to check releases. Define the token outside the theme code.
+
+Preferred `wp-config.php` setup:
 
 ```php
-// $update_checker->setAuthentication( 'TOKEN_HERE' );
+define( 'MP_ACADEMY_GITHUB_TOKEN', 'github_pat_or_classic_token_here' );
 ```
 
-Only use this if the repository becomes private. The token must have read-only repository access and must never be committed to the repository. Store production secrets in the hosting environment or another secure configuration layer before enabling this line.
+Environment variable alternative:
+
+```text
+MP_ACADEMY_GITHUB_TOKEN=github_pat_or_classic_token_here
+```
+
+Use a token with the minimum read-only repository access needed to read releases and source archives. Never commit a real token to this repository.
 
 ### Testing Updates Locally
 
@@ -133,6 +141,7 @@ Plugin Update Checker can also be inspected with the Debug Bar plugin. After ins
 ### Troubleshooting
 
 - No update appears: confirm the GitHub Release is published, not a prerelease, and its version/tag is higher than the installed `style.css` version.
+- Private repository returns no update: confirm `MP_ACADEMY_GITHUB_TOKEN` is configured on the WordPress host and has read access to `naderbassily/mp-academy`.
 - Update downloads but fails to install: confirm the repository ZIP contains the theme at the root and not nested inside `wp-content/` or another project folder.
 - Permission errors: confirm WordPress can write to `wp-content/themes/`.
 - Authentication errors for private repos: confirm the token is valid, read-only, and available without being committed.
