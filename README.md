@@ -42,6 +42,102 @@ Add this repository secret before enabling staging deploys:
 
 - `WPE_SSHG_KEY_PRIVATE`: private SSH key for the WP Engine SSH Gateway user with access to `mpacademystg`
 
+## WordPress Theme Updates From GitHub Releases
+
+MP Academy includes the Plugin Update Checker library in `inc/plugin-update-checker/` so WordPress can detect and install theme updates from GitHub.
+
+The updater is initialized in `functions.php` and points at:
+
+```text
+https://github.com/naderbassily/mp-academy/
+```
+
+The stable branch is `main`. WordPress compares the installed theme version from the `Version:` header in `style.css` against GitHub releases, tags, or the configured stable branch. If GitHub has a higher version, WordPress shows an update notification in Appearance -> Themes and supports the standard one-click theme update flow.
+
+### Repository Shape
+
+This repository must contain only the theme files at the repository root:
+
+```text
+mp-academy/
+├── style.css
+├── functions.php
+├── assets/
+├── inc/
+└── template-parts/
+```
+
+Do not wrap the theme in `wp-content/`, `wordpress/`, or another project folder. GitHub release source ZIPs must expose `style.css` and `functions.php` directly inside the extracted top-level theme folder so WordPress can update `wp-content/themes/mp-academy/` correctly.
+
+### Release Workflow
+
+1. Develop locally on a feature branch.
+2. Bump `Version:` in `style.css`.
+3. Keep `MP_ACADEMY_VERSION` in `functions.php` in sync with `style.css`.
+4. Commit and push the branch.
+5. Merge the branch into `main` after review and testing.
+6. Create a GitHub Release from `main` with a matching tag, for example `v1.0.2`.
+7. WordPress checks for updates periodically and shows Update Available when the release version is higher than the installed version.
+8. Use Appearance -> Themes to run the one-click update.
+
+Recommended tag and release names:
+
+```text
+v1.0.2
+v1.0.3
+v1.1.0
+```
+
+Avoid prereleases for production updates. Plugin Update Checker ignores GitHub releases marked as prerelease, which is useful for staging tests but not for live update prompts.
+
+### Private Repository Support
+
+The updater includes a commented authentication line in `functions.php`:
+
+```php
+// $update_checker->setAuthentication( 'TOKEN_HERE' );
+```
+
+Only use this if the repository becomes private. The token must have read-only repository access and must never be committed to the repository. Store production secrets in the hosting environment or another secure configuration layer before enabling this line.
+
+### Testing Updates Locally
+
+To test the update flow:
+
+1. Install an older packaged copy of the theme, for example version `1.0.1`.
+2. Confirm `style.css` in GitHub `main` has a higher version, for example `1.0.2`.
+3. Create a GitHub Release from `main` using a matching tag such as `v1.0.2`.
+4. In WordPress admin, go to Dashboard -> Updates and click Check again, or wait for the normal update check.
+5. Confirm Appearance -> Themes shows Update Available for MP Academy.
+6. Run the update.
+7. Confirm the theme remains active and the frontend/admin load without PHP errors.
+
+Plugin Update Checker can also be inspected with the Debug Bar plugin. After installing Debug Bar, open the PUC panel in the admin toolbar and trigger Check Now for `mp-academy`.
+
+### Rollback Workflow
+
+1. Keep a ZIP of the currently working theme release before applying updates.
+2. If an update fails, upload the previous release ZIP through Appearance -> Themes -> Add New -> Upload Theme.
+3. Alternatively, restore the previous release from hosting backups or deploy the previous Git tag to the server.
+4. Clear object/page caches after rollback.
+5. Confirm the active theme version in `style.css` matches the intended rollback version.
+
+### Hosting Requirements
+
+- WordPress must be able to make outbound HTTPS requests to GitHub.
+- The web server must be able to write to `wp-content/themes/` during theme updates.
+- ZIP extraction must be available in PHP/WordPress.
+- WP Engine, cPanel, and other managed hosts may require correct filesystem credentials or write permissions.
+- Caches should be cleared after updates when CSS, JS, or templates change.
+
+### Troubleshooting
+
+- No update appears: confirm the GitHub Release is published, not a prerelease, and its version/tag is higher than the installed `style.css` version.
+- Update downloads but fails to install: confirm the repository ZIP contains the theme at the root and not nested inside `wp-content/` or another project folder.
+- Permission errors: confirm WordPress can write to `wp-content/themes/`.
+- Authentication errors for private repos: confirm the token is valid, read-only, and available without being committed.
+- Theme appears inactive after update: reinstall the previous release ZIP or restore from backup, then check the package folder structure before releasing again.
+
 ## Theme Structure
 
 ```text
@@ -100,6 +196,11 @@ mp-academy/
 - The staging workflow still depends on the correct WP Engine SSH key being configured in GitHub and WP Engine.
 
 ## Changelog
+
+### 1.0.2
+
+- Added GitHub Release-based WordPress theme updates using Plugin Update Checker.
+- Documented the release, testing, rollback, and hosting requirements for one-click theme updates.
 
 ### 1.0.1
 
