@@ -9,7 +9,25 @@
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
 if ( ! defined( 'MP_ACADEMY_VERSION' ) ) {
-  define( 'MP_ACADEMY_VERSION', '1.0.3' );
+  define( 'MP_ACADEMY_VERSION', '1.0.4' );
+}
+
+/**
+ * Read a GitHub token for private repository update checks.
+ *
+ * Prefer defining MP_ACADEMY_GITHUB_TOKEN in wp-config.php. Environment
+ * variables are also supported for hosts that manage secrets outside PHP files.
+ *
+ * @return string
+ */
+function mp_academy_get_github_update_token() {
+  if ( defined( 'MP_ACADEMY_GITHUB_TOKEN' ) && MP_ACADEMY_GITHUB_TOKEN ) {
+    return (string) MP_ACADEMY_GITHUB_TOKEN;
+  }
+
+  $token = getenv( 'MP_ACADEMY_GITHUB_TOKEN' );
+
+  return $token ? (string) $token : '';
 }
 
 /**
@@ -41,10 +59,13 @@ function mp_academy_init_github_theme_updater() {
 
   /*
    * Optional private repository support:
-   * Add a GitHub token with read-only repository access if this repository
-   * becomes private. Never commit a real token to the theme repository.
+   * Add a GitHub token with read-only repository access in wp-config.php or
+   * as an environment variable. Never commit a real token to this repository.
    */
-  // $update_checker->setAuthentication( 'TOKEN_HERE' );
+  $github_token = mp_academy_get_github_update_token();
+  if ( '' !== $github_token ) {
+    $update_checker->setAuthentication( $github_token );
+  }
 }
 mp_academy_init_github_theme_updater();
 

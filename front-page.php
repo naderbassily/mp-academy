@@ -14,10 +14,6 @@ get_header();
   get_template_part('template-parts/home/home-hero'); 
   ?>
 
-  <div class="mp-home-update-test u-wrap" role="status">
-    <?php esc_html_e('Testing version', 'mp-academy'); ?>
-  </div>
-  
   <?php 
   // My Courses Section (Shows enrolled courses OR empty state)
   get_template_part('template-parts/home/my-course-grid'); 
