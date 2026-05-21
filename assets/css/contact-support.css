@@ -1,0 +1,91 @@
+/* Contact / Support template */
+
+.mp-contact-support-hero {
+	padding-top: 2.5rem;
+}
+
+.mp-contact-support-hero .c-breadcrumb {
+	margin-bottom: 1.25rem;
+}
+
+.mp-contact-support-hero__inner {
+	background: #eef6f7;
+	padding: 3rem;
+}
+
+.mp-contact-support-hero__title {
+	margin: 0 0 0.75rem;
+}
+
+.mp-contact-support-hero__lede {
+	max-width: 42rem;
+	margin: 0;
+	font-size: 1.125rem;
+	line-height: 1.6;
+	color: #334155;
+}
+
+.mp-contact-support {
+	padding-top: 2.5rem;
+}
+
+.mp-contact-support__content {
+	width: 100%;
+}
+
+.mp-contact-support__copy {
+	max-width: 42rem;
+	margin-bottom: 2rem;
+}
+
+.mp-contact-support__form {
+	width: 100%;
+}
+
+.mp-contact-support__form-intro {
+	max-width: 42rem;
+	margin: 0 0 1.5rem;
+	font-size: 1rem;
+	line-height: 1.6;
+	color: #334155;
+}
+
+.mp-contact-support__form-note {
+	max-width: 42rem;
+	margin-bottom: 2rem;
+	color: var(--color-petrol-step-0);
+	font-size: 1rem;
+	line-height: 1.6;
+}
+
+.mp-contact-support__form-note p {
+	margin: 0;
+}
+
+.mp-contact-support__form-note p + p {
+	margin-top: 1rem;
+}
+
+.mp-contact-support__form-note a {
+	color: inherit;
+	font-weight: 700;
+	text-decoration: underline;
+}
+
+.mp-contact-support__form iframe {
+	max-width: 100%;
+}
+
+@media (max-width: 720px) {
+	.mp-contact-support-hero {
+		padding-top: 2rem;
+	}
+
+	.mp-contact-support-hero__inner {
+		padding: 2rem;
+	}
+
+	.mp-contact-support {
+		padding-top: 2rem;
+	}
+}
