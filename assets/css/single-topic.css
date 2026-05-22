@@ -183,6 +183,50 @@ body.single-sfwd-topic .site-main .ld-progress-inline {
 }
 
 @media (max-width: 720px) {
+  body.single-sfwd-topic,
+  body.single-sfwd-lessons {
+    overflow-x: hidden;
+  }
+
+  #mp-custom-small-hero {
+    height: 200px !important;
+    overflow: hidden !important;
+  }
+
+  #mp-custom-small-hero .c-hero__wrap {
+    box-sizing: border-box !important;
+    height: 200px !important;
+    min-height: 200px !important;
+    overflow: hidden !important;
+    padding: 1rem !important;
+    width: 100% !important;
+  }
+
+  #mp-custom-small-hero .c-hero__main {
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  #mp-custom-small-hero .c-breadcrumb {
+    margin-bottom: 0.4rem !important;
+  }
+
+  #mp-custom-small-hero .c-hero__heading {
+    font-size: 1.75rem !important;
+    line-height: 1.08 !important;
+    margin-top: 0 !important;
+  }
+
+  #mp-custom-small-hero .c-hero__lede,
+  .mp-topic-hero-progress__activity {
+    display: none !important;
+  }
+
+  .mp-topic-hero-progress {
+    max-width: 100%;
+    padding-top: 0.4rem;
+  }
+
   .ld-navigation {
     grid-template-columns: 1fr;
     padding: 24px !important;

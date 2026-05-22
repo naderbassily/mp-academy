@@ -38,6 +38,50 @@
 	padding-top: 2.5rem;
 }
 
+@media (max-width: 640px) {
+	.mp-course-hero {
+		overflow: hidden;
+	}
+
+	.mp-course-hero .c-hero__wrap {
+		box-sizing: border-box;
+		grid-template-columns: 1fr !important;
+		height: 320px !important;
+		min-height: 320px !important;
+		overflow: hidden;
+		padding: 1rem !important;
+		width: 100%;
+	}
+
+	.mp-course-hero .c-hero__main {
+		max-width: 100%;
+		min-width: 0;
+	}
+
+	.mp-course-hero .c-breadcrumb {
+		margin-bottom: 0.5rem;
+	}
+
+	.mp-course-hero .c-hero__heading {
+		font-size: 1.9rem;
+		line-height: 1.08;
+		margin-bottom: 0.4rem;
+	}
+
+	.mp-course-hero .c-hero__lede {
+		display: -webkit-box;
+		font-size: 0.95rem;
+		line-height: 1.35;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		overflow: hidden;
+	}
+
+	.mp-course-hero .c-hero__media-wrap {
+		display: none;
+	}
+}
+
 /* ================================
    Course Header
    ================================ */
