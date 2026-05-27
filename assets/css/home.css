@@ -14,18 +14,38 @@
   margin: 0;
 }
 
+.mpa-home-hero > .u-wrap {
+  width: 100%;
+}
+
 .mpa-home-hero-inner {
   background: linear-gradient(90deg, rgba(235, 241, 242, 1) 0%, rgba(255, 255, 255, 1) 100%);
   border-radius: 6px;
-  min-height: 420px;
+  min-height: 430px;
   z-index: 99;
   width: 100%;
   position: relative;
   overflow: hidden;
 }
 
+/* Preserve the earlier c-hero reset workaround */
+.mpa-home-hero-inner.c-hero {
+  all: revert;
+  background: linear-gradient(90deg, rgba(235, 241, 242, 1) 0%, rgba(255, 255, 255, 1) 100%);
+  border-radius: 6px;
+  min-height: 430px;
+  z-index: 99;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  display: block;
+  box-sizing: border-box;
+}
+
 .mpa-home-hero__wrap {
-  min-height: 420px;
+  width: 100% !important;
+  box-sizing: border-box;
+  min-height: 430px;
   margin: 0;
   padding-left: 5rem;
   padding-right: 5rem;
@@ -109,21 +129,72 @@
 
 @media (max-width: 960px) {
   .mpa-home-hero__wrap {
-    min-height: 360px;
+    min-height: 430px;
     padding-left: 2rem;
     padding-right: 2rem;
   }
 }
 
+/* Tablet: hide media-wrap, drive X via background-image instead */
+@media (min-width: 641px) and (max-width: 960px) {
+  .mpa-home-hero-inner {
+    background-image:
+      linear-gradient(90deg,
+        rgba(235, 241, 242, 1)    0%,
+        rgba(235, 241, 242, 0.92) 40%,
+        rgba(255, 255, 255, 0.55) 65%,
+        rgba(255, 255, 255, 0.1)  100%
+      ),
+      var(--mp-home-hero-bg);
+    background-repeat: no-repeat;
+    background-position: right bottom;
+    background-size: cover, auto 92%;
+  }
+
+  .mpa-home-hero__media {
+    display: none;
+  }
+}
+
 @media (max-width: 640px) {
+  .mpa-home-hero-inner {
+    min-height: 430px;
+    background-image:
+      linear-gradient(180deg,
+        rgba(235, 241, 242, 0.94) 0%,
+        rgba(240, 245, 246, 0.88) 42%,
+        rgba(248, 250, 250, 0.78) 68%,
+        rgba(255, 255, 255, 0) 100%
+      ),
+      var(--mp-home-hero-bg);
+    background-repeat: no-repeat;
+    background-position: center center, right top;
+    background-size: cover, contain;
+  }
+
   .mpa-home-hero__wrap {
-    min-height: auto;
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
+    min-height: 430px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
   }
 
   .mpa-home-hero-header {
-    max-width: 100%;
+    max-width: 18rem;
+  }
+
+  .mpa-home-hero__media {
+    display: none;
+  }
+
+  .mpa-home-hero-header .c-hero__heading {
+    max-width: 12rem;
+    font-size: clamp(3rem, 12vw, 4rem);
+  }
+
+  .mpa-home-hero-subtitle {
+    max-width: 18rem;
   }
 
   .mpa-home-hero-search {

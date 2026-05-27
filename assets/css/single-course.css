@@ -5,24 +5,42 @@
  * File: assets/css/single-course.css
  */
 
+.mp-course-hero {
+	position: relative;
+	overflow: hidden;
+	--hero-main-padding: 1rem;
+	--hero-image-height: 12rem;
+}
 
 .mp-course-hero .c-hero__wrap {
-	min-height: 29rem;
+	min-height: 20rem;
+	align-items: flex-start;
+	position: relative;
+	background:
+		linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.78) 100%),
+		var(--placeholder-image) center center / cover no-repeat,
+		var(--hero-wrap-background-color);
 }
 
 .mp-course-hero .c-hero__media-wrap {
-	background-image: var(--placeholder-image);
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
+	display: none;
 }
 
 .mp-course-hero .c-hero__main {
 	max-width: 42rem;
+	align-self: flex-start;
+	position: relative;
+	z-index: 1;
+	gap: 0.75rem;
+	padding: 3rem;
 }
 
 .mp-course-hero .c-breadcrumb {
 	margin-bottom: 1.5rem;
+}
+
+.mp-course-hero .c-breadcrumb__list {
+	padding-bottom: 0;
 }
 
 .mp-course-hero .c-hero__heading {
@@ -352,8 +370,32 @@
    Responsive Design
    ================================ */
 @media (max-width: 768px) {
+	.mp-course-hero {
+		--hero-main-padding: 1rem;
+		--hero-image-height: 9.5rem;
+	}
+
 	.mp-course-hero .c-hero__wrap {
-		min-height: 24rem;
+		min-height: 18rem;
+		align-items: flex-start;
+	}
+
+	.mp-course-hero .c-hero__main {
+		align-self: flex-start;
+		gap: 0.5rem;
+	}
+
+	.mp-course-hero .c-breadcrumb {
+		margin-top: 0;
+		margin-bottom: 0.5rem;
+	}
+
+	.mp-course-hero .c-hero__heading {
+		margin-bottom: 0.5rem;
+	}
+
+	.mp-course-hero .c-hero__lede {
+		margin-bottom: 0;
 	}
 
 	.mp-single-course {
@@ -379,6 +421,19 @@
 }
 
 @media (max-width: 480px) {
+	.mp-course-hero {
+		--hero-main-padding: 0.875rem;
+		--hero-image-height: 8rem;
+	}
+
+	.mp-course-hero .c-hero__wrap {
+		min-height: 16rem;
+	}
+
+	.mp-course-hero .c-breadcrumb {
+		margin-bottom: 0.375rem;
+	}
+
 	.mp-module-item__badge {
 		display: none;
 	}

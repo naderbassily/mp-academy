@@ -10,7 +10,7 @@ $hero_bg = home_url('/wp-content/uploads/2025/12/mp-x-bg.png');
 
 <section class="mpa-home-hero">
   <div class="u-wrap">
-    <div class="c-hero mpa-home-hero-inner">
+    <div class="c-hero mpa-home-hero-inner" style="--mp-home-hero-bg: url('<?php echo esc_url($hero_bg); ?>');">
       <div class="c-hero__wrap mpa-home-hero__wrap">
         <div class="c-hero__main mpa-home-hero-header">
           <h1 class="c-hero__heading">

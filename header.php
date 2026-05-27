@@ -118,58 +118,51 @@ $mp_academy_is_local_host = '' !== $mp_academy_host && (
   </div>
 
   <!-- MOBILE OVERLAY MENU -->
-  <div id="overlay-menu" class="c-header__overlay" aria-hidden="true" aria-modal="true">
-    <button class="c-navicon c-navicon--close" aria-label="Close navigation" aria-controls="overlay-menu" type="button">
-      <i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i>
-    </button>
+  <div id="overlay-menu" class="c-header__overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Site navigation">
 
-    <nav class="c-navigation c-navigation--website" aria-label="Website navigation">
-      <ul class="c-navigation__list">
-        <?php
-          wp_nav_menu([
-            'theme_location' => 'menu-1',
-            'container'      => false,
-            'items_wrap'     => '%3$s',
-            'fallback_cb'    => '__return_empty_string',
-            'walker'         => class_exists('Franklin_Menu_Walker') ? new Franklin_Menu_Walker() : '',
-          ]);
-        ?>
-      </ul>
-    </nav>
+    <div class="c-header__overlay-header">
+      <button class="c-navicon c-navicon--close" aria-label="Close navigation" aria-controls="overlay-menu" type="button">
+        <i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i>
+      </button>
+    </div>
 
-    <nav class="c-navigation c-navigation--corporate" aria-label="Corporate navigation">
-      <ul class="c-navigation__list">
-        <?php
-          wp_nav_menu([
-            'theme_location' => 'corporate-menu',
-            'container'      => false,
-            'items_wrap'     => '%3$s',
-            'fallback_cb'    => '__return_empty_string',
-            'walker'         => class_exists('Franklin_Menu_Walker') ? new Franklin_Menu_Walker() : '',
-          ]);
-        ?>
-      </ul>
-    </nav>
+    <div class="c-header__overlay-body">
 
-    <form class="c-header__search c-form c-form--search" action="<?php echo esc_url(home_url('/')); ?>" method="get">
-      <div class="c-form__input-wrap">
-        <label for="header-overlay-site-search" class="u-hidden">Search</label>
-        <input id="header-overlay-site-search" placeholder="Search" type="search" name="s" class="c-input c-input--alt c-input--with-button">
-        <button type="submit" aria-label="Search">
-          <svg role="img" aria-hidden="true" focusable="false" class="mp c-icon c-icon--search">
-            <use xlink:href="/static/svg/sprite.svg#search"></use>
-          </svg>
-        </button>
+      <nav class="c-navigation c-navigation--website" aria-label="Website navigation">
+        <ul class="c-navigation__list">
+          <?php
+            wp_nav_menu([
+              'theme_location' => 'menu-1',
+              'container'      => false,
+              'items_wrap'     => '%3$s',
+              'fallback_cb'    => '__return_empty_string',
+              'walker'         => class_exists('Franklin_Menu_Walker') ? new Franklin_Menu_Walker() : '',
+            ]);
+          ?>
+        </ul>
+      </nav>
+
+      <form class="c-header__search c-form c-form--search" action="<?php echo esc_url(home_url('/')); ?>" method="get">
+        <div class="c-form__input-wrap">
+          <label for="header-overlay-site-search" class="u-hidden">Search</label>
+          <input id="header-overlay-site-search" placeholder="Search courses…" type="search" name="s" class="c-input c-input--alt c-input--with-button">
+          <button type="submit" aria-label="Search">
+            <svg role="img" aria-hidden="true" focusable="false" class="mp c-icon c-icon--search">
+              <use xlink:href="/static/svg/sprite.svg#search"></use>
+            </svg>
+          </button>
+        </div>
+      </form>
+
+      <div class="c-header__group">
+        <?php if (!$is_logged_in) : ?>
+          <a class="c-button c-button--blue c-button--small" href="<?php echo esc_url('https://www.malvernpanalytical.com/en/support/login?referrer=' . urlencode('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'])); ?>">Login</a>
+          <a class="c-button c-button--outline-white c-button--small" href="<?php echo esc_url( mp_academy_get_register_url() ); ?>">Register</a>
+        <?php else : ?>
+          <a class="c-button c-button--outline-white c-button--small" href="<?php echo esc_url(home_url('/logout')); ?>">Logout</a>
+        <?php endif; ?>
       </div>
-    </form>
 
-    <div class="c-header__group">
-      <?php if (!$is_logged_in) : ?>
-        <a class="c-button c-button--blue c-button--small" href="<?php echo esc_url('https://www.malvernpanalytical.com/en/support/login?referrer=' . urlencode('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'])); ?>">Login</a>
-        <a class="c-button c-button--outline-white c-button--small" href="<?php echo esc_url( mp_academy_get_register_url() ); ?>">Register</a>
-      <?php else : ?>
-        <a class="c-button c-button--outline-white c-button--small" href="<?php echo esc_url(home_url('/logout')); ?>">Logout</a>
-      <?php endif; ?>
     </div>
   </div>
 
