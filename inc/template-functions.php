@@ -334,7 +334,7 @@ function mp_get_step_status( $user_id, $course_id, $step_id, $step_type = 'lesso
       $status['complete'] = (bool) learndash_is_lesson_complete( $user_id, $step_id, $course_id );
     }
   } elseif ( $user_id && function_exists( 'learndash_is_topic_complete' ) ) {
-    $status['complete'] = (bool) learndash_is_topic_complete( $user_id, $step_id );
+    $status['complete'] = (bool) learndash_is_topic_complete( $user_id, $step_id, $course_id );
   }
 
   if ( ! $status['complete'] && $user_id && function_exists( 'learndash_get_user_activity' ) ) {

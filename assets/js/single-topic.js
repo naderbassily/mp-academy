@@ -40,6 +40,44 @@
   function deleteCookie(name) {
     document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
   }
+
+  function restoreSavedScrollPosition() {
+    var key = 'mp_ld_restore_scroll';
+    var raw = '';
+
+    try {
+      raw = window.sessionStorage.getItem(key);
+    } catch (e) {
+      raw = '';
+    }
+
+    if (!raw) {
+      return;
+    }
+
+    try {
+      window.sessionStorage.removeItem(key);
+    } catch (e) {
+      // Ignore storage failures.
+    }
+
+    var y = parseInt(raw, 10);
+    if (!isFinite(y) || y < 0) {
+      return;
+    }
+
+    window.requestAnimationFrame(function () {
+      window.scrollTo(0, y);
+    });
+  }
+
+  function saveScrollPositionForReload() {
+    try {
+      window.sessionStorage.setItem('mp_ld_restore_scroll', String(window.scrollY || window.pageYOffset || 0));
+    } catch (e) {
+      // Ignore storage failures.
+    }
+  }
   function unlockNextStepButtons() {
     document.querySelectorAll('[data-mp-next-step-url]').forEach(function (button) {
       var nextUrl = button.getAttribute('data-mp-next-step-url');
@@ -73,9 +111,43 @@
     });
   }
 
-  function submitStepCompleteForm(form, stepMain, submitButton) {
+  function syncStepStateFromHtml(html, stepMain, submitButton) {
+    if (!html) {
+      return false;
+    }
+
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(html, 'text/html');
+    var nextMain = doc.querySelector('main[data-mp-step-complete]');
+    var isComplete = nextMain && nextMain.getAttribute('data-mp-step-complete') === '1';
+
+    if (!isComplete) {
+      return false;
+    }
+
+    if (stepMain) {
+      stepMain.setAttribute('data-mp-step-complete', '1');
+    }
+
+    document.querySelectorAll('.mp-topic-video-wrapper').forEach(function (wrapper) {
+      wrapper.setAttribute('data-ld-is-complete', '1');
+    });
+
+    if (submitButton) {
+      submitButton.value = 'Completed';
+      submitButton.textContent = 'Completed';
+      submitButton.setAttribute('aria-label', 'Completed');
+      submitButton.disabled = true;
+    }
+
+    unlockNextStepButtons();
+
+    return true;
+  }
+
+  function submitStepCompleteForm(form, stepMain, submitButton, onError) {
     if (!form || form.dataset.mpSubmitting === 'true') {
-      return;
+      return Promise.resolve(false);
     }
 
     form.dataset.mpSubmitting = 'true';
@@ -84,7 +156,7 @@
       submitButton.disabled = true;
     }
 
-    fetch(form.getAttribute('action') || window.location.href, {
+    return fetch(form.getAttribute('action') || window.location.href, {
       method: (form.getAttribute('method') || 'POST').toUpperCase(),
       body: new FormData(form),
       credentials: 'same-origin',
@@ -96,27 +168,32 @@
         throw new Error('Mark complete failed');
       }
 
-      if (stepMain) {
-        stepMain.setAttribute('data-mp-step-complete', '1');
-      }
+      return response.text().then(function (html) {
+        var synced = syncStepStateFromHtml(html, stepMain, submitButton);
+        if (!synced) {
+          throw new Error('Mark complete state not confirmed');
+        }
 
-      unlockNextStepButtons();
-
-      if (submitButton) {
-        submitButton.value = 'Completed';
-        submitButton.textContent = 'Completed';
-        submitButton.setAttribute('aria-label', 'Completed');
-      }
+        return true;
+      });
     }).catch(function () {
       form.dataset.mpSubmitting = 'false';
       if (submitButton) {
         submitButton.disabled = false;
       }
-      form.submit();
+      if (typeof onError === 'function') {
+        onError();
+      }
+      if (window.console && typeof window.console.error === 'function') {
+        window.console.error('LearnDash step completion could not be confirmed without a page reload.');
+      }
+      return false;
     });
   }
 
   $(function () {
+    restoreSavedScrollPosition();
+
     var isStepPage = document.body.classList.contains('single-sfwd-topic') || document.body.classList.contains('single-sfwd-lessons');
     var stepMain = document.querySelector('main[data-mp-step-complete]');
     var stepIsComplete = stepMain ? stepMain.getAttribute('data-mp-step-complete') === '1' : true;
@@ -215,8 +292,10 @@
           event.stopImmediatePropagation();
         }
 
-        stepIsComplete = true;
-        submitStepCompleteForm(form, stepMain, submitButton);
+        saveScrollPositionForReload();
+        submitStepCompleteForm(form, stepMain, submitButton, function () {
+          stepIsComplete = false;
+        });
       }, true);
 
       document.addEventListener('submit', function (event) {
@@ -237,8 +316,10 @@
           event.stopImmediatePropagation();
         }
 
-        stepIsComplete = true;
-        submitStepCompleteForm(form, stepMain, submitButton);
+        saveScrollPositionForReload();
+        submitStepCompleteForm(form, stepMain, submitButton, function () {
+          stepIsComplete = false;
+        });
       }, true);
     }
 
@@ -432,6 +513,7 @@
           localStorage.setItem(cookieKey + '_state', 'complete');
 
           if (autoComplete && $mark.length) {
+            saveScrollPositionForReload();
             setTimeout(function () { $mark.trigger('click'); }, 300);
           }
         });
