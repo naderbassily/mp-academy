@@ -63,3 +63,30 @@ border-radius: 0px;
 .mp-search-empty__actions {
   margin: 1.5rem 0 0;
 }
+
+.c-footer__sections {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.c-footer__sections > li {
+  min-width: 0;
+  margin: 0;
+}
+
+@media (max-width: 960px) {
+  .c-footer__sections {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .c-footer__sections {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
