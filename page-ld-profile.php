@@ -29,7 +29,7 @@ if ($is_logged_in && $completed_course_id > 0 && function_exists('learndash_cour
         <div class="mp c-usp c-usp--bordered mp-profile-guest-usp">
           <div class="u-flow">
             <h1 class="c-h c-h--step-2 c-usp__title">
-              <?php esc_html_e('Welcome to MP Academy', 'mp-academy'); ?>
+              <?php esc_html_e('Welcome to Malvern Panalytical Academy', 'mp-academy'); ?>
             </h1>
             <div class="mp o-prose u-step--1">
               <p>

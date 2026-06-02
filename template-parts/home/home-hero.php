@@ -14,7 +14,7 @@ $hero_bg = home_url('/wp-content/uploads/2025/12/mp-x-bg.png');
       <div class="c-hero__wrap mpa-home-hero__wrap">
         <div class="c-hero__main mpa-home-hero-header">
           <h1 class="c-hero__heading">
-            MP Academy
+            Malvern Panalytical Academy
           </h1>
           <p class="c-hero__lede mpa-home-hero-subtitle">
             Your home for free training courses and how-to videos

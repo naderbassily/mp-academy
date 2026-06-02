@@ -13,7 +13,7 @@ get_header();
 
 $intro = has_excerpt()
 	? get_the_excerpt()
-	: __( 'Need help with a technical issue on MP Academy?', 'mp-academy' );
+	: __( 'Need help with a technical issue on Malvern Panalytical Academy?', 'mp-academy' );
 ?>
 
 <main id="primary" class="site-main">
@@ -50,12 +50,12 @@ $intro = has_excerpt()
 					</h2>
 
 					<p class="mp-contact-support__form-intro">
-						<?php esc_html_e( 'If you are experiencing technical issues while using MP Academy, please complete the form below and our team will assist you as soon as possible.', 'mp-academy' ); ?>
+						<?php esc_html_e( 'If you are experiencing technical issues while using Malvern Panalytical Academy, please complete the form below and our team will assist you as soon as possible.', 'mp-academy' ); ?>
 					</p>
 
 					<div class="mp-contact-support__form-note">
 						<p>
-							<?php esc_html_e( 'This form is intended for technical issues related to the MP Academy platform only, including course access, progress tracking, login issues, or website errors.', 'mp-academy' ); ?>
+							<?php esc_html_e( 'This form is intended for technical issues related to the Malvern Panalytical Academy platform only, including course access, progress tracking, login issues, or website errors.', 'mp-academy' ); ?>
 						</p>
 						<p>
 							<?php esc_html_e( 'For instrument inquiries, application support, or general business requests, please use our main', 'mp-academy' ); ?>
