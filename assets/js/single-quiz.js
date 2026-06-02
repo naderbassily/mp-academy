@@ -36,14 +36,9 @@
 
   function labelVisibleQuestions() {
     var questions = document.querySelectorAll('.single-sfwd-quiz .wpProQuiz_listItem');
-    var visibleIndex = 0;
 
-    questions.forEach(function (question) {
-      if (!isVisible(question)) {
-        return;
-      }
-
-      visibleIndex += 1;
+    questions.forEach(function (question, index) {
+      var questionNumber = index + 1;
 
       var title = question.querySelector('.wpProQuiz_question_text');
       if (!title) {
@@ -61,7 +56,7 @@
         title.appendChild(heading);
       }
 
-      heading.textContent = 'Q' + visibleIndex + ': ' + title.dataset.mpOriginalTitle;
+      heading.textContent = 'Q' + questionNumber + ': ' + title.dataset.mpOriginalTitle;
     });
   }
 
