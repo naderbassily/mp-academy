@@ -45,9 +45,28 @@
 		} );
 	}
 
+	function initBackToTop() {
+		const backToTopButton = document.querySelector( '.c-back-to-top' );
+
+		if ( ! backToTopButton ) {
+			return;
+		}
+
+		backToTopButton.addEventListener( 'click', function() {
+			window.scrollTo( {
+				top: 0,
+				behavior: 'smooth',
+			} );
+		} );
+	}
+
 	if ( document.readyState === 'loading' ) {
-		document.addEventListener( 'DOMContentLoaded', initMobileMenu );
+		document.addEventListener( 'DOMContentLoaded', function() {
+			initMobileMenu();
+			initBackToTop();
+		} );
 	} else {
 		initMobileMenu();
+		initBackToTop();
 	}
 }() );

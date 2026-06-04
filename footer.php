@@ -84,11 +84,11 @@
   </div>
 </footer>
 
-<a href="#header" class="mp c-back-to-top" title="">
+<button type="button" class="mp c-back-to-top" aria-label="<?php esc_attr_e( 'Back to top', 'mp-academy' ); ?>">
   <svg class="mp c-icon c-icon--chevron-up c-back-to-top__icon">
     <use xlink:href="<?php echo esc_url( mp_academy_get_sprite_url() ); ?>#chevron-up"></use>
   </svg>
-</a>
+</button>
 
 <?php wp_footer(); ?>
 
