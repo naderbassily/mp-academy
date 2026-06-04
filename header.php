@@ -105,7 +105,7 @@ $mp_academy_is_local_host = '' !== $mp_academy_host && (
           <input id="header-site-search" placeholder="Search" type="search" name="s" class="c-input c-input--alt c-input--with-button">
           <button type="submit" aria-label="Search">
             <svg role="img" aria-hidden="true" focusable="false" class="mp c-icon c-icon--search">
-              <use xlink:href="/static/svg/sprite.svg#search"></use>
+              <use xlink:href="<?php echo esc_url( mp_academy_get_sprite_url() ); ?>#search"></use>
             </svg>
           </button>
         </div>
@@ -148,7 +148,7 @@ $mp_academy_is_local_host = '' !== $mp_academy_host && (
           <input id="header-overlay-site-search" placeholder="Search courses…" type="search" name="s" class="c-input c-input--alt c-input--with-button">
           <button type="submit" aria-label="Search">
             <svg role="img" aria-hidden="true" focusable="false" class="mp c-icon c-icon--search">
-              <use xlink:href="/static/svg/sprite.svg#search"></use>
+              <use xlink:href="<?php echo esc_url( mp_academy_get_sprite_url() ); ?>#search"></use>
             </svg>
           </button>
         </div>

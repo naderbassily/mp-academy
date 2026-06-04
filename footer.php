@@ -62,12 +62,12 @@
       </a>
       <ul class="c-footer__social">
         <!-- Keep as-is for now, we can ACF or menu these later -->
-        <li><a href="#"><svg class="mp c-icon c-icon--facebook"><use xlink:href="/static/svg/sprite.svg#facebook"></use></svg></a></li>
-        <li><a href="#"><svg class="mp c-icon c-icon--twitter"><use xlink:href="/static/svg/sprite.svg#twitter"></use></svg></a></li>
-        <li><a href="#"><svg class="mp c-icon c-icon--rss"><use xlink:href="/static/svg/sprite.svg#rss"></use></svg></a></li>
-        <li><a href="#"><svg class="mp c-icon c-icon--instagram"><use xlink:href="/static/svg/sprite.svg#instagram"></use></svg></a></li>
-        <li><a href="#"><svg class="mp c-icon c-icon--linkedin"><use xlink:href="/static/svg/sprite.svg#linkedin"></use></svg></a></li>
-        <li><a href="#"><svg class="mp c-icon c-icon--youtube"><use xlink:href="/static/svg/sprite.svg#youtube"></use></svg></a></li>
+        <li><a href="#"><svg class="mp c-icon c-icon--facebook"><use xlink:href="<?php echo esc_url( mp_academy_get_sprite_url() ); ?>#facebook"></use></svg></a></li>
+        <li><a href="#"><svg class="mp c-icon c-icon--twitter"><use xlink:href="<?php echo esc_url( mp_academy_get_sprite_url() ); ?>#twitter"></use></svg></a></li>
+        <li><a href="#"><svg class="mp c-icon c-icon--rss"><use xlink:href="<?php echo esc_url( mp_academy_get_sprite_url() ); ?>#rss"></use></svg></a></li>
+        <li><a href="#"><svg class="mp c-icon c-icon--instagram"><use xlink:href="<?php echo esc_url( mp_academy_get_sprite_url() ); ?>#instagram"></use></svg></a></li>
+        <li><a href="#"><svg class="mp c-icon c-icon--linkedin"><use xlink:href="<?php echo esc_url( mp_academy_get_sprite_url() ); ?>#linkedin"></use></svg></a></li>
+        <li><a href="#"><svg class="mp c-icon c-icon--youtube"><use xlink:href="<?php echo esc_url( mp_academy_get_sprite_url() ); ?>#youtube"></use></svg></a></li>
       </ul>
     </div>
   </nav>
@@ -86,7 +86,7 @@
 
 <a href="#header" class="mp c-back-to-top" title="">
   <svg class="mp c-icon c-icon--chevron-up c-back-to-top__icon">
-    <use xlink:href="/static/svg/sprite.svg#chevron-up"></use>
+    <use xlink:href="<?php echo esc_url( mp_academy_get_sprite_url() ); ?>#chevron-up"></use>
   </svg>
 </a>
 

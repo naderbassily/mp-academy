@@ -59,7 +59,7 @@ if ($query->have_posts()) :
               <span class="mp c-twi c-twi--left">
                 <span><?php echo esc_html($duration); ?></span>
                 <svg role="img" aria-hidden="true" focusable="false" class="mp c-icon c-icon--play">
-                  <use xlink:href="/static/svg/sprite.svg#play"></use>
+                  <use xlink:href="<?php echo esc_url( mp_academy_get_sprite_url() ); ?>#play"></use>
                 </svg>
               </span>
               <span><?php echo esc_html($release); ?></span>

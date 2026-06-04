@@ -32,7 +32,7 @@ $q = isset($_GET['s']) ? sanitize_text_field(wp_unslash($_GET['s'])) : '';
     <!-- Magnifier (decorative; not submitting) -->
     <button type="button" class="c-button--reset u-blue mp-course-search__magnifier" aria-hidden="true" tabindex="-1">
       <svg role="img" aria-hidden="true" focusable="false" class="mp c-icon c-icon--search">
-        <use xlink:href="/static/svg/sprite.svg#search"></use>
+        <use xlink:href="<?php echo esc_url( mp_academy_get_sprite_url() ); ?>#search"></use>
       </svg>
     </button>
   </div>

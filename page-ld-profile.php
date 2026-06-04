@@ -79,7 +79,7 @@ if ($is_logged_in && $completed_course_id > 0 && function_exists('learndash_cour
             <article class="mp c-card c-card--layout-multi c-card--size-small c-card--event c-card--inline-specs c-card--has-image">
               <span class="c-card__corner">
                 <svg role="img" aria-hidden="true" focusable="false" class="mp c-icon c-icon--arrow-right">
-                  <use xlink:href="/static/svg/sprite.svg#arrow-right"></use>
+                  <use xlink:href="<?php echo esc_url( mp_academy_get_sprite_url() ); ?>#arrow-right"></use>
                 </svg>
               </span>
 

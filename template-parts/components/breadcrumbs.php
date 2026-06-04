@@ -18,7 +18,7 @@ if ( ! function_exists( 'mp_bc_chevron' ) ) {
 	}
 }
 
-$sprite_path = '/static/svg/sprite.svg';
+$sprite_path = mp_academy_get_sprite_url();
 $extra_class = !empty($args['extra_class']) ? ' ' . trim((string) $args['extra_class']) : '';
 
 // Base links

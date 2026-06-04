@@ -9,7 +9,7 @@
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
 if ( ! defined( 'MP_ACADEMY_VERSION' ) ) {
-  define( 'MP_ACADEMY_VERSION', '1.0.8' );
+  define( 'MP_ACADEMY_VERSION', '1.0.9' );
 }
 
 /**
@@ -97,6 +97,15 @@ function mp_academy_get_register_url() {
     ),
     'https://www.malvernpanalytical.com/en/profile/register'
   );
+}
+
+/**
+ * Return the theme-bundled SVG sprite URL.
+ *
+ * @return string
+ */
+function mp_academy_get_sprite_url() {
+  return get_template_directory_uri() . '/assets/images/sprite.svg';
 }
 
 /**
