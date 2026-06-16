@@ -61,13 +61,36 @@
         <img src="<?php echo get_template_directory_uri(); ?>/assets/images/malvernpanalyticallogo.svg" alt="Home" width="162" />
       </a>
       <ul class="c-footer__social">
-        <!-- Keep as-is for now, we can ACF or menu these later -->
-        <li><a href="#"><svg class="mp c-icon c-icon--facebook"><use xlink:href="<?php echo esc_url( mp_academy_get_sprite_url() ); ?>#facebook"></use></svg></a></li>
-        <li><a href="#"><svg class="mp c-icon c-icon--twitter"><use xlink:href="<?php echo esc_url( mp_academy_get_sprite_url() ); ?>#twitter"></use></svg></a></li>
-        <li><a href="#"><svg class="mp c-icon c-icon--rss"><use xlink:href="<?php echo esc_url( mp_academy_get_sprite_url() ); ?>#rss"></use></svg></a></li>
-        <li><a href="#"><svg class="mp c-icon c-icon--instagram"><use xlink:href="<?php echo esc_url( mp_academy_get_sprite_url() ); ?>#instagram"></use></svg></a></li>
-        <li><a href="#"><svg class="mp c-icon c-icon--linkedin"><use xlink:href="<?php echo esc_url( mp_academy_get_sprite_url() ); ?>#linkedin"></use></svg></a></li>
-        <li><a href="#"><svg class="mp c-icon c-icon--youtube"><use xlink:href="<?php echo esc_url( mp_academy_get_sprite_url() ); ?>#youtube"></use></svg></a></li>
+        <li>
+          <a href="https://facebook.com/MalvernPanalytical">
+            <img src="https://dam.malvernpanalytical.com/57f7ad6e-6556-4d1d-8180-ae9700a67b31/MP%20Facebook%20icon_Original%20file.svg" alt="Facebook" class="c-icon">
+          </a>
+        </li>
+        <li>
+          <a href="https://twitter.com/newsfrom_MP">
+            <img src="https://dam.malvernpanalytical.com/cdd1f8a0-06d7-4f62-8e6f-b0f200a9e9f3/x-twitter-logo_Original%20file.svg" alt="Twitter" class="c-icon">
+          </a>
+        </li>
+        <li>
+          <a href="https://www.malvernpanalytical.com/en/learn/knowledge-center?size=n_20_n&amp;filters%5B0%5D%5Bfield%5D=mp_documenttype_title&amp;filters%5B0%5D%5Bvalues%5D%5B0%5D=Insights&amp;filters%5B0%5D%5Btype%5D=any&amp;sort-field=date&amp;sort-direction=desc">
+            <img src="https://dam.malvernpanalytical.com/ebf7b7af-4177-45e2-8388-ae9700a67b6a/MP%20RSS%20blog%20feed%20icon_Original%20file.svg" alt="Blog" class="c-icon">
+          </a>
+        </li>
+        <li>
+          <a href="https://www.instagram.com/malvernpanalytical">
+            <img src="https://dam.malvernpanalytical.com/41fc66b5-da41-443b-b537-ae9700a67a4c/MP%20instagram%20icon_Original%20file.svg" alt="Instagram" class="c-icon">
+          </a>
+        </li>
+        <li>
+          <a href="https://www.linkedin.com/company/malvernpanalytical">
+            <img src="https://dam.malvernpanalytical.com/2c4d1560-6d70-401c-802a-ae9700a679e8/MP%20Linkedin%20icon_Original%20file.svg" alt="LinkedIn" class="c-icon">
+          </a>
+        </li>
+        <li>
+          <a href="https://www.youtube.com/c/MalvernPanalytical">
+            <img src="https://dam.malvernpanalytical.com/fbab6bba-3efb-4f23-86a9-ae9700a67bf2/MP%20Youtube%20icon_Original%20file.svg" alt="Youtube" class="c-icon">
+          </a>
+        </li>
       </ul>
     </div>
   </nav>
