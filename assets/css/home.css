@@ -19,19 +19,21 @@
 }
 
 .mpa-home-hero-inner {
-  background: linear-gradient(90deg, rgba(235, 241, 242, 1) 0%, rgba(255, 255, 255, 1) 100%);
   border-radius: 6px;
   min-height: 430px;
   z-index: 99;
   width: 100%;
   position: relative;
   overflow: hidden;
+  background-image: var(--mp-home-hero-bg);
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: cover;
 }
 
 /* Preserve the earlier c-hero reset workaround */
 .mpa-home-hero-inner.c-hero {
   all: revert;
-  background: linear-gradient(90deg, rgba(235, 241, 242, 1) 0%, rgba(255, 255, 255, 1) 100%);
   border-radius: 6px;
   min-height: 430px;
   z-index: 99;
@@ -40,33 +42,41 @@
   overflow: hidden;
   display: block;
   box-sizing: border-box;
+  background-image: var(--mp-home-hero-bg);
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: cover;
 }
 
 .mpa-home-hero__wrap {
+  display: block !important;
+  grid-template-columns: none !important;
   width: 100% !important;
   box-sizing: border-box;
   min-height: 430px;
   margin: 0;
   padding-left: 5rem;
   padding-right: 5rem;
+  background: transparent !important;
 }
 
-.mpa-home-hero__media {
-  background-repeat: no-repeat;
-  background-position: right bottom;
-  background-size: contain;
+.mpa-home-hero__wrap::before,
+.mpa-home-hero__wrap::after {
+  content: none !important;
+  display: none !important;
 }
 
 .mpa-home-hero-header {
   position: relative;
   z-index: 1;
   max-width: 34rem;
+  background: transparent !important;
 }
 
 .mpa-home-hero-header .c-hero__heading {
   max-width: 18rem;
   margin: 0 0 1rem;
-  color: #002f36;
+  color: #ffffff;
   font-size: clamp(3.25rem, 6vw, 4.75rem);
   line-height: 0.95;
   font-weight: 700;
@@ -76,7 +86,7 @@
 .mpa-home-hero-subtitle {
   font-size: 1.05rem;
   line-height: 1.45;
-  color: #3f4548;
+  color: #ffffff;
   max-width: 34rem;
   margin: 0 0 1.5rem;
 }
@@ -135,41 +145,22 @@
   }
 }
 
-/* Tablet: hide media-wrap, drive X via background-image instead */
 @media (min-width: 641px) and (max-width: 960px) {
   .mpa-home-hero-inner {
-    background-image:
-      linear-gradient(90deg,
-        rgba(235, 241, 242, 1)    0%,
-        rgba(235, 241, 242, 0.92) 40%,
-        rgba(255, 255, 255, 0.55) 65%,
-        rgba(255, 255, 255, 0.1)  100%
-      ),
-      var(--mp-home-hero-bg);
+    background-image: var(--mp-home-hero-bg);
     background-repeat: no-repeat;
-    background-position: right bottom;
-    background-size: cover, auto 92%;
-  }
-
-  .mpa-home-hero__media {
-    display: none;
+    background-position: right center;
+    background-size: cover;
   }
 }
 
 @media (max-width: 640px) {
   .mpa-home-hero-inner {
     min-height: 430px;
-    background-image:
-      linear-gradient(180deg,
-        rgba(235, 241, 242, 0.94) 0%,
-        rgba(240, 245, 246, 0.88) 42%,
-        rgba(248, 250, 250, 0.78) 68%,
-        rgba(255, 255, 255, 0) 100%
-      ),
-      var(--mp-home-hero-bg);
+    background-image: var(--mp-home-hero-bg);
     background-repeat: no-repeat;
-    background-position: center center, right top;
-    background-size: cover, contain;
+    background-position: right center;
+    background-size: cover;
   }
 
   .mpa-home-hero__wrap {
@@ -182,10 +173,6 @@
 
   .mpa-home-hero-header {
     max-width: 18rem;
-  }
-
-  .mpa-home-hero__media {
-    display: none;
   }
 
   .mpa-home-hero-header .c-hero__heading {

@@ -5,7 +5,16 @@
 if (!defined('ABSPATH')) exit;
 
 $q = isset($_GET['s']) ? sanitize_text_field(wp_unslash($_GET['s'])) : '';
-$hero_bg = home_url('/wp-content/uploads/2025/12/mp-x-bg.png');
+$hero_fallback_bg = home_url('/wp-content/uploads/2025/12/mp-x-bg.png');
+$hero_title = function_exists('get_field') ? (string) get_field('hero_title') : '';
+$hero_content = function_exists('get_field') ? (string) get_field('hero_content') : '';
+$hero_image = function_exists('get_field') ? get_field('hero_image') : '';
+
+if (is_array($hero_image)) {
+  $hero_image = isset($hero_image['url']) ? (string) $hero_image['url'] : '';
+}
+
+$hero_bg = $hero_image ?: $hero_fallback_bg;
 ?>
 
 <section class="mpa-home-hero">
@@ -14,10 +23,10 @@ $hero_bg = home_url('/wp-content/uploads/2025/12/mp-x-bg.png');
       <div class="c-hero__wrap mpa-home-hero__wrap">
         <div class="c-hero__main mpa-home-hero-header">
           <h1 class="c-hero__heading">
-            Malvern Panalytical Academy
+            <?php echo esc_html($hero_title ?: 'Malvern Panalytical Academy'); ?>
           </h1>
           <p class="c-hero__lede mpa-home-hero-subtitle">
-            Your home for free training courses and how-to videos
+            <?php echo wp_kses_post($hero_content ?: 'Your home for free training courses and how-to videos'); ?>
           </p>
 
           <form
@@ -46,7 +55,6 @@ $hero_bg = home_url('/wp-content/uploads/2025/12/mp-x-bg.png');
             </div>
           </form>
         </div>
-        <div class="c-hero__media-wrap mpa-home-hero__media" style="background-image: url('<?php echo esc_url($hero_bg); ?>');"></div>
       </div>
     </div>
   </div>
