@@ -68,12 +68,18 @@ if (!$user_id || empty($course_ids)) {
             <p class="c-h c-h--step-4">
                 <?php echo esc_html(($user_id && !empty($course_ids)) ? __('My courses', 'mp-academy') : __('Featured courses', 'mp-academy')); ?>
             </p>
-            <?php if ($user_id && empty($course_ids)): ?>
-                <p class="mp-my-courses__empty-text u-charcoal u-step--1">
-                    <?php esc_html_e('You don’t have any courses in progress.', 'mp-academy'); ?>
-                </p>
-            <?php endif; ?>
+			
+			<a class="mp-featured-courses__browse u-blue u-step--1" href="<?php echo home_url( '/courses/' ); ?>">
+				<span class="mp-featured-courses__browse-icon" aria-hidden="true">→</span>
+				<span><?php esc_html_e( 'Browse all courses', 'mp-academy' ); ?></span>
+			</a>
         </header>
+		
+		<?php if ($user_id && empty($course_ids)): ?>
+			<p class="mp-my-courses__empty-text u-charcoal u-step--1">
+				<?php esc_html_e('You don’t have any courses in progress.', 'mp-academy'); ?>
+			</p>
+		<?php endif; ?>
 
         <?php if (!$user_id): ?>
             <?php if ($latest_courses_query && $latest_courses_query->have_posts()): ?>
