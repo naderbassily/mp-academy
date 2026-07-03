@@ -3,6 +3,10 @@
 }
 
 .mp .mp-my-courses__hd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
   margin-bottom: var(--space-16, 16px);
 }
 
