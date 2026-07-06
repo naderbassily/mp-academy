@@ -86,7 +86,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="c-header__secondary">
     <a class="c-header__logo" href="<?php echo esc_url(home_url('/')); ?>" aria-label="Home">
       <?php
-        $svg_path = get_template_directory() . '/assets/images/malvernpanalyticallogo.svg';
+        $svg_path = get_template_directory() . '/assets/images/mp-logo.svg';
         if (file_exists($svg_path)) {
           echo file_get_contents($svg_path);
         } else {

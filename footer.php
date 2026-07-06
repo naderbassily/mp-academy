@@ -58,7 +58,7 @@
 
     <div class="c-footer__identity">
       <a href="/" class="c-footer__logo">
-        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/malvernpanalyticallogo.svg" alt="Home" width="162" />
+        <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/mp-logo-white.svg' ); ?>" alt="Home" width="162" />
       </a>
       <ul class="c-footer__social">
         <li>
