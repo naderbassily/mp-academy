@@ -4,16 +4,16 @@ Custom WordPress theme for MP Academy, built around LearnDash and the Franklin D
 
 ## Repository Status
 
-- `main` is the clean `v1` baseline and the branch intended to deploy to WP Engine staging.
+- `main` is the clean `v1` baseline and the branch used for approved theme updates.
 - Feature and cleanup work should happen in short-lived branches and merge into `main` only after review and testing.
-- Production deployment is deferred until the live 20i workflow is defined.
+- Theme distribution is handled through GitHub-backed WordPress theme updates.
 
 ## Stack
 
 - WordPress theme
 - LearnDash
 - Franklin Design System
-- GitHub Actions for staging deployment to WP Engine
+- GitHub-backed WordPress theme updates
 
 ## Local Workflow
 
@@ -24,23 +24,8 @@ Custom WordPress theme for MP Academy, built around LearnDash and the Franklin D
    - add a changelog entry under `Unreleased`
 4. Commit and push the branch.
 5. Merge into `main` once the change is approved.
-6. GitHub Actions deploys `main` to WP Engine staging.
-7. Validate staging before any future production deployment.
-
-## Staging Deployment
-
-The repo is configured for a theme-only deploy to WP Engine staging using WP Engine's official GitHub Action.
-
-- Environment: `mpacademystg`
-- Remote target path: `wp-content/themes/mp-academy/`
-- Workflow file: `.github/workflows/deploy-to-wpe.yml`
-- Required GitHub secret: `WPE_SSHG_KEY_PRIVATE`
-
-### Required GitHub Secret
-
-Add this repository secret before enabling staging deploys:
-
-- `WPE_SSHG_KEY_PRIVATE`: private SSH key for the WP Engine SSH Gateway user with access to `mpacademystg`
+6. Create a GitHub release from `main` when the version is ready to distribute.
+7. Update the theme from WordPress using the built-in updater.
 
 ## WordPress Theme Updates From GitHub Releases
 
@@ -202,7 +187,6 @@ mp-academy/
 ## Known Risks / Follow-up Items
 
 - A full translation file regeneration has not been run in this branch.
-- The staging workflow still depends on the correct WP Engine SSH key being configured in GitHub and WP Engine.
 
 ## Changelog
 
@@ -219,8 +203,7 @@ mp-academy/
 - Removed unused files that were not loaded by the active theme bootstrap.
 - Cleaned header and breadcrumb integration, including the missing corporate menu registration.
 - Hardened the LearnDash topic template by replacing regex-based content extraction with DOM-based parsing.
-- Replaced the old SFTP workflow with a WP Engine staging deployment workflow for the `main` branch.
-- Documented repository workflow, theme structure, staging deployment, and follow-up risks.
+- Documented repository workflow, theme structure, theme updates, and follow-up risks.
 
 ### 1.0.0
 
