@@ -197,7 +197,6 @@
     var isStepPage = document.body.classList.contains('single-sfwd-topic') || document.body.classList.contains('single-sfwd-lessons');
     var stepMain = document.querySelector('main[data-mp-step-complete]');
     var stepIsComplete = stepMain ? stepMain.getAttribute('data-mp-step-complete') === '1' : true;
-    var stepRequiresCompletion = stepMain ? stepMain.getAttribute('data-mp-lock-next-step') === '1' : false;
 
     // =========================
     // 1) Add Franklin wrapper to LD navigation
@@ -254,7 +253,7 @@
       link.classList.add('mp', 'c-button', 'c-button--outline-green');
     });
 
-    if (stepRequiresCompletion && !stepIsComplete) {
+    if (!stepIsComplete) {
       document.querySelectorAll('.ld-navigation__next-link, .ld-js-next-lesson, .ld-lesson-nav-next a, .ld-content-action__next .ld-button').forEach(function (link) {
         if (link.tagName.toLowerCase() === 'a') {
           if (link.getAttribute('href')) {
@@ -336,65 +335,12 @@
       var v = $video[0];
       var $ld = $wrap.find('.ld-video').first();
 
-      // LearnDash exposes the real progression requirement on `.ld-video`
-      // via `data-video-progression="true|false"`. Do not treat generic
-      // "video enabled" values like "on" as progression locks.
-      var progression = $ld.data('video-progression') === true
-        || $ld.data('video-progression') === 'true'
-        || $ld.data('video-progression') === 1
-        || $ld.data('video-progression') === '1'
-        || $wrap.data('ld-progression') === true
-        || $wrap.data('ld-progression') === 'true'
-        || $wrap.data('ld-progression') === 1
-        || $wrap.data('ld-progression') === '1';
+      var progression = isOn($wrap.data('ld-progression')) || isOn($ld.data('video-progression'));
       var autostart = isOn($wrap.data('ld-autostart')) || isOn($ld.data('video-autostart'));
       var focusPause = isOn($wrap.data('ld-focus-pause')) || isOn($ld.data('video-focus-pause'));
       var controlsOn = !isOff($wrap.data('ld-controls'));
       var autoComplete = isOn($wrap.data('ld-auto-complete'));
       var isCompleted = isOn($wrap.data('ld-is-complete'));
-      var $mark = $('.learndash_mark_complete_button, #learndash_mark_complete_button, form[name="sfwd-mark-complete"] input[type="submit"]').first();
-
-      function ensureMarkCompleteAvailable() {
-        if (!$mark.length || isCompleted) {
-          return;
-        }
-
-        $mark.show();
-        $mark.prop('disabled', false);
-        $mark.removeAttr('disabled');
-        $mark.removeAttr('aria-disabled');
-
-        var $tooltip = $mark.closest('.ld-tooltip, .ld-tooltip--modern').find('.ld-tooltip__text');
-        if ($tooltip.length) {
-          $tooltip.hide();
-        }
-      }
-
-      function isVideoEffectivelyComplete() {
-        if (isCompleted) {
-          return true;
-        }
-
-        var savedState = localStorage.getItem(cookieKey + '_state');
-        if (savedState === 'complete') {
-          return true;
-        }
-
-        if (v.ended) {
-          return true;
-        }
-
-        if (!isFinite(v.duration) || v.duration <= 0 || !isFinite(v.currentTime)) {
-          return false;
-        }
-
-        return (v.duration - v.currentTime) <= 1;
-      }
-
-      function unlockMarkCompleteAfterVideo() {
-        ensureMarkCompleteAvailable();
-        localStorage.setItem(cookieKey + '_state', 'complete');
-      }
 
       // Use LearnDash cookie key if present, else fallback to topic id.
       // LearnDash only emits data-video-cookie-key when "Track Video Progress"
@@ -556,30 +502,21 @@
       // Progression: keep Mark Complete visible so users can manually complete
       // the topic when needed, while still supporting optional auto-complete.
       if (progression) {
+        var $mark = $('.learndash_mark_complete_button, #learndash_mark_complete_button, form[name="sfwd-mark-complete"] input[type="submit"]').first();
+
         if ($mark.length && !isCompleted) {
           $mark.hide();
         }
 
-        if (isVideoEffectivelyComplete()) {
-          unlockMarkCompleteAfterVideo();
-        }
-
-        $video.on('loadedmetadata canplay loadeddata seeked timeupdate pause', function () {
-          if (isVideoEffectivelyComplete()) {
-            unlockMarkCompleteAfterVideo();
-          }
-        });
-
         $video.on('ended', function () {
-          unlockMarkCompleteAfterVideo();
+          if ($mark.length) $mark.show();
+          localStorage.setItem(cookieKey + '_state', 'complete');
 
           if (autoComplete && $mark.length) {
             saveScrollPositionForReload();
             setTimeout(function () { $mark.trigger('click'); }, 300);
           }
         });
-      } else {
-        ensureMarkCompleteAvailable();
       }
     });
 

@@ -256,10 +256,6 @@ function mp_ld_can_access_lesson( $user_id, $course_id, $lesson_id, $lesson_ids 
     return false;
   }
 
-  if ( ! mp_ld_progression_enabled( $course_id ) || mp_ld_user_can_bypass_progression( $user_id ) ) {
-    return true;
-  }
-
   if ( empty( $lesson_ids ) || ! is_array( $lesson_ids ) ) {
     $lesson_ids = mp_ld_get_course_lesson_ids( $course_id, $user_id );
   }
@@ -292,10 +288,6 @@ function mp_ld_can_access_lesson( $user_id, $course_id, $lesson_id, $lesson_ids 
 function mp_ld_can_access_topic( $user_id, $course_id, $lesson_id, $topic_id, $topic_ids = null ) {
   if ( ! $topic_id || ! $lesson_id || ! $course_id ) {
     return false;
-  }
-
-  if ( ! mp_ld_progression_enabled( $course_id ) || mp_ld_user_can_bypass_progression( $user_id ) ) {
-    return true;
   }
 
   if ( ! mp_ld_can_access_lesson( $user_id, $course_id, $lesson_id ) ) {

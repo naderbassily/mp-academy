@@ -259,8 +259,6 @@ if ( $is_completed ) {
 	$topic_step_status = 'in-progress';
 }
 
-$should_lock_next_step = $next_id && ! $is_completed;
-
 get_template_part(
 	'template-parts/lesson/single/hero',
 	null,
@@ -287,7 +285,6 @@ get_template_part(
 		id="primary"
 		class="site-main u-wrap u-space--section u-flow u-margin-top-xl"
 		data-mp-step-complete="<?php echo esc_attr( $is_completed ? '1' : '0' ); ?>"
-		data-mp-lock-next-step="<?php echo esc_attr( $should_lock_next_step ? '1' : '0' ); ?>"
 	>
 	<header class="u-flow--s">
 		<div class="u-display-flex u-flex-wrap u-gap-s u-align-items-center u-margin-top-xl u-justify-content-between">
@@ -297,7 +294,7 @@ get_template_part(
 				<a href="<?php echo esc_url( $prev_url ); ?>" class="mp c-button c-button--outline-green">← Previous Topic</a>
 			<?php endif; ?>
 
-			<?php if ( $next_url && ! $should_lock_next_step ) : ?>
+			<?php if ( $next_url && $is_completed ) : ?>
 				<a href="<?php echo esc_url( $next_url ); ?>" class="mp c-button c-button--outline-green">Next Topic →</a>
 			<?php elseif ( $next_id ) : ?>
 					<button

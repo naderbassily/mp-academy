@@ -251,8 +251,6 @@ $prev_url               = mp_academy_get_lesson_navigation_url( $course_id, $les
 $next_url               = mp_academy_get_lesson_navigation_url( $course_id, $lesson_id, $next_id );
 $lesson_video_settings  = mp_ld_get_step_video_settings( $lesson_id );
 
-$should_lock_next_step = $is_standalone_lesson && ! $is_completed;
-
 get_template_part('template-parts/lesson/single/hero', null, [
 	'post_id'        => $lesson_id,
 	'lesson_id'      => $lesson_id,
@@ -275,7 +273,6 @@ get_template_part('template-parts/lesson/single/hero', null, [
 	id="primary"
 	class="site-main u-wrap<?php echo $is_standalone_lesson ? ' u-space--section u-flow u-margin-top-xl' : ' u-margin-top-xl u-margin-bottom-xl'; ?><?php echo $is_standalone_lesson ? ' mp-single-lesson--standalone' : ''; ?>"
 	data-mp-step-complete="<?php echo esc_attr( $is_completed ? '1' : '0' ); ?>"
-	data-mp-lock-next-step="<?php echo esc_attr( $should_lock_next_step ? '1' : '0' ); ?>"
 >
 	<?php while ( have_posts() ) : the_post(); ?>
 		<?php if ( $is_standalone_lesson ) : ?>
