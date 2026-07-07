@@ -7,11 +7,15 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: var(--space-16, 16px);
+  margin-bottom: 0;
 }
 
-.mp .mp-my-courses__hd .mp-my-courses__empty-text {
-  margin-top: 0.5rem;
+.mp .mp-my-courses__hd + .mp-my-courses__grid {
+  margin-top: var(--space-16, 16px);
+}
+
+.mp .mp-my-courses__empty-text {
+  margin: 0 0 var(--space-16, 16px);
 }
 .mp .mp-my-courses__note {
   color: var(--color-text-weak, #6b7280);

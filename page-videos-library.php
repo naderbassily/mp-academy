@@ -81,6 +81,12 @@ if (preg_match('/n_(\d+)_n/', $size_raw, $m)) {
 // Search
 $search = isset($_GET['q']) ? sanitize_text_field(wp_unslash($_GET['q'])) : '';
 
+// View mode
+$view_mode = isset($_GET['view']) ? sanitize_key(wp_unslash($_GET['view'])) : 'grid';
+if (!in_array($view_mode, ['grid', 'list'], true)) {
+	$view_mode = 'grid';
+}
+
 // Pagination
 $paged = isset($_GET['pg']) ? max(1, (int) $_GET['pg']) : 1;
 
@@ -133,7 +139,7 @@ $hero_placeholder = 'https://dam.malvernpanalytical.com/fae4c741-f556-475a-b286-
 <main id="primary" class="site-main">
 	<form method="get" action="<?php echo esc_url($base_url); ?>" class="mp-videos-form">
 
-		<input type="hidden" name="size" value="<?php echo esc_attr($size_raw); ?>" />
+		<input type="hidden" name="view" value="<?php echo esc_attr($view_mode); ?>" />
 		<input type="hidden" name="pg" value="1" />
 
 		<section class="c-hero c-hero--dark mp-videos-hero" style="--placeholder-image: url('<?php echo esc_url($hero_placeholder); ?>')">
@@ -247,23 +253,41 @@ $hero_placeholder = 'https://dam.malvernpanalytical.com/fae4c741-f556-475a-b286-
 					<div class="mp-results__top">
 						<div class="mp-results__count"><?php echo (int) $q->found_posts; ?> results</div>
 
-						<div class="mp-results__size">
-							<label for="mp-size">Show</label>
-							<select id="mp-size" onchange="window.location.href=this.value;">
-								<?php foreach ([12, 24, 36] as $n) :
-									$val = "n_{$n}_n";
-									$url = mp_videos_url_with($base_url, ['size' => $val, 'pg' => 1]);
-								?>
-									<option value="<?php echo esc_url($url); ?>" <?php selected($size_raw, $val); ?>>
-										<?php echo (int) $n; ?>
-									</option>
-								<?php endforeach; ?>
-							</select>
+							<div class="mp-results__controls">
+								<div>
+									<label for="mp-view-toggle" class="c-toggle">
+										<?php esc_html_e('Grid', 'mp-academy'); ?>
+									<input
+										id="mp-view-toggle"
+										type="checkbox"
+										class="c-toggle__checkbox u-hidden"
+										role="switch"
+										aria-checked="<?php echo 'list' === $view_mode ? 'true' : 'false'; ?>"
+										aria-label="<?php esc_attr_e('Grid / List', 'mp-academy'); ?>"
+										<?php checked('list', $view_mode); ?>
+									/>
+										<span class="c-toggle__slider" aria-hidden="true"></span>
+										<?php esc_html_e('List', 'mp-academy'); ?>
+									</label>
+								</div>
+
+								<div class="mp-results__size">
+								<label for="mp-size">Show</label>
+								<select id="mp-size" name="size">
+									<?php foreach ([12, 24, 36] as $n) :
+										$val = "n_{$n}_n";
+									?>
+										<option value="<?php echo esc_attr($val); ?>" <?php selected($size_raw, $val); ?>>
+											<?php echo (int) $n; ?>
+										</option>
+									<?php endforeach; ?>
+								</select>
+							</div>
 						</div>
 					</div>
 
 					<?php if ($q->have_posts()) : ?>
-						<div class="mp-video-cards">
+						<div class="mp-video-cards mp-video-cards--<?php echo esc_attr($view_mode); ?>">
 							<?php while ($q->have_posts()) : $q->the_post(); ?>
 								<?php
 								$post_id = get_the_ID();
@@ -295,16 +319,44 @@ $hero_placeholder = 'https://dam.malvernpanalytical.com/fae4c741-f556-475a-b286-
 						$total = (int) $q->max_num_pages;
 						if ($total > 1) : ?>
 							<nav class="mp-pagination" aria-label="Pagination">
-								<?php
-								// show simple numeric paging
-								for ($i = 1; $i <= $total; $i++) :
-									$url = mp_videos_url_with($base_url, ['pg' => $i]);
-									$active = ($i === $paged) ? ' is-active' : '';
-								?>
-									<a class="mp-page<?php echo esc_attr($active); ?>" href="<?php echo esc_url($url); ?>">
-										<?php echo (int) $i; ?>
-									</a>
-								<?php endfor; ?>
+								<div class="mp-pagination__side">
+									<?php if ($paged > 1) : ?>
+										<a class="mp-page mp-page--nav" href="<?php echo esc_url(mp_videos_url_with($base_url, ['pg' => $paged - 1])); ?>">
+											<span class="mp-page__arrow" aria-hidden="true">&#8592;</span>
+											<span><?php esc_html_e('Previous page', 'mp-academy'); ?></span>
+										</a>
+									<?php else : ?>
+										<span class="mp-page mp-page--nav is-disabled" aria-disabled="true">
+											<span class="mp-page__arrow" aria-hidden="true">&#8592;</span>
+											<span><?php esc_html_e('Previous page', 'mp-academy'); ?></span>
+										</span>
+									<?php endif; ?>
+								</div>
+
+								<p class="mp-pagination__status">
+									<?php
+									printf(
+										/* translators: 1: current page number, 2: total page count */
+										esc_html__('Page %1$d of %2$d', 'mp-academy'),
+										(int) $paged,
+										(int) $total
+									);
+									?>
+								</p>
+
+								<div class="mp-pagination__side mp-pagination__side--next">
+									<?php if ($paged < $total) : ?>
+										<a class="mp-page mp-page--nav" href="<?php echo esc_url(mp_videos_url_with($base_url, ['pg' => $paged + 1])); ?>">
+											<span><?php esc_html_e('Next page', 'mp-academy'); ?></span>
+											<span class="mp-page__arrow" aria-hidden="true">&#8594;</span>
+										</a>
+									<?php else : ?>
+										<span class="mp-page mp-page--nav is-disabled" aria-disabled="true">
+											<span><?php esc_html_e('Next page', 'mp-academy'); ?></span>
+											<span class="mp-page__arrow" aria-hidden="true">&#8594;</span>
+										</span>
+									<?php endif; ?>
+								</div>
 							</nav>
 						<?php endif; ?>
 
