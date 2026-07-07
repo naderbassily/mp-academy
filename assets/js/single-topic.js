@@ -336,7 +336,17 @@
       var v = $video[0];
       var $ld = $wrap.find('.ld-video').first();
 
-      var progression = isOn($wrap.data('ld-progression')) || isOn($ld.data('video-progression'));
+      // LearnDash exposes the real progression requirement on `.ld-video`
+      // via `data-video-progression="true|false"`. Do not treat generic
+      // "video enabled" values like "on" as progression locks.
+      var progression = $ld.data('video-progression') === true
+        || $ld.data('video-progression') === 'true'
+        || $ld.data('video-progression') === 1
+        || $ld.data('video-progression') === '1'
+        || $wrap.data('ld-progression') === true
+        || $wrap.data('ld-progression') === 'true'
+        || $wrap.data('ld-progression') === 1
+        || $wrap.data('ld-progression') === '1';
       var autostart = isOn($wrap.data('ld-autostart')) || isOn($ld.data('video-autostart'));
       var focusPause = isOn($wrap.data('ld-focus-pause')) || isOn($ld.data('video-focus-pause'));
       var controlsOn = !isOff($wrap.data('ld-controls'));

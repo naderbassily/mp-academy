@@ -251,12 +251,7 @@ $prev_url               = mp_academy_get_lesson_navigation_url( $course_id, $les
 $next_url               = mp_academy_get_lesson_navigation_url( $course_id, $lesson_id, $next_id );
 $lesson_video_settings  = mp_ld_get_step_video_settings( $lesson_id );
 
-$progression_is_locked = $is_enrolled
-	&& $course_id
-	&& mp_ld_progression_enabled( $course_id )
-	&& ! mp_ld_user_can_bypass_progression( $user_id );
-
-$should_lock_next_step = $is_standalone_lesson && ! $is_completed && $progression_is_locked;
+$should_lock_next_step = $is_standalone_lesson && ! $is_completed;
 
 get_template_part('template-parts/lesson/single/hero', null, [
 	'post_id'        => $lesson_id,

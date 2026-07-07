@@ -259,12 +259,7 @@ if ( $is_completed ) {
 	$topic_step_status = 'in-progress';
 }
 
-$progression_is_locked = $is_enrolled
-	&& $course_id
-	&& mp_ld_progression_enabled( $course_id )
-	&& ! mp_ld_user_can_bypass_progression( $user_id );
-
-$should_lock_next_step = $next_id && ! $is_completed && $progression_is_locked;
+$should_lock_next_step = $next_id && ! $is_completed;
 
 get_template_part(
 	'template-parts/lesson/single/hero',
