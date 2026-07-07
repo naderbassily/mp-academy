@@ -376,10 +376,10 @@
         $video.removeAttr('controls');
       }
 
-      // Match LearnDash's native cookie name exactly — `learndash-video-progress-<hash>` —
-      // so this resume state is interchangeable with LD's own storage if LD ever
-      // wires up `_wpmejsSettings.success` on this template.
-      var resumeStorageKey = cookieKey;
+      // LearnDash uses `data-video-cookie-key` to store structured completion
+      // state. Keep custom resume tracking in a separate key so we do not
+      // overwrite LearnDash's completion cookie with a raw timestamp.
+      var resumeStorageKey = 'mp_ld_resume_' + fallbackId;
       var resumeApplied = !resume;
       var resumeTargetTime = 0;
       var resumeRetryTimer = null;
