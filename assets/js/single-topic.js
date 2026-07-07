@@ -370,6 +370,32 @@
         }
       }
 
+      function isVideoEffectivelyComplete() {
+        if (isCompleted) {
+          return true;
+        }
+
+        var savedState = localStorage.getItem(cookieKey + '_state');
+        if (savedState === 'complete') {
+          return true;
+        }
+
+        if (v.ended) {
+          return true;
+        }
+
+        if (!isFinite(v.duration) || v.duration <= 0 || !isFinite(v.currentTime)) {
+          return false;
+        }
+
+        return (v.duration - v.currentTime) <= 1;
+      }
+
+      function unlockMarkCompleteAfterVideo() {
+        ensureMarkCompleteAvailable();
+        localStorage.setItem(cookieKey + '_state', 'complete');
+      }
+
       // Use LearnDash cookie key if present, else fallback to topic id.
       // LearnDash only emits data-video-cookie-key when "Track Video Progress"
       // is enabled (globally or per-topic), so its presence is the source of
@@ -534,9 +560,18 @@
           $mark.hide();
         }
 
+        if (isVideoEffectivelyComplete()) {
+          unlockMarkCompleteAfterVideo();
+        }
+
+        $video.on('loadedmetadata canplay loadeddata seeked timeupdate pause', function () {
+          if (isVideoEffectivelyComplete()) {
+            unlockMarkCompleteAfterVideo();
+          }
+        });
+
         $video.on('ended', function () {
-          if ($mark.length) $mark.show();
-          localStorage.setItem(cookieKey + '_state', 'complete');
+          unlockMarkCompleteAfterVideo();
 
           if (autoComplete && $mark.length) {
             saveScrollPositionForReload();
