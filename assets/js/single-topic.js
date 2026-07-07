@@ -78,6 +78,16 @@
       // Ignore storage failures.
     }
   }
+  function enableMarkCompleteControls() {
+    $('.learndash_mark_complete_button, #learndash_mark_complete_button, form[name="sfwd-mark-complete"] input[type="submit"]').each(function () {
+      this.disabled = false;
+      this.removeAttribute('disabled');
+      this.removeAttribute('aria-disabled');
+      this.style.removeProperty('opacity');
+      this.style.removeProperty('cursor');
+      $(this).show();
+    });
+  }
   function unlockNextStepButtons() {
     document.querySelectorAll('[data-mp-next-step-url]').forEach(function (button) {
       var nextUrl = button.getAttribute('data-mp-next-step-url');
@@ -335,7 +345,14 @@
       var v = $video[0];
       var $ld = $wrap.find('.ld-video').first();
 
-      var progression = isOn($wrap.data('ld-progression')) || isOn($ld.data('video-progression'));
+      // Only trust LearnDash's rendered progression flag on the video wrapper.
+      // `data-ld-progression` is derived from the generic "video enabled" step
+      // setting and can incorrectly lock subscriber users even when actual
+      // video progression is not required for completion.
+      var progression = $ld.data('video-progression') === true
+        || $ld.data('video-progression') === 'true'
+        || $ld.data('video-progression') === 1
+        || $ld.data('video-progression') === '1';
       var autostart = isOn($wrap.data('ld-autostart')) || isOn($ld.data('video-autostart'));
       var focusPause = isOn($wrap.data('ld-focus-pause')) || isOn($ld.data('video-focus-pause'));
       var controlsOn = !isOff($wrap.data('ld-controls'));
@@ -509,7 +526,7 @@
         }
 
         $video.on('ended', function () {
-          if ($mark.length) $mark.show();
+          enableMarkCompleteControls();
           localStorage.setItem(cookieKey + '_state', 'complete');
 
           if (autoComplete && $mark.length) {
@@ -517,6 +534,8 @@
             setTimeout(function () { $mark.trigger('click'); }, 300);
           }
         });
+      } else {
+        enableMarkCompleteControls();
       }
     });
 
