@@ -352,6 +352,23 @@
       var controlsOn = !isOff($wrap.data('ld-controls'));
       var autoComplete = isOn($wrap.data('ld-auto-complete'));
       var isCompleted = isOn($wrap.data('ld-is-complete'));
+      var $mark = $('.learndash_mark_complete_button, #learndash_mark_complete_button, form[name="sfwd-mark-complete"] input[type="submit"]').first();
+
+      function ensureMarkCompleteAvailable() {
+        if (!$mark.length || isCompleted) {
+          return;
+        }
+
+        $mark.show();
+        $mark.prop('disabled', false);
+        $mark.removeAttr('disabled');
+        $mark.removeAttr('aria-disabled');
+
+        var $tooltip = $mark.closest('.ld-tooltip, .ld-tooltip--modern').find('.ld-tooltip__text');
+        if ($tooltip.length) {
+          $tooltip.hide();
+        }
+      }
 
       // Use LearnDash cookie key if present, else fallback to topic id.
       // LearnDash only emits data-video-cookie-key when "Track Video Progress"
@@ -513,8 +530,6 @@
       // Progression: keep Mark Complete visible so users can manually complete
       // the topic when needed, while still supporting optional auto-complete.
       if (progression) {
-        var $mark = $('.learndash_mark_complete_button, #learndash_mark_complete_button, form[name="sfwd-mark-complete"] input[type="submit"]').first();
-
         if ($mark.length && !isCompleted) {
           $mark.hide();
         }
@@ -528,6 +543,8 @@
             setTimeout(function () { $mark.trigger('click'); }, 300);
           }
         });
+      } else {
+        ensureMarkCompleteAvailable();
       }
     });
 
