@@ -197,6 +197,7 @@
     var isStepPage = document.body.classList.contains('single-sfwd-topic') || document.body.classList.contains('single-sfwd-lessons');
     var stepMain = document.querySelector('main[data-mp-step-complete]');
     var stepIsComplete = stepMain ? stepMain.getAttribute('data-mp-step-complete') === '1' : true;
+    var stepRequiresCompletion = stepMain ? stepMain.getAttribute('data-mp-lock-next-step') === '1' : false;
 
     // =========================
     // 1) Add Franklin wrapper to LD navigation
@@ -253,7 +254,7 @@
       link.classList.add('mp', 'c-button', 'c-button--outline-green');
     });
 
-    if (!stepIsComplete) {
+    if (stepRequiresCompletion && !stepIsComplete) {
       document.querySelectorAll('.ld-navigation__next-link, .ld-js-next-lesson, .ld-lesson-nav-next a, .ld-content-action__next .ld-button').forEach(function (link) {
         if (link.tagName.toLowerCase() === 'a') {
           if (link.getAttribute('href')) {
